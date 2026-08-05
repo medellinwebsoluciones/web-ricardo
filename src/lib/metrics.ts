@@ -146,7 +146,10 @@ export async function getMetrics(days = 14): Promise<Metrics> {
     prisma.lead.count({ where: { createdAt: { gte: since } } }),
     prisma.appointment.count({ where: { createdAt: { gte: since } } }),
     prisma.appointment.count({
-      where: { scheduledAt: { gte: now }, status: "confirmed" },
+      where: {
+        scheduledAt: { gte: now },
+        status: { in: ["confirmed", "pending"] },
+      },
     }),
     prisma.apiUsage.aggregate({
       where: { createdAt: { gte: since } },
@@ -161,7 +164,10 @@ export async function getMetrics(days = 14): Promise<Metrics> {
       select: { content: true, createdAt: true },
     }),
     prisma.appointment.findMany({
-      where: { scheduledAt: { gte: now }, status: "confirmed" },
+      where: {
+        scheduledAt: { gte: now },
+        status: { in: ["confirmed", "pending"] },
+      },
       orderBy: { scheduledAt: "asc" },
       take: 10,
       select: {

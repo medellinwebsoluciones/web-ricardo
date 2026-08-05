@@ -72,6 +72,29 @@ export function bookingConfirmationHtml(params: {
   </div>`;
 }
 
+/**
+ * Cita registrada sin enlace de Meet (Google no configurado o caído):
+ * confirmamos la recepción sin prometer un enlace que todavía no existe.
+ */
+export function bookingRequestHtml(params: {
+  name: string;
+  whenHuman: string;
+  locale: string;
+  topic?: string;
+}): string {
+  const en = params.locale === "en";
+  return `
+  <div style="font-family:Inter,Arial,sans-serif;background:#09090b;color:#e4e4e7;padding:32px;border-radius:12px;max-width:520px;margin:auto">
+    <h2 style="color:#fff;margin:0 0 8px">${en ? "Request received — Ricardo will send you the invite" : "Solicitud recibida — Ricardo te enviará la invitación"}</h2>
+    <p style="color:#a1a1aa">${en ? "Hi" : "Hola"} ${params.name},</p>
+    <p style="color:#a1a1aa">${en ? "Your 15-minute technical call request is registered for:" : "Tu solicitud de llamada técnica de 15 minutos quedó registrada para:"}</p>
+    <p style="color:#fff;font-size:18px;font-weight:600">${params.whenHuman}</p>
+    ${params.topic ? `<p style="color:#a1a1aa">${en ? "Topic" : "Tema"}: ${params.topic}</p>` : ""}
+    <p style="color:#a1a1aa">${en ? "Ricardo will confirm the slot and send you the meeting link by email shortly. If that time no longer works, just reply to this message." : "Ricardo confirmará el horario y te enviará el enlace de la reunión por correo en breve. Si ese horario ya no te sirve, responde este mensaje."}</p>
+    <p style="color:#71717a;font-size:12px;margin-top:24px">Medellín Web Soluciones · ${site.email}</p>
+  </div>`;
+}
+
 export function contactNotificationHtml(params: {
   name: string;
   email: string;

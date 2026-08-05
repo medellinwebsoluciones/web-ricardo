@@ -107,7 +107,7 @@ model Appointment {
   durationMin   Int      @default(15)
   timezone      String   @default("America/Bogota")
   locale        String   @default("es")
-  status        String   @default("confirmed") // confirmed | cancelled | completed
+  status        String   @default("confirmed") // pending (sin Meet, por confirmar a mano) | confirmed | cancelled | completed
   googleEventId String?
   meetLink      String?
   createdAt     DateTime @default(now())

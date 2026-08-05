@@ -88,8 +88,11 @@ export type Dictionary = {
     submitting: string;
     successTitle: string;
     successBody: string;
+    pendingTitle: string;
+    pendingBody: string;
     meetLabel: string;
     errorGeneric: string;
+    errorRateLimited: string;
     tz: string;
   };
   contact: {
@@ -364,13 +367,18 @@ const es: Dictionary = {
     topicPlaceholder: "¿Sobre qué quieres conversar?",
     noSlots: "No hay horarios disponibles para esta fecha.",
     loadingSlots: "Cargando disponibilidad...",
-    submit: "Confirmar y generar Google Meet",
+    submit: "Confirmar llamada técnica",
     submitting: "Agendando...",
     successTitle: "Reunión confirmada",
     successBody:
       "Revisa tu correo: te acabamos de enviar la invitación con el enlace de Google Meet.",
+    pendingTitle: "Solicitud recibida",
+    pendingBody:
+      "Tu horario quedó reservado. Ricardo te confirmará por email y te enviará el enlace de la reunión.",
     meetLabel: "Unirse a Google Meet",
     errorGeneric: "No se pudo agendar. Intenta con otro horario.",
+    errorRateLimited:
+      "Demasiados intentos seguidos. Espera unos minutos y vuelve a probar.",
     tz: "Horarios en Colombia (America/Bogota). Cada slot muestra también la hora en España (Europe/Madrid).",
   },
   contact: {
@@ -675,13 +683,18 @@ const en: Dictionary = {
     topicPlaceholder: "What would you like to discuss?",
     noSlots: "No available times for this date.",
     loadingSlots: "Loading availability...",
-    submit: "Confirm and create Google Meet",
+    submit: "Confirm technical call",
     submitting: "Booking...",
     successTitle: "Meeting confirmed",
     successBody:
       "Check your inbox: the invite with the Google Meet link just landed.",
+    pendingTitle: "Request received",
+    pendingBody:
+      "Your time slot is reserved. Ricardo will confirm by email and send you the meeting link.",
     meetLabel: "Join Google Meet",
     errorGeneric: "Could not book. Please try another time.",
+    errorRateLimited:
+      "Too many attempts in a row. Please wait a few minutes and try again.",
     tz: "Times in Colombia (America/Bogota). Each slot also shows Spain time (Europe/Madrid).",
   },
   contact: {

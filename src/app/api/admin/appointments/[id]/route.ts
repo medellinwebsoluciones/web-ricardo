@@ -79,7 +79,11 @@ export async function PATCH(
 
     const updated = await prisma.appointment.update({
       where: { id },
-      data: { scheduledAt: start, status: "confirmed" },
+      // Sin enlace de Meet la cita sigue pendiente de confirmar a mano.
+      data: {
+        scheduledAt: start,
+        status: appt.meetLink ? "confirmed" : "pending",
+      },
     });
     return Response.json({ appointment: updated, googleWarning });
   }

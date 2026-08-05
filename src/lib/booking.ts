@@ -57,10 +57,10 @@ export async function getAvailability(
   const dayStart = fromZonedTime(`${dateStr}T00:00:00`, tz).getTime();
   const dayEnd = fromZonedTime(`${dateStr}T23:59:59`, tz).getTime();
 
-  // Citas existentes (confirmadas)
+  // Citas existentes (confirmadas y pendientes de confirmar: ambas ocupan)
   const appts = await prisma.appointment.findMany({
     where: {
-      status: "confirmed",
+      status: { in: ["confirmed", "pending"] },
       scheduledAt: {
         gte: new Date(dayStart),
         lte: new Date(dayEnd),

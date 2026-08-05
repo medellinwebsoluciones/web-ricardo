@@ -33,6 +33,7 @@ export function Booking({
   const [success, setSuccess] = useState<{
     whenHuman: string;
     meetLink: string | null;
+    pending: boolean;
   } | null>(null);
   const [error, setError] = useState("");
 
@@ -77,12 +78,18 @@ export function Booking({
         if (data.error === "slot_taken") {
           setError(t.errorGeneric);
           loadSlots(date);
+        } else if (data.error === "rate_limited") {
+          setError(t.errorRateLimited);
         } else {
           setError(t.errorGeneric);
         }
         return;
       }
-      setSuccess({ whenHuman: data.whenHuman, meetLink: data.meetLink });
+      setSuccess({
+        whenHuman: data.whenHuman,
+        meetLink: data.meetLink,
+        pending: Boolean(data.pending),
+      });
     } catch {
       setError(t.errorGeneric);
     } finally {
@@ -113,9 +120,11 @@ export function Booking({
                   <CheckCircle2 className="h-7 w-7" />
                 </span>
                 <h3 className="mt-6 text-xl font-semibold text-white">
-                  {t.successTitle}
+                  {success.pending ? t.pendingTitle : t.successTitle}
                 </h3>
-                <p className="mt-2 max-w-md text-zinc-400">{t.successBody}</p>
+                <p className="mt-2 max-w-md text-zinc-400">
+                  {success.pending ? t.pendingBody : t.successBody}
+                </p>
                 <p className="mt-4 font-medium text-zinc-200">
                   {success.whenHuman}
                 </p>

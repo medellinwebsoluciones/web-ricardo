@@ -7,8 +7,13 @@ import { getAvailability } from "@/lib/booking";
 import {
   createMeetEvent,
   isGoogleConfigured,
+  type CreatedMeetEvent,
 } from "@/lib/google-calendar";
-import { sendMail, bookingConfirmationHtml } from "@/lib/mailer";
+import {
+  sendMail,
+  bookingConfirmationHtml,
+  bookingRequestHtml,
+} from "@/lib/mailer";
 import { rateLimit, getClientIp } from "@/lib/ratelimit";
 import { site } from "@/lib/site";
 
@@ -49,10 +54,6 @@ export async function POST(req: NextRequest) {
     return Response.json({ ok: true }); // fingir exito para bots
   }
 
-  if (!isGoogleConfigured()) {
-    return Response.json({ error: "booking_unavailable" }, { status: 503 });
-  }
-
   // Validar que el slot sigue disponible
   const dateStr = data.startIso.slice(0, 10);
   const zonedDate = format(
@@ -78,73 +79,113 @@ export async function POST(req: NextRequest) {
     .filter(Boolean)
     .join("\n");
 
-  let meet;
-  try {
-    meet = await createMeetEvent({
-      summary,
-      description,
-      startIso: slot.startIso,
-      endIso: slot.endIso,
-      attendeeEmail: data.email,
-      attendeeName: data.name,
-    });
-  } catch (err) {
-    console.error("createMeetEvent error:", err);
-    return Response.json({ error: "calendar_error" }, { status: 502 });
-  }
-
-  const appointment = await prisma.appointment.create({
-    data: {
-      name: data.name,
-      email: data.email,
-      topic: data.topic || null,
-      scheduledAt: new Date(slot.startIso),
-      durationMin: 15,
-      timezone: site.timezone,
-      locale: data.locale,
-      status: "confirmed",
-      googleEventId: meet.eventId || null,
-      meetLink: meet.meetLink,
-    },
-  });
-
-  // Registrar lead
-  await prisma.lead.create({
-    data: {
-      name: data.name,
-      email: data.email,
-      message: data.topic || null,
-      source: "booking",
-      locale: data.locale,
-    },
-  });
-
-  // Email de confirmacion
   const whenHuman = format(
     toZonedTime(new Date(slot.startIso), site.timezone),
     "PPPP p '(GMT-5)'",
     { timeZone: site.timezone, locale: en ? enUS : es },
   );
+
+  // El Meet es un extra, no un requisito: si Google no está configurado o
+  // falla, la cita se guarda igual como "pending" y Ricardo envía la
+  // invitación a mano. Perder el lead nunca es una opción aceptable.
+  let meet: CreatedMeetEvent | null = null;
+  if (isGoogleConfigured()) {
+    try {
+      meet = await createMeetEvent({
+        summary,
+        description,
+        startIso: slot.startIso,
+        endIso: slot.endIso,
+        attendeeEmail: data.email,
+        attendeeName: data.name,
+      });
+    } catch (err) {
+      console.error("createMeetEvent error:", err);
+    }
+  } else {
+    console.warn("Google Calendar no configurado; cita guardada como pending");
+  }
+
+  const confirmed = Boolean(meet);
+
+  let appointment;
+  try {
+    appointment = await prisma.appointment.create({
+      data: {
+        name: data.name,
+        email: data.email,
+        topic: data.topic || null,
+        scheduledAt: new Date(slot.startIso),
+        durationMin: 15,
+        timezone: site.timezone,
+        locale: data.locale,
+        status: confirmed ? "confirmed" : "pending",
+        googleEventId: meet?.eventId || null,
+        meetLink: meet?.meetLink ?? null,
+      },
+    });
+  } catch (err) {
+    console.error("appointment create error:", err);
+    return Response.json({ error: "storage_error" }, { status: 500 });
+  }
+
+  // Registrar lead (nunca debe tumbar la cita ya guardada)
+  try {
+    await prisma.lead.create({
+      data: {
+        name: data.name,
+        email: data.email,
+        message: confirmed
+          ? data.topic || null
+          : [
+              data.topic,
+              `Cita solicitada para ${whenHuman}: falta enviar la invitación de Meet manualmente.`,
+            ]
+              .filter(Boolean)
+              .join("\n\n"),
+        source: "booking",
+        locale: data.locale,
+      },
+    });
+  } catch (err) {
+    console.error("lead create error:", err);
+  }
+
+  // Email al visitante (con copia a Ricardo). Si SMTP no está configurado
+  // sendMail solo avisa por log y devuelve false.
   await sendMail({
     to: data.email,
     cc: site.email,
-    subject: en
-      ? "Your technical call with Ricardo Zuluaga is confirmed"
-      : "Tu llamada técnica con Ricardo Zuluaga está confirmada",
-    html: bookingConfirmationHtml({
-      name: data.name,
-      whenHuman,
-      meetLink: meet.meetLink,
-      locale: data.locale,
-      topic: data.topic || undefined,
-    }),
+    subject: confirmed
+      ? en
+        ? "Your technical call with Ricardo Zuluaga is confirmed"
+        : "Tu llamada técnica con Ricardo Zuluaga está confirmada"
+      : en
+        ? "We received your technical call request"
+        : "Recibimos tu solicitud de llamada técnica",
+    html: confirmed
+      ? bookingConfirmationHtml({
+          name: data.name,
+          whenHuman,
+          meetLink: meet?.meetLink ?? null,
+          locale: data.locale,
+          topic: data.topic || undefined,
+        })
+      : bookingRequestHtml({
+          name: data.name,
+          whenHuman,
+          locale: data.locale,
+          topic: data.topic || undefined,
+        }),
     replyTo: data.email,
   });
 
   return Response.json({
     ok: true,
     id: appointment.id,
-    meetLink: meet.meetLink,
+    status: appointment.status,
+    pending: !confirmed,
+    meetLink: meet?.meetLink ?? null,
     whenHuman,
   });
 }

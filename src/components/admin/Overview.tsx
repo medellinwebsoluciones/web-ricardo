@@ -377,7 +377,7 @@ export function Overview({ metrics }: { metrics: Metrics }) {
                       {fmtDateTime(a.scheduledAt)}
                     </p>
                   </div>
-                  {a.meetLink && (
+                  {a.meetLink ? (
                     <a
                       href={a.meetLink}
                       target="_blank"
@@ -386,6 +386,8 @@ export function Overview({ metrics }: { metrics: Metrics }) {
                     >
                       <Video className="h-3.5 w-3.5" /> Meet
                     </a>
+                  ) : (
+                    <Tag tone="amber">Enviar invitación</Tag>
                   )}
                 </div>
               ))}

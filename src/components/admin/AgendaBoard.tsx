@@ -39,10 +39,14 @@ export type AppointmentRow = {
 };
 
 const STATUS_TONE: Record<string, Tone> = {
+  pending: "amber",
   confirmed: "emerald",
   cancelled: "red",
   completed: "neutral",
 };
+
+/** Citas vivas: ocupan la agenda aunque todavía no tengan Meet. */
+const ACTIVE_STATUSES = ["confirmed", "pending"];
 
 function fmtTime(iso: string) {
   return new Date(iso).toLocaleTimeString("es-CO", {
@@ -126,7 +130,9 @@ export function AgendaBoard({
     const now = Date.now();
     return appts
       .filter(
-        (a) => a.status === "confirmed" && new Date(a.scheduledAt).getTime() >= now,
+        (a) =>
+          ACTIVE_STATUSES.includes(a.status) &&
+          new Date(a.scheduledAt).getTime() >= now,
       )
       .sort((x, y) => x.scheduledAt.localeCompare(y.scheduledAt));
   }, [appts]);
@@ -135,6 +141,7 @@ export function AgendaBoard({
     () => ({
       total: appts.length,
       confirmed: appts.filter((a) => a.status === "confirmed").length,
+      pending: appts.filter((a) => a.status === "pending").length,
       cancelled: appts.filter((a) => a.status === "cancelled").length,
       completed: appts.filter((a) => a.status === "completed").length,
     }),
@@ -172,7 +179,7 @@ export function AgendaBoard({
         subtitle={
           googleConfigured
             ? "Sincronizada con Google Calendar"
-            : "Google Calendar no configurado: los cambios solo afectan la base local"
+            : "Google Calendar no configurado: las citas entran como «por confirmar» y sin Meet; los cambios solo afectan la base local"
         }
         actions={
           <a
@@ -185,9 +192,10 @@ export function AgendaBoard({
       />
 
       <div className="space-y-5 p-6">
-        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-4 lg:grid-cols-5">
           <Stat icon={CalendarClock} label="Total citas" value={stats.total} />
           <Stat label="Confirmadas" value={stats.confirmed} />
+          <Stat label="Por confirmar" value={stats.pending} />
           <Stat label="Completadas" value={stats.completed} />
           <Stat label="Canceladas" value={stats.cancelled} />
         </div>
@@ -253,7 +261,9 @@ export function AgendaBoard({
                         className={`block w-full truncate rounded px-1.5 py-1 text-left text-[11px] transition-colors ${
                           a.status === "cancelled"
                             ? "bg-zinc-800/50 text-zinc-500 line-through"
-                            : "bg-emerald-500/10 text-emerald-200 hover:bg-emerald-500/20"
+                            : a.status === "pending"
+                              ? "bg-amber-500/10 text-amber-200 hover:bg-amber-500/20"
+                              : "bg-emerald-500/10 text-emerald-200 hover:bg-emerald-500/20"
                         }`}
                       >
                         {fmtTime(a.scheduledAt)} {a.name}
@@ -267,7 +277,7 @@ export function AgendaBoard({
         </Panel>
 
         <div className="grid gap-4 xl:grid-cols-[1fr_380px]">
-          <Panel title="Próximas citas confirmadas">
+          <Panel title="Próximas citas">
             <div className="space-y-3">
               {upcoming.length === 0 && <Empty>Sin citas próximas.</Empty>}
               {upcoming.map((a) => (
@@ -288,7 +298,7 @@ export function AgendaBoard({
                       {fmtEs(a.scheduledAt)} ES
                     </p>
                   </button>
-                  {a.meetLink && (
+                  {a.meetLink ? (
                     <a
                       href={a.meetLink}
                       target="_blank"
@@ -297,6 +307,8 @@ export function AgendaBoard({
                     >
                       <Video className="h-3.5 w-3.5" /> Meet
                     </a>
+                  ) : (
+                    <Tag tone="amber">Enviar invitación</Tag>
                   )}
                 </div>
               ))}
@@ -333,7 +345,7 @@ export function AgendaBoard({
                     </p>
                   </div>
 
-                  {selected.meetLink && (
+                  {selected.meetLink ? (
                     <a
                       href={selected.meetLink}
                       target="_blank"
@@ -342,6 +354,12 @@ export function AgendaBoard({
                     >
                       <Video className="h-3.5 w-3.5" /> Abrir Google Meet
                     </a>
+                  ) : (
+                    <p className="rounded-lg border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-[11px] text-amber-200">
+                      Sin enlace de Meet: envíale la invitación a{" "}
+                      {selected.email} manualmente. Al reprogramar o cancelar,
+                      avísale por correo tú mismo.
+                    </p>
                   )}
 
                   <div className="space-y-2">

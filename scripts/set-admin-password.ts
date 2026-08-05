@@ -8,6 +8,10 @@ import { prisma } from "../src/lib/prisma";
  * `prisma/seed.ts` reingesta el corpus con `reset: true`, asi que usarlo solo
  * para cambiar la password borra lo que hayas entrenado desde la consola.
  *
+ * Esto solo actualiza la BD. `src/lib/auth.ts` acepta ademas `ADMIN_PASSWORD`
+ * del entorno como fallback, asi que la password vieja sigue siendo valida
+ * hasta que la cambies en el `.env` y recrees el contenedor.
+ *
  * Uso:
  *   npx tsx scripts/set-admin-password.ts <password> [email]
  */
@@ -35,8 +39,12 @@ async function main() {
     create: { email, passwordHash: bcrypt.hashSync(password, 10) },
   });
 
-  console.log(`Password actualizada para ${email}.`);
-  console.log("Acuerdate de reflejar el cambio en ADMIN_PASSWORD del .env.");
+  console.log(`Password actualizada en la BD para ${email}.`);
+  console.log(
+    "IMPORTANTE: la password vieja sigue valida por el fallback de entorno.\n" +
+      "Para revocarla, actualiza ADMIN_PASSWORD en el .env y recrea el contenedor:\n" +
+      "  docker compose up -d --force-recreate app",
+  );
 }
 
 main()
