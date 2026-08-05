@@ -1,6 +1,22 @@
-flowchart LR
-  Buyer[Comprador] --> Web[Flask Web]
-  Owner[Propietario] --> Web
-  Web --> Leads[(SQLite Leads)]
-  Web --> Admin[Admin Panel]
-  Admin --> Followup[Seguimiento]
+flowchart TB
+  Buyer[Comprador] --> Nginx
+  Partner[Colega inmobiliario] --> Nginx
+  Scout[Captador de calle] --> Nginx
+  Admin[Admin / operacion] --> Nginx
+
+  Nginx[Nginx · TLS · 301 www a apex] --> Gunicorn[Gunicorn · 3 workers x 2 threads]
+  Gunicorn --> Flask[Flask · 159 rutas]
+
+  Flask --> Domain[33 modulos de dominio<br/>geo · amenidades · finanzas · blog]
+  Flask --> AI[Agentes IA<br/>asesor · copiloto · SEO de fichas]
+  Flask --> SEO[SEO/GEO/AEO<br/>sitemaps · llms.txt · IndexNow]
+  Flask --> Media[Pipeline WebP<br/>log de optimizacion]
+
+  Domain --> MySQL[(MySQL 8 InnoDB<br/>45 tablas)]
+  AI --> MySQL
+  SEO --> MySQL
+  Media --> Vol[(Volumen /app/instance<br/>subidas · BD de rescate)]
+
+  AI --> LLM[OpenAI / Gemini<br/>con fallback]
+  Flask --> Bold[Bold Link API]
+  SEO --> Google[GA4 · Search Console<br/>Indexing API]

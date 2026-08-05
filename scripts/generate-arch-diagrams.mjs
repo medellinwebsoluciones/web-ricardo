@@ -1,6 +1,10 @@
 /**
  * Genera diagramas de arquitectura PNG (SVG rasterizado vía Playwright)
  * a public/images/arch/{slug}.png y copies a captures/{slug}-hero.png
+ *
+ * Uso: node scripts/generate-arch-diagrams.mjs [slug ...]
+ * Sin argumentos regenera todos; con slugs solo esos (evita sobrescribir
+ * capturas reales de UI de otros casos).
  */
 import { mkdir, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
@@ -33,11 +37,11 @@ const diagrams = [
   },
   {
     slug: "auge-urbano",
-    title: "Auge Urbano — Captación Real Estate",
+    title: "Auge Urbano — Plataforma PropTech",
     layers: [
-      ["Compradores", "Flask Web", "Propietarios"],
-      ["Landing · Forms", "Lead Pipeline", "Admin"],
-      ["SQLite Leads", "Seguimiento", "CRM handoff"],
+      ["Compradores", "Colegas · Captadores", "Admin / operacion"],
+      ["Nginx TLS + apex canonico", "Gunicorn 3w x 2t", "Flask · 159 rutas"],
+      ["Agentes IA + guards", "SEO/GEO/AEO · IndexNow", "MySQL 8 · 45 tablas"],
     ],
   },
   {
@@ -171,6 +175,14 @@ function htmlFor(d) {
 }
 
 async function main() {
+  const only = new Set(process.argv.slice(2));
+  const selected = only.size
+    ? diagrams.filter((d) => only.has(d.slug))
+    : diagrams;
+  if (!selected.length) {
+    throw new Error(`Sin diagramas para: ${[...only].join(", ")}`);
+  }
+
   await mkdir(archDir, { recursive: true });
   await mkdir(captureDir, { recursive: true });
   const browser = await chromium.launch();
@@ -179,7 +191,7 @@ async function main() {
     deviceScaleFactor: 2,
   });
 
-  for (const d of diagrams) {
+  for (const d of selected) {
     const html = htmlFor(d);
     const tmp = join(archDir, `${d.slug}.html`);
     await writeFile(tmp, html, "utf8");
@@ -201,7 +213,7 @@ async function main() {
   }
 
   await browser.close();
-  console.log("Done", diagrams.length, "diagrams");
+  console.log("Done", selected.length, "diagrams");
 }
 
 main().catch((e) => {

@@ -154,14 +154,14 @@ Model: few clients, high seniority, ownership. Typical engagement: 15-min discov
     title: "Caso: Auge Urbano",
     lang: "es",
     sourceType: "manual",
-    content: `Plataforma Flask de Real Estate: embudos comprador/propietario, SQLite leads, admin. Base para automatización con agente de calificación. Resultado: captación E2E operable, no solo brochure.`,
+    content: `Plataforma PropTech en Flask desplegada en VPS (Docker, Gunicorn, Nginx con TLS): 159 rutas, 45 tablas MySQL 8 InnoDB, CRM propio (leads, citas, cierres, ingresos y gastos), portal de colegas inmobiliarios y portal de captadores, blog, pagos con Bold y pila SEO/GEO/AEO con IndexNow, sitemaps y llms.txt. Agentes IA integrados (asesor público, copiloto de negocio, generación SEO de fichas) con guards de prompt injection. Resultado: el negocio completo operado desde un solo sistema, no un brochure.`,
   },
   {
     collectionSlug: "proyectos",
     title: "Case: Auge Urbano",
     lang: "en",
     sourceType: "manual",
-    content: `Flask Real Estate platform: buyer/owner funnels, SQLite leads, admin. Path to automation with scoring agent. Outcome: operable E2E capture—not just a brochure.`,
+    content: `Flask PropTech platform deployed on a VPS (Docker, Gunicorn, Nginx with TLS): 159 routes, 45 MySQL 8 InnoDB tables, in-house CRM (leads, viewings, closings, income and expenses), partner-agent portal and street-scout portal, blog, Bold payments and a SEO/GEO/AEO stack with IndexNow, sitemaps and llms.txt. Embedded AI agents (public advisor, business copilot, listing SEO generation) behind prompt-injection guards. Outcome: the whole business operated from one system—not a brochure.`,
   },
   {
     collectionSlug: "proyectos",
