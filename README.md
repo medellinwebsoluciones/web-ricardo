@@ -66,13 +66,21 @@ cp .env.example .env
 nano .env   # NEXTAUTH_SECRET, ADMIN_*, POSTGRES_PASSWORD, URLs https://tudominio.com, OPENAI_API_KEY
 ```
 
+   `NEXT_PUBLIC_SITE_URL` tiene que estar puesta **antes** del build: Next la
+   inlinea al compilar, así que el canonical, los `hreflang`, el Open Graph y el
+   sitemap salen del valor que hubiera en ese momento. Si cambias de dominio,
+   toca reconstruir (`docker compose up -d --build`), no basta con reiniciar.
+
+   `APP_PORT` es el puerto del host (solo `127.0.0.1`) al que se publica la app.
+   Cámbialo si el 3000 ya está ocupado por otro sitio del servidor.
+
 3. Primera vez (build + Postgres pgvector + seed admin; RAG si hay `OPENAI_API_KEY`):
 
 ```bash
 RUN_SEED=1 docker compose up -d --build
 ```
 
-4. Pon Nginx + TLS delante de `127.0.0.1:3000` (`docker/nginx.conf.example` + certbot).
+4. Pon Nginx + TLS delante de `127.0.0.1:$APP_PORT` (`docker/nginx.conf.example` + certbot).
 
 5. Arranques posteriores:
 

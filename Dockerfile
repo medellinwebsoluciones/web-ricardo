@@ -14,6 +14,10 @@ FROM base AS builder
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
+# Next inlinea las NEXT_PUBLIC_* durante el build: sin este arg, el canonical,
+# los hreflang, el OG y el sitemap quedan apuntando a localhost en produccion.
+ARG NEXT_PUBLIC_SITE_URL="http://localhost:3000"
+ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL
 RUN npx prisma generate
 RUN npx next build
 
