@@ -1,7 +1,15 @@
 import { NextRequest } from "next/server";
-import { getOpenAI, CHAT_MODEL } from "@/lib/openai";
-import { searchChunks, formatRagContext } from "@/lib/rag";
+import type OpenAI from "openai";
+import { clientFor, isLlmConfigured } from "@/lib/llm/client";
+import { searchChunks, formatRagContext, ragTrace, type RetrievedChunk } from "@/lib/rag";
 import { buildSystemPrompt } from "@/lib/persona";
+import { getAgentConfig } from "@/lib/agent-config";
+import {
+  analyzeTurn,
+  lastAnalysisFor,
+  persistTurnAnalysis,
+} from "@/lib/conversation-analyst";
+import { AGENT_TOOLS, runAgentTool, type ToolContext } from "@/lib/agent-tools";
 import { prisma } from "@/lib/prisma";
 import { logUsage } from "@/lib/usage";
 import { rateLimit, getClientIp } from "@/lib/ratelimit";
@@ -11,7 +19,8 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 const MAX_MESSAGE_CHARS = 1200;
-const EMAIL_RE = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
+/** Rondas de herramientas antes de obligar al modelo a responder. */
+const MAX_TOOL_ROUNDS = 2;
 
 type IncomingMessage = { role: "user" | "assistant"; content: string };
 
@@ -25,7 +34,7 @@ export async function POST(req: NextRequest) {
     });
   }
 
-  if (!process.env.OPENAI_API_KEY) {
+  if (!isLlmConfigured("chat")) {
     return new Response(JSON.stringify({ error: "not_configured" }), {
       status: 503,
       headers: { "content-type": "application/json" },
@@ -56,18 +65,7 @@ export async function POST(req: NextRequest) {
 
   const history = (body.history || []).slice(-8);
 
-  // --- RAG retrieval ---
-  let ragContext = "";
-  try {
-    const chunks = await searchChunks(message, { k: 5, publicOnly: true });
-    ragContext = formatRagContext(chunks.filter((c) => c.similarity > 0.15));
-  } catch (err) {
-    console.error("RAG error:", err);
-  }
-
-  const systemPrompt = buildSystemPrompt(locale as "es" | "en", ragContext);
-
-  // --- Session persistence ---
+  // --- Sesión ---
   let sessionId = body.sessionId;
   try {
     if (sessionId) {
@@ -90,29 +88,52 @@ export async function POST(req: NextRequest) {
     await prisma.chatMessage.create({
       data: { sessionId, role: "user", content: message },
     });
-
-    // Detectar lead (email en el mensaje)
-    const emailMatch = message.match(EMAIL_RE);
-    if (emailMatch) {
-      await prisma.lead.create({
-        data: {
-          name: "Chat visitor",
-          email: emailMatch[0],
-          message: message.slice(0, 500),
-          source: "chat",
-          locale,
-        },
-      });
-    }
   } catch (err) {
     console.error("Session persist error:", err);
   }
 
-  const openai = getOpenAI();
-  const messages = [
-    { role: "system" as const, content: systemPrompt },
+  // --- Leer al interlocutor y recuperar contexto en paralelo ---
+  const previous = sessionId ? await lastAnalysisFor(sessionId) : null;
+  const [analysis, chunks] = await Promise.all([
+    analyzeTurn({ message, history, previous }),
+    searchChunks(message, { k: 5, publicOnly: true, lang: locale }).catch(
+      (err) => {
+        console.error("RAG error:", err);
+        return [] as RetrievedChunk[];
+      },
+    ),
+  ]);
+
+  const retrieved: RetrievedChunk[] = [...chunks];
+  const config = await getAgentConfig();
+
+  const systemPrompt = buildSystemPrompt({
+    locale: locale as "es" | "en",
+    ragContext: formatRagContext(chunks),
+    audience: analysis.audience,
+    stage: analysis.stage,
+    layers: config.layers,
+    extra: analysis.tactic
+      ? `LECTURA DE ESTE TURNO: ${analysis.tactic}${
+          analysis.objections.length
+            ? `\nObjeciones detectadas: ${analysis.objections.join("; ")}`
+            : ""
+        }`
+      : undefined,
+  });
+
+  const toolCtx: ToolContext = {
+    locale,
+    sessionId,
+    analysis,
+    onRetrieval: (extra) => retrieved.push(...extra),
+  };
+
+  const { client, model, provider, tier } = clientFor("chat");
+  const messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
+    { role: "system", content: systemPrompt },
     ...history.map((m) => ({ role: m.role, content: m.content })),
-    { role: "user" as const, content: message },
+    { role: "user", content: message },
   ];
 
   const encoder = new TextEncoder();
@@ -120,49 +141,106 @@ export async function POST(req: NextRequest) {
 
   const stream = new ReadableStream({
     async start(controller) {
-      // Enviar sessionId primero como linea de metadata JSON
       controller.enqueue(
-        encoder.encode(
-          `\u0000META${JSON.stringify({ sessionId })}\u0000`,
-        ),
+        encoder.encode(`\u0000META${JSON.stringify({ sessionId })}\u0000`),
       );
-      try {
-        const completion = await openai.chat.completions.create({
-          model: CHAT_MODEL,
-          messages,
-          temperature: 0.4,
-          max_tokens: 600,
-          stream: true,
-          stream_options: { include_usage: true },
-        });
 
-        for await (const part of completion) {
-          const delta = part.choices[0]?.delta?.content || "";
-          if (delta) {
-            fullText += delta;
-            controller.enqueue(encoder.encode(delta));
+      try {
+        for (let round = 0; round <= MAX_TOOL_ROUNDS; round++) {
+          const completion = await client.chat.completions.create({
+            model: config.model || model,
+            messages,
+            temperature: config.temperature,
+            max_tokens: config.maxTokens,
+            stream: true,
+            stream_options: { include_usage: true },
+            // En la última ronda se le quitan las herramientas para forzar
+            // una respuesta al visitante en vez de otra llamada.
+            ...(round < MAX_TOOL_ROUNDS ? { tools: AGENT_TOOLS } : {}),
+          });
+
+          // Las llamadas a herramientas llegan troceadas: hay que reensamblar
+          // el JSON de argumentos por índice antes de poder ejecutarlas.
+          const pending = new Map<
+            number,
+            { id: string; name: string; args: string }
+          >();
+          let roundText = "";
+
+          for await (const part of completion) {
+            const delta = part.choices[0]?.delta;
+
+            if (delta?.content) {
+              roundText += delta.content;
+              fullText += delta.content;
+              controller.enqueue(encoder.encode(delta.content));
+            }
+
+            for (const call of delta?.tool_calls ?? []) {
+              const slot = pending.get(call.index) ?? {
+                id: "",
+                name: "",
+                args: "",
+              };
+              if (call.id) slot.id = call.id;
+              if (call.function?.name) slot.name = call.function.name;
+              if (call.function?.arguments) slot.args += call.function.arguments;
+              pending.set(call.index, slot);
+            }
+
+            if (part.usage) {
+              await logUsage({
+                channel: "chat",
+                model: config.model || model,
+                provider,
+                tier,
+                promptTokens: part.usage.prompt_tokens,
+                completionTokens: part.usage.completion_tokens,
+              });
+            }
           }
-          if (part.usage) {
-            await logUsage({
-              channel: "chat",
-              model: CHAT_MODEL,
-              promptTokens: part.usage.prompt_tokens,
-              completionTokens: part.usage.completion_tokens,
+
+          if (pending.size === 0) break;
+
+          const calls = [...pending.values()].filter((c) => c.id && c.name);
+          messages.push({
+            role: "assistant",
+            content: roundText || null,
+            tool_calls: calls.map((c) => ({
+              id: c.id,
+              type: "function" as const,
+              function: { name: c.name, arguments: c.args || "{}" },
+            })),
+          });
+
+          for (const call of calls) {
+            const result = await runAgentTool(call.name, call.args, toolCtx);
+            messages.push({
+              role: "tool",
+              tool_call_id: call.id,
+              content: result,
             });
           }
         }
       } catch (err) {
         console.error("OpenAI stream error:", err);
-        controller.enqueue(encoder.encode(""));
       } finally {
-        if (sessionId && fullText) {
-          try {
-            await prisma.chatMessage.create({
-              data: { sessionId, role: "assistant", content: fullText },
-            });
-          } catch {
-            /* noop */
+        if (sessionId) {
+          if (fullText) {
+            try {
+              await prisma.chatMessage.create({
+                data: { sessionId, role: "assistant", content: fullText },
+              });
+            } catch {
+              /* noop */
+            }
           }
+          await persistTurnAnalysis({
+            sessionId,
+            message,
+            analysis,
+            ragTrace: ragTrace(retrieved),
+          });
         }
         controller.close();
       }

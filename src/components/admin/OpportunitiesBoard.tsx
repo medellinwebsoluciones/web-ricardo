@@ -60,9 +60,34 @@ export type OpportunityRow = {
   assets: OpportunityAsset[];
 };
 
+export type JobScoreResult = {
+  score: number;
+  verdict: "aplicar" | "valorar" | "descartar";
+  priority: "alta" | "media" | "baja";
+  matched: string[];
+  missing: string[];
+  redFlags: string[];
+  remote: boolean | null;
+  senior: boolean | null;
+  summary: string;
+  usedLlm: boolean;
+};
+
 const STAGES = ["guardada", "aplicada", "entrevista", "oferta", "cerrada"];
 const TYPES = ["fijo-remoto", "consultoria", "freelance"];
 const PRIORITIES = ["alta", "media", "baja"];
+
+const VERDICT_TONE: Record<JobScoreResult["verdict"], "emerald" | "amber" | "red"> = {
+  aplicar: "emerald",
+  valorar: "amber",
+  descartar: "red",
+};
+
+const VERDICT_LABEL: Record<JobScoreResult["verdict"], string> = {
+  aplicar: "Aplicar",
+  valorar: "Valorar",
+  descartar: "Descartar",
+};
 
 export function OpportunitiesBoard({
   initial,
@@ -85,6 +110,18 @@ export function OpportunitiesBoard({
     salaryRange: "",
     priority: "media",
     jobDescription: "",
+  });
+
+  // --- Analizador de ofertas (triaje) ---
+  const [showAnalyzer, setShowAnalyzer] = useState(false);
+  const [analyzing, setAnalyzing] = useState(false);
+  const [scoreResult, setScoreResult] = useState<JobScoreResult | null>(null);
+  const [analyzer, setAnalyzer] = useState({
+    jobDescription: "",
+    company: "",
+    role: "",
+    url: "",
+    useLlm: false,
   });
 
   const filtered = useMemo(
@@ -145,6 +182,68 @@ export function OpportunitiesBoard({
       setMessage(e instanceof Error ? e.message : "Error al crear");
     } finally {
       setBusy(false);
+    }
+  }
+
+  async function analyze() {
+    if (analyzer.jobDescription.trim().length < 40) {
+      setMessage("Pega el texto de la oferta (al menos unas líneas).");
+      return;
+    }
+    setAnalyzing(true);
+    setMessage("");
+    setScoreResult(null);
+    try {
+      const res = await fetch("/api/admin/opportunities/score", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          jobDescription: analyzer.jobDescription,
+          useLlm: analyzer.useLlm,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "error");
+      setScoreResult(data.score);
+    } catch (e) {
+      setMessage(e instanceof Error ? e.message : "Error al analizar");
+    } finally {
+      setAnalyzing(false);
+    }
+  }
+
+  async function saveAnalyzed() {
+    setAnalyzing(true);
+    setMessage("");
+    try {
+      const res = await fetch("/api/admin/opportunities/score", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          jobDescription: analyzer.jobDescription,
+          company: analyzer.company,
+          role: analyzer.role,
+          url: analyzer.url,
+          useLlm: analyzer.useLlm,
+          save: true,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "error");
+      setOpps((prev) => [
+        { ...data.opportunity, events: data.opportunity.events ?? [], assets: [] },
+        ...prev,
+      ]);
+      setMessage(
+        `Guardada en el tablero con veredicto ${data.score.verdict.toUpperCase()} (${data.score.score}%).`,
+      );
+      setScoreResult(null);
+      setAnalyzer({ jobDescription: "", company: "", role: "", url: "", useLlm: analyzer.useLlm });
+      setShowAnalyzer(false);
+    } catch (e) {
+      setMessage(e instanceof Error ? e.message : "Error al guardar");
+    } finally {
+      setAnalyzing(false);
     }
   }
 
@@ -210,7 +309,19 @@ export function OpportunitiesBoard({
               <Download className="h-3.5 w-3.5" /> CSV
             </a>
             <button
-              onClick={() => setShowForm((v) => !v)}
+              onClick={() => {
+                setShowAnalyzer((v) => !v);
+                setShowForm(false);
+              }}
+              className="btn-secondary px-3 py-2 text-xs"
+            >
+              <Target className="h-3.5 w-3.5" /> Analizar oferta
+            </button>
+            <button
+              onClick={() => {
+                setShowForm((v) => !v);
+                setShowAnalyzer(false);
+              }}
               className="btn-primary px-3 py-2 text-xs"
             >
               <Plus className="h-3.5 w-3.5" /> Nueva
@@ -231,6 +342,165 @@ export function OpportunitiesBoard({
           <p className="rounded-lg border border-zinc-700 bg-zinc-900/60 px-3 py-2 text-xs text-zinc-200">
             {message}
           </p>
+        )}
+
+        {showAnalyzer && (
+          <Panel
+            title="Analizar oferta (triaje)"
+            actions={
+              <button
+                onClick={() => setShowAnalyzer(false)}
+                className="text-zinc-500 hover:text-zinc-200"
+                aria-label="Cerrar"
+              >
+                <X className="h-3.5 w-3.5" />
+              </button>
+            }
+          >
+            <div className="grid gap-4 xl:grid-cols-[1fr_360px]">
+              <div className="space-y-3">
+                <textarea
+                  value={analyzer.jobDescription}
+                  onChange={(e) =>
+                    setAnalyzer({ ...analyzer, jobDescription: e.target.value })
+                  }
+                  placeholder="Pega aquí el texto completo de la oferta de LinkedIn (funciones y requisitos)..."
+                  rows={10}
+                  className="input-field resize-y py-2 text-xs"
+                />
+                <div className="flex flex-wrap items-center gap-3">
+                  <button
+                    onClick={analyze}
+                    disabled={analyzing || analyzer.jobDescription.trim().length < 40}
+                    className="btn-primary px-4 py-2 text-xs"
+                  >
+                    {analyzing ? (
+                      <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                    ) : (
+                      <Target className="h-3.5 w-3.5" />
+                    )}
+                    Analizar
+                  </button>
+                  <label className="flex items-center gap-1.5 text-xs text-zinc-400">
+                    <input
+                      type="checkbox"
+                      checked={analyzer.useLlm}
+                      onChange={(e) =>
+                        setAnalyzer({ ...analyzer, useLlm: e.target.checked })
+                      }
+                    />
+                    Afinar con IA (opcional)
+                  </label>
+                </div>
+                <div className="grid gap-2 sm:grid-cols-3">
+                  <input
+                    value={analyzer.company}
+                    onChange={(e) =>
+                      setAnalyzer({ ...analyzer, company: e.target.value })
+                    }
+                    placeholder="Empresa (para guardar)"
+                    className="input-field py-2 text-xs"
+                  />
+                  <input
+                    value={analyzer.role}
+                    onChange={(e) =>
+                      setAnalyzer({ ...analyzer, role: e.target.value })
+                    }
+                    placeholder="Puesto (para guardar)"
+                    className="input-field py-2 text-xs"
+                  />
+                  <input
+                    value={analyzer.url}
+                    onChange={(e) =>
+                      setAnalyzer({ ...analyzer, url: e.target.value })
+                    }
+                    placeholder="URL (opcional)"
+                    className="input-field py-2 text-xs"
+                  />
+                </div>
+              </div>
+
+              <div>
+                {!scoreResult ? (
+                  <Empty>
+                    Pega una oferta y pulsa Analizar. Funciona sin conexión a IA:
+                    el veredicto sale de tu stack real.
+                  </Empty>
+                ) : (
+                  <div className="space-y-3 rounded-lg border border-zinc-800 bg-zinc-900/40 p-3">
+                    <div className="flex items-center gap-2">
+                      <Tag tone={VERDICT_TONE[scoreResult.verdict]}>
+                        {VERDICT_LABEL[scoreResult.verdict]}
+                      </Tag>
+                      <span className="text-2xl font-semibold text-white">
+                        {scoreResult.score}%
+                      </span>
+                      {scoreResult.usedLlm && <Tag tone="violet">IA</Tag>}
+                    </div>
+                    <p className="text-xs text-zinc-300">{scoreResult.summary}</p>
+
+                    {scoreResult.matched.length > 0 && (
+                      <div>
+                        <p className="text-[11px] uppercase tracking-wide text-zinc-500">
+                          Coincide en
+                        </p>
+                        <div className="mt-1 flex flex-wrap gap-1">
+                          {scoreResult.matched.map((m) => (
+                            <Tag key={m} tone="emerald">
+                              {m}
+                            </Tag>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {scoreResult.missing.length > 0 && (
+                      <div>
+                        <p className="text-[11px] uppercase tracking-wide text-zinc-500">
+                          Fuera de tu core
+                        </p>
+                        <div className="mt-1 flex flex-wrap gap-1">
+                          {scoreResult.missing.map((m) => (
+                            <Tag key={m} tone="amber">
+                              {m}
+                            </Tag>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {scoreResult.redFlags.length > 0 && (
+                      <div>
+                        <p className="text-[11px] uppercase tracking-wide text-zinc-500">
+                          Alertas
+                        </p>
+                        <ul className="mt-1 space-y-1">
+                          {scoreResult.redFlags.map((f) => (
+                            <li key={f} className="text-[11px] text-red-300">
+                              — {f}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    <button
+                      onClick={saveAnalyzed}
+                      disabled={analyzing}
+                      className="btn-secondary w-full py-2 text-xs"
+                    >
+                      {analyzing ? (
+                        <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                      ) : (
+                        <Plus className="h-3.5 w-3.5" />
+                      )}
+                      Guardar en el tablero
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          </Panel>
         )}
 
         {showForm && (

@@ -13,6 +13,7 @@
     "db:seed": "tsx prisma/seed.ts",
     "admin:password": "tsx scripts/set-admin-password.ts",
     "rag:ingest": "tsx scripts/ingest.ts",
+    "agent:finetune": "tsx scripts/finetune.ts",
     "cv:pdf": "node scripts/generate-cv.mjs",
     "portfolio:diagrams": "node scripts/generate-arch-diagrams.mjs",
     "portfolio:capture": "node scripts/capture-portfolio.mjs",

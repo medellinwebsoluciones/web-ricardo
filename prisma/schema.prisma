@@ -64,7 +64,15 @@ model ChatSession {
   lastSeenAt DateTime      @default(now())
   messages   ChatMessage[]
 
+  // Estado conversacional deducido por el analista de turno
+  audience String? // reclutador | hiring_manager | cto | ceo | agencia | desconocido
+  stage    String? // apertura | descubrimiento | diagnostico | propuesta | cierre
+  leadId   String? // lead creado/actualizado desde el chat
+
+  analyses ChatTurnAnalysis[]
+
   @@index([channel])
+  @@index([audience])
 }
 
 model ChatMessage {
@@ -78,13 +86,209 @@ model ChatMessage {
   @@index([sessionId])
 }
 
+/// Lectura del interlocutor turno a turno: alimenta la seleccion de capas de
+/// persona y deja el trazo de retrieval para diagnosticar en el panel.
+model ChatTurnAnalysis {
+  id         String      @id @default(cuid())
+  sessionId  String
+  session    ChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  turn       Int         @default(0)
+  message    String
+  audience   String      @default("desconocido")
+  intent     String      @default("otro")
+  stage      String      @default("apertura")
+  sentiment  String      @default("neutral")
+  urgency    String      @default("baja")
+  objections String[]    @default([])
+  extracted  Json? // { name, company, role, need, budgetSignal, timeline }
+  tactic     String?
+  ragTrace   Json? // [{ id, title, similarity }]
+  createdAt  DateTime    @default(now())
+
+  @@index([sessionId])
+  @@index([createdAt])
+}
+
+// ---------------------------------------------------------------------------
+// Entrenador del agente: persona versionada, evaluaciones, simulaciones
+// ---------------------------------------------------------------------------
+
+/// Version editable del prompt del agente. El nucleo (identidad + grounding)
+/// vive en codigo; aqui solo las capas que se pueden tunear sin redeploy.
+model AgentPromptVersion {
+  id              String   @id @default(cuid())
+  version         Int      @unique
+  name            String
+  notes           String?
+  psychologyLayer String
+  audienceLayers  Json // { reclutador: "...", cto: "...", ... }
+  stageLayers     Json // { apertura: "...", descubrimiento: "...", ... }
+  model           String   @default("gpt-4o")
+  temperature     Float    @default(0.6)
+  maxTokens       Int      @default(700)
+  isActive        Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  runs EvalRun[]
+
+  @@index([isActive])
+}
+
+/// Agrupacion de casos de evaluacion (normalmente un panel de auditor).
+model EvalSuite {
+  id          String     @id @default(cuid())
+  slug        String     @unique
+  name        String
+  description String?
+  createdAt   DateTime   @default(now())
+  cases       EvalCase[]
+  runs        EvalRun[]
+}
+
+model EvalCase {
+  id         String    @id @default(cuid())
+  suiteId    String
+  suite      EvalSuite @relation(fields: [suiteId], references: [id], onDelete: Cascade)
+  externalId String? // id del banco en codigo, para re-sincronizar
+  question   String
+  locale     String    @default("es")
+  audience   String    @default("reclutador")
+  difficulty String    @default("media") // baja | media | alta
+  mustCover  String[]  @default([])
+  redFlags   String[]  @default([])
+  createdAt  DateTime  @default(now())
+
+  results EvalResult[]
+
+  @@unique([suiteId, externalId])
+  @@index([suiteId])
+}
+
+model EvalRun {
+  id              String              @id @default(cuid())
+  suiteId         String
+  suite           EvalSuite           @relation(fields: [suiteId], references: [id], onDelete: Cascade)
+  promptVersionId String?
+  promptVersion   AgentPromptVersion? @relation(fields: [promptVersionId], references: [id], onDelete: SetNull)
+  label           String?
+  model           String
+  status          String              @default("running") // running | done | error
+  totalCases      Int                 @default(0)
+  completedCases  Int                 @default(0)
+  avgScore        Float?
+  dimensionAvgs   Json? // { grounding: 82, naturalidad: 71, ... }
+  corpusChunks    Int                 @default(0)
+  startedAt       DateTime            @default(now())
+  finishedAt      DateTime?
+
+  results EvalResult[]
+
+  @@index([suiteId])
+  @@index([startedAt])
+}
+
+model EvalResult {
+  id             String   @id @default(cuid())
+  runId          String
+  run            EvalRun  @relation(fields: [runId], references: [id], onDelete: Cascade)
+  caseId         String
+  case           EvalCase @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  answer         String
+  scores         Json // { grounding, especificidad, naturalidad, empatia, rol, comercial, concision }
+  score          Float
+  diagnosis      String?
+  improved       String? // respuesta mejorada sugerida por el juez
+  sources        Json? // fuentes RAG recuperadas
+  bestSimilarity Float    @default(0)
+  createdAt      DateTime @default(now())
+
+  @@index([runId])
+  @@index([caseId])
+}
+
+/// Role-play adversario: un LLM interpreta a un personaje dificil y conversa
+/// con el agente para ver si consigue cerrar la llamada.
+model SimulationRun {
+  id          String    @id @default(cuid())
+  personaSlug String
+  personaName String
+  locale      String    @default("es")
+  maxTurns    Int       @default(8)
+  status      String    @default("running") // running | done | error
+  booked      Boolean? // veredicto: habria agendado la llamada
+  verdict     String?
+  score       Float?
+  failures    String[]  @default([])
+  model       String
+  startedAt   DateTime  @default(now())
+  finishedAt  DateTime?
+
+  turns SimulationTurn[]
+
+  @@index([personaSlug])
+  @@index([startedAt])
+}
+
+model SimulationTurn {
+  id        String        @id @default(cuid())
+  runId     String
+  run       SimulationRun @relation(fields: [runId], references: [id], onDelete: Cascade)
+  idx       Int           @default(0)
+  role      String // prospect | agent
+  content   String
+  createdAt DateTime      @default(now())
+
+  @@index([runId])
+}
+
+/// Pregunta que el corpus no supo responder. Se llena desde el playground, las
+/// notas bajas de las evals y la mineria de chats reales del sitio.
+model KnowledgeGap {
+  id             String   @id @default(cuid())
+  question       String
+  normalized     String   @unique // para deduplicar por frecuencia
+  source         String   @default("playground") // playground | eval | chat
+  audience       String?
+  hits           Int      @default(1)
+  bestSimilarity Float    @default(0)
+  status         String   @default("abierto") // abierto | resuelto | descartado
+  answer         String?
+  entryId        String? // entrada de corpus creada al resolverlo
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([status])
+  @@index([hits])
+}
+
+/// Ejemplo aprobado para el dataset de fine-tuning (estilo, no hechos).
+model TrainingExample {
+  id         String    @id @default(cuid())
+  question   String
+  answer     String
+  audience   String    @default("reclutador")
+  locale     String    @default("es")
+  source     String    @default("correccion") // correccion | eval | simulacion
+  approved   Boolean   @default(true)
+  exportedAt DateTime?
+  createdAt  DateTime  @default(now())
+
+  @@index([approved])
+  @@index([source])
+}
+
 // ---------------------------------------------------------------------------
 // Consumo IA (tokens/coste) - portado de NovaApiUsage
 // ---------------------------------------------------------------------------
 model ApiUsage {
   id               String   @id @default(cuid())
-  channel          String // chat | embeddings
+  channel          String // chat | embeddings | analyst | judge | simulation
   model            String
+  // Proveedor y tier quedan registrados desde ya: cuando el chat pase por una
+  // cascada de proveedores gratis, el panel de consumo ya sabe desglosarlos.
+  provider         String   @default("openai")
+  tier             String   @default("paid") // free | paid
   promptTokens     Int      @default(0)
   completionTokens Int      @default(0)
   totalTokens      Int      @default(0)
@@ -92,6 +296,7 @@ model ApiUsage {
   createdAt        DateTime @default(now())
 
   @@index([channel])
+  @@index([provider])
   @@index([createdAt])
 }
 

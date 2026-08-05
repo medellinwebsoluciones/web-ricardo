@@ -1,27 +1,25 @@
 import { NextRequest } from "next/server";
-import { getOpenAI, CHAT_MODEL } from "@/lib/openai";
-import { searchChunks, formatRagContext } from "@/lib/rag";
-import { buildSystemPrompt } from "@/lib/persona";
-import { logUsage } from "@/lib/usage";
+import { isLlmConfigured } from "@/lib/llm/client";
+import { answerAsAgent, GAP_THRESHOLD } from "@/lib/agent-eval";
+import { analyzeTurn } from "@/lib/conversation-analyst";
+import { recordGap } from "@/lib/knowledge-gaps";
 import { denyIfNotAdmin } from "@/lib/admin-auth";
+import { isAudience, isStage, type Audience, type Stage } from "@/lib/persona";
 import { isLocale, defaultLocale } from "@/i18n/config";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-/** Por debajo de esta similitud consideramos que falta contexto en el corpus. */
-const GAP_THRESHOLD = 0.35;
-
 /**
- * Prueba el agente igual que en el sitio público, pero devolviendo las fuentes
- * recuperadas y su similitud para poder detectar huecos de conocimiento.
- * Modo "entrevista": responde como si un reclutador estuviera evaluando.
+ * Playground: responde igual que el sitio público pero devolviendo las fuentes
+ * recuperadas, la lectura del interlocutor y la similitud, para poder ver por
+ * qué el agente contestó lo que contestó.
  */
 export async function POST(req: NextRequest) {
   const denied = await denyIfNotAdmin();
   if (denied) return denied;
 
-  if (!process.env.OPENAI_API_KEY) {
+  if (!isLlmConfigured("chat")) {
     return Response.json({ error: "openai_not_configured" }, { status: 503 });
   }
 
@@ -29,56 +27,74 @@ export async function POST(req: NextRequest) {
   const message = String(body?.message || "").trim();
   if (!message) return Response.json({ error: "empty_message" }, { status: 400 });
 
-  const locale = isLocale(body?.locale || "") ? body.locale : defaultLocale;
-  const mode = body?.mode === "entrevista" ? "entrevista" : "normal";
+  const locale = (isLocale(body?.locale || "") ? body.locale : defaultLocale) as
+    | "es"
+    | "en";
+  const history = Array.isArray(body?.history)
+    ? body.history
+        .slice(-6)
+        .map((m: { role: string; content: string }) => ({
+          role: m.role === "assistant" ? ("assistant" as const) : ("user" as const),
+          content: String(m.content).slice(0, 2000),
+        }))
+    : [];
 
-  const chunks = await searchChunks(message, { k: 6, publicOnly: false });
-  const useful = chunks.filter((c) => c.similarity > 0.15);
-  const ragContext = formatRagContext(useful);
-  const bestSimilarity = chunks[0]?.similarity ?? 0;
+  // La audiencia se puede forzar desde el panel para probar cómo cambia el tono
+  // con el mismo corpus; si no, la deduce el analista.
+  const forcedAudience = String(body?.audience || "");
+  const analysis =
+    isAudience(forcedAudience) && forcedAudience !== "desconocido"
+      ? null
+      : await analyzeTurn({ message, history });
 
-  const systemPrompt =
-    buildSystemPrompt(locale as "es" | "en", ragContext) +
-    (mode === "entrevista"
-      ? `\n\nMODO ENTREVISTA: quien pregunta es un reclutador o hiring manager evaluando a Ricardo para un puesto senior (remoto fijo o consultoría). Responde en primera persona como su asistente, con ejemplos concretos del contexto, métricas si existen, y cierra ofreciendo la llamada técnica de 15 minutos. Máximo 6 frases.`
-      : "");
+  const audience: Audience = isAudience(forcedAudience)
+    ? forcedAudience
+    : (analysis?.audience ?? "desconocido");
+  const stage: Stage = isStage(String(body?.stage || ""))
+    ? (body.stage as Stage)
+    : (analysis?.stage ?? "diagnostico");
 
-  const openai = getOpenAI();
-  const completion = await openai.chat.completions.create({
-    model: CHAT_MODEL,
-    temperature: 0.4,
-    max_tokens: 600,
-    messages: [
-      { role: "system", content: systemPrompt },
-      ...(Array.isArray(body?.history)
-        ? body.history.slice(-6).map((m: { role: string; content: string }) => ({
-            role: m.role === "assistant" ? ("assistant" as const) : ("user" as const),
-            content: String(m.content).slice(0, 2000),
-          }))
-        : []),
-      { role: "user", content: message },
-    ],
+  const result = await answerAsAgent({
+    question: message,
+    locale,
+    audience,
+    stage,
+    history,
+    publicOnly: false,
   });
 
-  if (completion.usage) {
-    await logUsage({
-      channel: "chat",
-      model: CHAT_MODEL,
-      promptTokens: completion.usage.prompt_tokens,
-      completionTokens: completion.usage.completion_tokens,
+  const gap = result.bestSimilarity < GAP_THRESHOLD;
+  if (gap) {
+    await recordGap({
+      question: message,
+      source: "playground",
+      bestSimilarity: result.bestSimilarity,
+      audience,
     });
   }
 
   return Response.json({
-    answer: completion.choices[0]?.message?.content || "",
-    sources: chunks.map((c) => ({
+    answer: result.answer,
+    audience,
+    stage,
+    analysis: analysis
+      ? {
+          intent: analysis.intent,
+          sentiment: analysis.sentiment,
+          urgency: analysis.urgency,
+          objections: analysis.objections,
+          extracted: analysis.extracted,
+          tactic: analysis.tactic,
+        }
+      : null,
+    sources: result.sources.map((c) => ({
       id: c.id,
       title: c.title,
       sourceRef: c.sourceRef,
       similarity: Number(c.similarity.toFixed(3)),
       excerpt: c.content.slice(0, 240),
     })),
-    gap: bestSimilarity < GAP_THRESHOLD,
-    bestSimilarity: Number(bestSimilarity.toFixed(3)),
+    gap,
+    bestSimilarity: Number(result.bestSimilarity.toFixed(3)),
   });
 }
