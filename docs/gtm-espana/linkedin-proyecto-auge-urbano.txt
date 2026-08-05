@@ -1,0 +1,26 @@
+Plataforma PropTech (real estate) en producción — augeurbano.com. Conecta comprador, vendedor y captador en un solo sistema, con atención automatizada 24/7 y CRM comercial completo. 159 rutas y 40+ pantallas de administración.
+
+EL PROBLEMA QUE RESUELVE
+En inmobiliaria el negocio se pierde por tiempo de respuesta: quien pregunta a las 11 de la noche no espera al día siguiente. Un agente de IA mantiene la conexión vendedor-comprador activa todo el tiempo: atiende, califica y agenda la visita sin intervención humana, y el lead cae en el CRM listo para seguimiento.
+
+PERFILES Y RED DE CAPTACIÓN
+• Captadores externos con portal propio: reportan inmuebles con fotos, código público de seguimiento y cascada geográfica.
+• Antifraude: deduplicación por teléfono normalizado contra reportes repetidos del mismo inmueble.
+• Incentivos automáticos por tramos según el valor de la venta cerrada, con datos bancarios validados antes de habilitar el cobro.
+• Propietarios y vendedores, colegas y socios con comisión por referido, y usuarios del panel con roles diferenciados.
+
+ASESOR IA PARA VISITANTES
+• Infiere presupuesto en pesos desde lenguaje natural y lo convierte en filtro numérico.
+• Motor propio de matching y ranking con penalización por distancia entre precio y presupuesto.
+• Al agendar emite un bloque delimitado que el backend parsea y normaliza (teléfono y franja).
+
+COPILOTO IA DEL PANEL
+Function calling con OpenAI sobre una ontología del panel: abre pantallas, responde KPIs en solo lectura, sin acceso a claves ni SQL arbitrario.
+
+SEGURIDAD
+Prompt injection con 12 patrones por severidad, defensa contra inyección de delimitadores, historial endurecido contra envenenamiento de contexto, patrones SQLi y rate limit por IP.
+
+CRM Y SEO
+Propiedades, leads, citas, cierres y finanzas con pagos vía Bold. Landings dinámicas por ciudad y zona, SEO masivo con IA e indexación programática (AEO/GEO).
+
+Stack: Python, Flask, MySQL, OpenAI, Google Gemini, Docker y Nginx sobre VPS.

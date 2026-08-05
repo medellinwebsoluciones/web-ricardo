@@ -1,0 +1,8 @@
+Consultoría y desarrollo de sistemas de IA aplicada y plataformas de negocio para clientes en Colombia y España. Arquitectura, implementación, despliegue y operación.
+
+• Orquestación multiagente con CrewAI sobre FastAPI: 29 agentes especialistas con routing jerárquico, configuración en runtime sin redespliegue y trazas por ejecución.
+• Capacidades multimodales en los agentes: reconocimiento de voz con faster-whisper, síntesis con edge-tts y visión por computador con OpenCV y YOLO/Ultralytics. Observabilidad de LLM con Langfuse, integración de herramientas vía Composio y almacenamiento vectorial en ChromaDB y pgvector.
+• RAG en producción sobre datos vivos (inventario, corpus jurídico, base de conocimiento) con PostgreSQL + pgvector y guardrails de citación de fuente.
+• MWS AI: plugin de WordPress tipo SaaS que atiende tiendas WooCommerce en automático, con backend FastAPI/SQLAlchemy, autenticación JWT y WebSockets, y RAG sobre stock, tallas y precios reales con traspaso a agente humano.
+• Integraciones: WooCommerce REST y webhooks, pasarela de pagos Bold, Google Calendar/Meet, SMTP transaccional.
+• Infraestructura: Docker, Nginx con TLS y despliegue en VPS.

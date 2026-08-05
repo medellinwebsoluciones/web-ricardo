@@ -1,0 +1,221 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  @apply bg-zinc-950 text-zinc-100 antialiased;
+  font-feature-settings: "cv11", "ss01";
+  text-rendering: optimizeLegibility;
+}
+
+/* Selection */
+::selection {
+  background-color: rgba(16, 185, 129, 0.25);
+  color: #ffffff;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #09090b;
+}
+::-webkit-scrollbar-thumb {
+  background: #27272a;
+  border-radius: 9999px;
+  border: 2px solid #09090b;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3f3f46;
+}
+
+@layer components {
+  .container-tight {
+    @apply mx-auto w-full max-w-5xl px-6 sm:px-8;
+  }
+  .container-wide {
+    @apply mx-auto w-full max-w-6xl px-6 sm:px-8;
+  }
+  .section-pad {
+    @apply py-24 sm:py-32;
+  }
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.2em] text-accent-soft;
+  }
+  .card {
+    @apply rounded-xl border border-zinc-800 bg-zinc-900/40 backdrop-blur-sm transition-colors duration-300;
+  }
+  .card-hover {
+    @apply hover:border-emerald-500/40 hover:bg-zinc-900/70;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-5 py-3 text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-primary {
+    @apply btn bg-emerald-500 text-zinc-950 hover:bg-emerald-400;
+  }
+  .btn-secondary {
+    @apply btn border border-zinc-700 bg-transparent text-zinc-200 hover:border-zinc-500 hover:bg-zinc-900;
+  }
+  .btn-ghost {
+    @apply btn text-zinc-300 hover:text-white;
+  }
+  .input-field {
+    @apply w-full rounded-lg border border-zinc-800 bg-zinc-900/60 px-4 py-3 text-sm text-zinc-100 placeholder:text-zinc-500 transition-colors focus:border-emerald-500/60 focus:outline-none focus:ring-1 focus:ring-emerald-500/40;
+  }
+}
+
+.text-gradient {
+  background: linear-gradient(180deg, #fafafa 0%, #a1a1aa 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-glow {
+  background: radial-gradient(
+    600px circle at 50% 0%,
+    rgba(16, 185, 129, 0.08),
+    transparent 60%
+  );
+}
+
+/* --- Retrato del hero -------------------------------------------------------
+   El retrato es un recorte con alpha (public/images/ricardo-hero.png, generado
+   por scripts/hero-portrait.py). Se integra al fondo con cuatro capas: el set
+   original desenfocado, un halo con forma de silueta, la figura y un fundido
+   inferior. Cualquier cambio de encuadre en el PNG obliga a revisar los offsets. */
+.portrait {
+  --portrait-figure: url("/images/ricardo-hero.png");
+}
+
+/* Entorno del set. La imagen ya trae la luz horneada en el alfa (solo suma luz),
+   así que no usa mix-blend-mode: framer-motion lo aislaría y dejaría un bloque. */
+.portrait-ambient {
+  position: absolute;
+  inset: -14% -22% -4%;
+  background-image: url("/images/ricardo-hero-ambient.webp");
+  /* Estirada, no cover: con cover se recorta el degradado del alfa y aparecen
+     bordes rectos. Al estar tan desenfocada la deformación no se percibe. */
+  background-size: 100% 100%;
+  opacity: 0.75;
+  -webkit-mask-image: radial-gradient(68% 60% at 50% 44%, #000 40%, transparent 100%);
+  mask-image: radial-gradient(68% 60% at 50% 44%, #000 40%, transparent 100%);
+}
+
+/* Difusión de luz ambiente detrás del sujeto. */
+.portrait-bloom {
+  position: absolute;
+  inset: -10%;
+  background:
+    radial-gradient(46% 34% at 50% 16%, rgba(16, 185, 129, 0.09), transparent 74%),
+    radial-gradient(60% 44% at 48% 70%, rgba(16, 185, 129, 0.05), transparent 76%);
+}
+
+/* Halo con la silueta del sujeto: hace que la luz del fondo lo envuelva.
+   El blur va en el contenedor y la máscara en el hijo: al revés, CSS aplica el
+   filtro antes del recorte y el borde sale duro. */
+.portrait-halo {
+  position: absolute;
+  inset: 0;
+  filter: blur(34px);
+  opacity: 0.5;
+}
+
+/* Luz de recorte: fría arriba (separa la cabeza del fondo) y verde muy tenue al
+   bajar. Desplazada hacia arriba para que lea como contraluz, no como contorno. */
+.portrait-halo::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(196, 253, 234, 0.34) 0%,
+    rgba(16, 185, 129, 0.12) 34%,
+    transparent 64%
+  );
+  -webkit-mask: var(--portrait-figure) no-repeat center / contain;
+  mask: var(--portrait-figure) no-repeat center / contain;
+  transform: scale(1.05) translateY(-2%);
+}
+
+/* Asegura que la base del recorte muera en el fondo de la página. */
+.portrait-fade {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 30%;
+  background: linear-gradient(
+    to top,
+    #09090b 10%,
+    rgba(9, 9, 11, 0.7) 46%,
+    transparent 100%
+  );
+}
+
+/* Stack expertise cards */
+.stack-card {
+  transition:
+    border-color 0.35s ease,
+    background-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+.stack-card:hover {
+  border-color: rgba(16, 185, 129, 0.35);
+  background-color: rgba(24, 24, 27, 0.72);
+  box-shadow: 0 18px 40px -28px rgba(16, 185, 129, 0.45);
+}
+
+.stack-card-sheen {
+  background:
+    linear-gradient(
+      125deg,
+      transparent 30%,
+      rgba(16, 185, 129, 0.06) 48%,
+      transparent 66%
+    );
+}
+
+.stack-tag--in {
+  animation: stack-tag-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes stack-tag-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stack-card,
+  .stack-card:hover {
+    transition: none;
+    box-shadow: none;
+  }
+
+  .stack-tag--in {
+    animation: none;
+  }
+}

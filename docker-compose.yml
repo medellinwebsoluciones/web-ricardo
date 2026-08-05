@@ -1,0 +1,53 @@
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-ricardo}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ricardo}
+      POSTGRES_DB: ${POSTGRES_DB:-webricardo}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U $${POSTGRES_USER:-ricardo} -d $${POSTGRES_DB:-webricardo}",
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 15
+      start_period: 10s
+    # Solo red interna. No publicar 5432 al host.
+
+  app:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - .env
+    environment:
+      # Forzar URL interna al servicio `db` (ignora localhost del .env).
+      DATABASE_URL: postgresql://${POSTGRES_USER:-ricardo}:${POSTGRES_PASSWORD:-ricardo}@db:5432/${POSTGRES_DB:-webricardo}?schema=public
+      RUN_SEED: ${RUN_SEED:-0}
+      NEXTAUTH_URL: ${NEXTAUTH_URL:-http://127.0.0.1:3000}
+      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://127.0.0.1:3000}
+      # Biblioteca de documentos del panel: persiste en el volumen app_uploads.
+      UPLOAD_DIR: /app/storage/uploads
+      MAX_UPLOAD_MB: ${MAX_UPLOAD_MB:-15}
+    volumes:
+      - app_uploads:/app/storage/uploads
+    ports:
+      - "127.0.0.1:3000:3000"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000/es"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 90s
+
+volumes:
+  postgres_data:
+  app_uploads:

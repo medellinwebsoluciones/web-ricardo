@@ -1,0 +1,48 @@
+flowchart TB
+
+  subgraph sources [Fuentes]
+
+    SECOP[SECOP II]
+
+    Scraper[Scraper / SERP]
+
+    AI[Perfilado IA]
+
+  end
+
+  subgraph crm [CRM Embudo]
+
+    KPIs[KPIs + filtros]
+
+    Leads[Tabla leads]
+
+    Detail[Detalle lead]
+
+  end
+
+  subgraph ops [Operación]
+
+    Clients[Clientes]
+
+    Quotes[Cotizaciones]
+
+    Projects[Proyectos]
+
+    Finance[Finanzas]
+
+  end
+
+  SECOP --> KPIs
+
+  Scraper --> AI --> KPIs
+
+  KPIs --> Leads --> Detail
+
+  Detail -->|Convertir| Clients
+
+  Clients --> Quotes
+
+  Clients --> Projects
+
+  Detail -.-> Finance
+

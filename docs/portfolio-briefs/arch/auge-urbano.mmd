@@ -1,0 +1,6 @@
+flowchart LR
+  Buyer[Comprador] --> Web[Flask Web]
+  Owner[Propietario] --> Web
+  Web --> Leads[(SQLite Leads)]
+  Web --> Admin[Admin Panel]
+  Admin --> Followup[Seguimiento]

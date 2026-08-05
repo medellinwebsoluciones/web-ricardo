@@ -1,0 +1,282 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [vector]
+}
+
+// ---------------------------------------------------------------------------
+// RAG / Knowledge base (portado del pipeline agent_knowledge)
+// ---------------------------------------------------------------------------
+model KnowledgeCollection {
+  id        String           @id @default(cuid())
+  slug      String           @unique
+  name      String
+  isPublic  Boolean          @default(true)
+  createdAt DateTime         @default(now())
+  entries   KnowledgeEntry[]
+  chunks    KnowledgeChunk[]
+}
+
+model KnowledgeEntry {
+  id           String              @id @default(cuid())
+  collectionId String
+  collection   KnowledgeCollection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  title        String
+  sourceType   String              @default("manual") // manual | site | doc | faq
+  sourceRef    String? // path / url
+  lang         String              @default("es")
+  trustTier    String              @default("canonical") // canonical | operational | draft
+  content      String
+  createdAt    DateTime            @default(now())
+  chunks       KnowledgeChunk[]
+}
+
+model KnowledgeChunk {
+  id           String                       @id @default(cuid())
+  entryId      String
+  entry        KnowledgeEntry               @relation(fields: [entryId], references: [id], onDelete: Cascade)
+  collectionId String
+  collection   KnowledgeCollection          @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  idx          Int                          @default(0)
+  content      String
+  tokens       Int?
+  // pgvector column (managed via raw SQL, dimension 1536 = text-embedding-3-small)
+  embedding    Unsupported("vector(1536)")?
+  createdAt    DateTime                     @default(now())
+
+  @@index([collectionId])
+}
+
+// ---------------------------------------------------------------------------
+// Chat
+// ---------------------------------------------------------------------------
+model ChatSession {
+  id         String        @id @default(uuid())
+  locale     String        @default("es")
+  visitorId  String?
+  channel    String        @default("site") // site | admin (playground / simulador)
+  createdAt  DateTime      @default(now())
+  lastSeenAt DateTime      @default(now())
+  messages   ChatMessage[]
+
+  @@index([channel])
+}
+
+model ChatMessage {
+  id        String      @id @default(cuid())
+  sessionId String
+  session   ChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  role      String // user | assistant | system
+  content   String
+  createdAt DateTime    @default(now())
+
+  @@index([sessionId])
+}
+
+// ---------------------------------------------------------------------------
+// Consumo IA (tokens/coste) - portado de NovaApiUsage
+// ---------------------------------------------------------------------------
+model ApiUsage {
+  id               String   @id @default(cuid())
+  channel          String // chat | embeddings
+  model            String
+  promptTokens     Int      @default(0)
+  completionTokens Int      @default(0)
+  totalTokens      Int      @default(0)
+  costUsd          Float    @default(0)
+  createdAt        DateTime @default(now())
+
+  @@index([channel])
+  @@index([createdAt])
+}
+
+// ---------------------------------------------------------------------------
+// Citas + Google Meet
+// ---------------------------------------------------------------------------
+model Appointment {
+  id            String   @id @default(cuid())
+  name          String
+  email         String
+  topic         String?
+  scheduledAt   DateTime
+  durationMin   Int      @default(15)
+  timezone      String   @default("America/Bogota")
+  locale        String   @default("es")
+  status        String   @default("confirmed") // confirmed | cancelled | completed
+  googleEventId String?
+  meetLink      String?
+  createdAt     DateTime @default(now())
+
+  @@index([scheduledAt])
+}
+
+// ---------------------------------------------------------------------------
+// Leads / contacto
+// ---------------------------------------------------------------------------
+model Lead {
+  id      String  @id @default(cuid())
+  name    String
+  email   String
+  message String?
+  source  String  @default("contact") // contact | chat | booking
+  locale  String  @default("es")
+
+  // Pipeline comercial
+  company         String?
+  role            String?
+  phone           String?
+  status          String    @default("nuevo") // nuevo | contactado | calificado | propuesta | ganado | perdido
+  temperature     String    @default("media") // alta | media | baja
+  value           Float?
+  nextAction      String?
+  nextActionAt    DateTime?
+  lastContactedAt DateTime?
+  aiSummary       String?
+  tags            String[]  @default([])
+
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  notes     LeadNote[]
+
+  @@index([source])
+  @@index([createdAt])
+  @@index([status])
+  @@index([nextActionAt])
+}
+
+model LeadNote {
+  id        String   @id @default(cuid())
+  leadId    String
+  lead      Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  body      String
+  createdAt DateTime @default(now())
+
+  @@index([leadId])
+}
+
+// ---------------------------------------------------------------------------
+// Analytics first-party
+// ---------------------------------------------------------------------------
+model VisitSession {
+  id          String   @id @default(cuid())
+  visitorId   String   @unique
+  landingPath String
+  referrer    String?
+  utmSource   String?
+  utmMedium   String?
+  utmCampaign String?
+  pageViews   Int      @default(1)
+  firstSeenAt DateTime @default(now())
+  lastSeenAt  DateTime @default(now())
+
+  @@index([firstSeenAt])
+}
+
+model PageHit {
+  id        String   @id @default(cuid())
+  visitorId String
+  path      String
+  locale    String?
+  referrer  String?
+  dwellMs   Int?
+  scrollPct Int?
+  createdAt DateTime @default(now())
+
+  @@index([visitorId])
+  @@index([createdAt])
+}
+
+// ---------------------------------------------------------------------------
+// Biblioteca de documentos (archivos en volumen, metadatos aqui)
+// ---------------------------------------------------------------------------
+model Document {
+  id               String   @id @default(cuid())
+  title            String
+  kind             String   @default("otro") // cv | propuesta | certificado | caso | otro
+  lang             String   @default("es")
+  filename         String // nombre original
+  storedName       String   @unique // nombre aleatorio en disco
+  mimeType         String
+  sizeBytes        Int
+  version          Int      @default(1)
+  tags             String[] @default([])
+  // Texto extraido (PDF/DOCX/MD/TXT) para poder enviarlo al RAG
+  extractedText    String?
+  knowledgeEntryId String?
+  createdAt        DateTime @default(now())
+
+  @@index([kind])
+  @@index([createdAt])
+}
+
+// ---------------------------------------------------------------------------
+// Oportunidades (empleo fijo remoto / consultoria) + material generado
+// ---------------------------------------------------------------------------
+model Opportunity {
+  id             String    @id @default(cuid())
+  company        String
+  role           String
+  type           String    @default("fijo-remoto") // fijo-remoto | consultoria | freelance
+  location       String?
+  remote         Boolean   @default(true)
+  url            String?
+  salaryRange    String?
+  stage          String    @default("guardada") // guardada | aplicada | entrevista | oferta | cerrada
+  priority       String    @default("media") // alta | media | baja
+  matchScore     Int?
+  matchGaps      String?
+  jobDescription String?
+  nextAction     String?
+  nextActionAt   DateTime?
+  notes          String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  events OpportunityEvent[]
+  assets GeneratedAsset[]
+
+  @@index([stage])
+  @@index([type])
+  @@index([nextActionAt])
+}
+
+model OpportunityEvent {
+  id            String      @id @default(cuid())
+  opportunityId String
+  opportunity   Opportunity @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
+  type          String // creada | etapa | nota | envio | entrevista
+  note          String?
+  at            DateTime    @default(now())
+
+  @@index([opportunityId])
+}
+
+model GeneratedAsset {
+  id            String       @id @default(cuid())
+  opportunityId String?
+  opportunity   Opportunity? @relation(fields: [opportunityId], references: [id], onDelete: SetNull)
+  kind          String // cv | carta | propuesta
+  locale        String       @default("es")
+  title         String
+  content       String
+  model         String?
+  createdAt     DateTime     @default(now())
+
+  @@index([opportunityId])
+  @@index([kind])
+}
+
+// ---------------------------------------------------------------------------
+// Admin
+// ---------------------------------------------------------------------------
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+}

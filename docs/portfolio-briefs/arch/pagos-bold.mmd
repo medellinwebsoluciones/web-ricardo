@@ -1,0 +1,8 @@
+flowchart LR
+  App[Producto] --> SDK[pagos_bold SDK]
+  SDK --> Checkout[CheckoutService]
+  SDK --> Health[IntegrationHealth]
+  Checkout --> Bold[Bold API]
+  Bold --> WH[Webhooks]
+  WH --> App
+  Console[bold-console] --> SDK

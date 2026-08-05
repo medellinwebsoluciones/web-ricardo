@@ -1,0 +1,77 @@
+SECCIÓN "PROYECTOS" DE LINKEDIN — TEXTOS LISTOS PARA COPIAR
+Orden de carga: del 1 al 5. El 1 es el más fuerte y debe quedar arriba.
+Campos de LinkedIn: Nombre · Descripción (máx 2.000) · Fecha inicio/fin ·
+Asociado con (puesto) · Contribuidores · URL del proyecto · Multimedia.
+
+===============================================================
+1) SÍGUEME 4 — PLATAFORMA DE TELEMETRÍA SATELITAL DE FLOTAS
+Asociado con: Carga Control
+Fechas: [inicio real] – [fin real]
+===============================================================
+Plataforma de seguimiento satelital de vehículos y monitoreo de mercancías, rutas y riesgo. Superó las 100 licencias contractuales en su lanzamiento y sigue operando hoy en empresas de transporte de toda Colombia.
+
+Fui el único responsable del desarrollo end-to-end: arquitectura, backend, frontend, modelo de datos y despliegue.
+
+• Unificación de múltiples plataformas GPS de distintos proveedores en un solo sistema de monitoreo, eliminando la dependencia de un único proveedor de rastreo.
+• Monitoreo automatizado por geocercas y posicionamiento satelital, con alertas por desvío de ruta y eventos de riesgo.
+• Integración con el Ministerio de Transporte vía web services: más de 15 procesos automáticos conectando Systram, Sígueme, Seway y la entidad.
+• Arquitectura AWS: EC2, RDS con réplicas, S3, SNS y SES.
+• Backends de alto volumen con alta disponibilidad y eliminación de puntos únicos de fallo.
+• Para LTSA (Grupo Éxito): integración y consumo de APIs de SAP y funcionalidad a medida.
+
+Stack: .NET/C#, PHP/LAMP, SQL Server, MySQL, AWS, web services, APIs GPS.
+
+===============================================================
+2) NOVA — EJÉRCITO DE AGENTES IA (PRODUCTO PROPIO)
+Asociado con: Medellín Web Soluciones
+Fechas: [inicio] – Actualidad
+===============================================================
+Red de IA propia que analiza y ejecuta soluciones end-to-end: un CEO, 5 divisiones y 29 agentes especialistas coordinados sobre FastAPI y CrewAI.
+
+• Routing jerárquico CEO → hubs → especialistas, con configuración por agente en runtime sin necesidad de redespliegue.
+• Panel de grafo 3D para visualizar la red de agentes y streaming en vivo de la ejecución vía SSE.
+• Inferencia local con Ollama y LiteLLM para coste predecible y privacidad de datos, con override a modelos cloud cuando hace falta.
+• Capacidades multimodales: reconocimiento de voz con faster-whisper, síntesis con edge-tts y visión por computador con OpenCV y YOLO/Ultralytics.
+• Observabilidad de LLM con Langfuse (trazas y coste por ejecución) e integración de herramientas vía Composio y n8n.
+• Memoria y recuperación con ChromaDB y pgvector.
+
+Stack: Python, FastAPI, CrewAI, LangChain, LiteLLM, Ollama, Langfuse, ChromaDB, Composio, Three.js, PostgreSQL, Docker.
+
+===============================================================
+3) MWS AI — AGENTE DE VENTAS Y SOPORTE PARA WOOCOMMERCE
+Asociado con: Medellín Web Soluciones
+Fechas: [inicio] – Actualidad
+===============================================================
+Plugin de WordPress tipo SaaS que atiende tiendas WooCommerce en automático 24/7. A diferencia de un chatbot genérico, responde con RAG sobre el inventario real: stock, tallas y precios vivos de la tienda.
+
+• Traspaso a agente humano (handoff) con bandeja de entrada dentro del panel de WordPress.
+• Backend FastAPI con SQLAlchemy y Alembic, PostgreSQL con pgvector, autenticación JWT y WebSockets para monitoreo en vivo.
+• Ingesta de base de conocimiento desde PDF y Excel, con contexto de negocio configurable por tienda.
+• Sistema de licenciamiento anual y planes por volumen, pensado para agencias y distribuidores en modelo white-label.
+• Actualizador propio del plugin y capa de seguridad para el proxy de chat.
+
+Stack: WordPress/PHP, FastAPI, SQLAlchemy, Alembic, asyncpg, PostgreSQL + pgvector, OpenAI, JWT, WebSockets, WooCommerce REST.
+
+===============================================================
+4) LEXIA — LEGAL INTELLIGENCE OS
+Asociado con: Medellín Web Soluciones
+===============================================================
+Sistema operativo jurídico multi-rama con IA, en tres superficies para tres tipos de usuario: API, entorno de trabajo y analítica.
+
+• RAG sobre corpus legal con citación obligatoria de fuente: el agente no responde sin señalar de dónde sale la información, requisito indispensable en un dominio regulado.
+• Separación deliberada entre el OS operativo (Streamlit) y la analítica (Dash), por roles de usuario distintos.
+• Datos semilla para demos comerciales reproducibles y despliegue documentado en Docker para dev y producción.
+
+Stack: Python, FastAPI, Streamlit, Dash, RAG, Docker.
+
+===============================================================
+5) AUGE URBANO — SOLUCIÓN VERTICAL CON CRM Y AUTOMATIZACIÓN IA
+Asociado con: Medellín Web Soluciones
+===============================================================
+Plataforma de gestión end-to-end para el ciclo completo del negocio: captación, seguimiento comercial, operación y reportes, con CRM propio y automatización con IA.
+
+• CRM a medida en lugar de adaptar un genérico, para modelar el proceso real del negocio.
+• Automatización con IA de las tareas repetitivas del ciclo comercial.
+• Control de gastos y soportes documentales integrado en la operación.
+
+Stack: Python, PostgreSQL, IA/automatización, Docker.

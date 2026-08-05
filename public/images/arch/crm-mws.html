@@ -1,0 +1,40 @@
+<!doctype html>
+<html><head><meta charset="utf-8"/>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    width: 1280px; height: 720px;
+    background: radial-gradient(1200px 600px at 20% 0%, #0f2918 0%, #09090b 45%, #050506 100%);
+    color: #e4e4e7; font-family: "Segoe UI", system-ui, sans-serif;
+    display: flex; flex-direction: column; padding: 48px 56px;
+  }
+  .eyebrow { color: #34d399; letter-spacing: 0.2em; font-size: 12px; text-transform: uppercase; font-weight: 600; }
+  h1 { margin-top: 12px; font-size: 32px; font-weight: 600; letter-spacing: -0.02em; }
+  .grid { margin-top: 40px; display: flex; flex-direction: column; gap: 14px; flex: 1; justify-content: center; }
+  .row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .node {
+    border: 1px solid #27272a; background: rgba(24,24,27,0.85);
+    border-radius: 12px; padding: 22px 18px; text-align: center;
+    font-size: 17px; font-weight: 500; color: #fafafa;
+  }
+  .arrow { text-align: center; color: #34d399; font-size: 22px; opacity: 0.7; }
+  .footer { margin-top: auto; font-size: 13px; color: #71717a; }
+</style></head>
+<body>
+  <div class="eyebrow">Architecture</div>
+  <h1>CRM operativo MWS — Embudo</h1>
+  <div class="grid">
+      <div class="row">
+        <div class="node">SECOP II</div><div class="node">Scraper / SERP</div><div class="node">Perfilado IA</div>
+      </div>
+      <div class="arrow">↓</div>
+      <div class="row">
+        <div class="node">Embudo KPIs</div><div class="node">Leads · Detalle</div><div class="node">Temperatura / territorio</div>
+      </div>
+      <div class="arrow">↓</div>
+      <div class="row">
+        <div class="node">Clientes · Cotizaciones</div><div class="node">Proyectos · Tareas</div><div class="node">Finanzas COP</div>
+      </div>
+      </div>
+  <div class="footer">Ricardo Zuluaga · Medellín Web Soluciones · Production systems</div>
+</body></html>

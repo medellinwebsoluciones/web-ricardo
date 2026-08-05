@@ -1,0 +1,24 @@
+Diseño y entrego IA aplicada que llega a producción: orquestación multiagente, RAG sobre datos vivos y automatización. Con historial que lo respalda: desarrollé de punta a punta Sígueme 4, plataforma de telemetría satelital con más de 100 licencias contractuales, aún operando en empresas de transporte de toda Colombia.
+
+Más de 10 años y 12 sistemas entregados. Especialidad: end-to-end, de la arquitectura al despliegue.
+
+IA APLICADA Y PRODUCTO PROPIO
+• Nova, mi ejército de agentes: red de 29 especialistas con CEO y 5 divisiones sobre FastAPI y CrewAI que analiza y ejecuta soluciones end-to-end, con inferencia local para coste predecible.
+• MWS AI: plugin de WordPress tipo SaaS que atiende tiendas en automático, con RAG sobre inventario real (stock, tallas, precios) y traspaso a humano.
+• LEXIA: sistema operativo jurídico con RAG y citación obligatoria de fuente.
+• Auge Urbano: solución vertical con CRM y automatización IA.
+
+TELEMETRÍA SATELITAL Y TRANSPORTE — SÍGUEME 4 Y SYSTRAM
+En Sígueme 4 fui el único responsable del desarrollo completo: arquitectura AWS (EC2, RDS, S3, SNS, SES), unificación de múltiples plataformas GPS en un solo sistema de monitoreo de mercancías, rutas y riesgo, con geocercas y posicionamiento satelital.
+Integré CRM, transporte y seguimiento con el Ministerio de Transporte vía web services: más de 15 procesos automáticos conectando Systram, Sígueme, Seway y la entidad. Para LTSA (Grupo Éxito) integré y consumí APIs de SAP. En Systram, CRM de transporte, trabajé como full stack.
+
+SISTEMAS CORPORATIVOS Y CAMPAÑAS NACIONALES
+Software B2B y plataformas de campaña para Bancolombia, Comfama, Tigo, Nutresa, Navidad Noel, Rica, Cunit, Renault y Argos: LEED (B2B banca), control de presupuestos y contratos, DUX (premiación con códigos de empaque) y Test Drive Renault.
+
+STACK
+Arquitectura AWS (EC2, RDS, S3, SNS, SES). TypeScript, React, Next.js, Node, Python, FastAPI, Django, .NET/C#, PHP/LAMP. PostgreSQL, MySQL, SQL Server, pgvector, Redis. Docker, Nginx, CrewAI, MCP, OpenAI. APIs REST, web services, integraciones SAP, GPS y gubernamentales.
+
+FORMACIÓN
+Autodidacta sobre documentación técnica oficial, validado en pruebas técnicas empresariales y en producción. No tengo título universitario: mi credencial son los sistemas funcionando, y los muestro en vivo en la primera llamada.
+
+Busco rol senior 100% remoto con solape horario España (CET) como Solutions Architect / IA aplicada o Senior Full Stack. Abierto a indefinido en España con relocation, o a contractor B2B.

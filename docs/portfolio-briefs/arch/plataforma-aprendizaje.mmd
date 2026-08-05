@@ -1,0 +1,7 @@
+flowchart TB
+  Visitor[Visitante] --> Django[Django LMS]
+  Django --> Pay[Bold and PayPal]
+  Pay --> Access[Acceso 12 meses]
+  Access --> Course[Lecciones y Examen]
+  Course --> Tutor[Tutor RAG]
+  Django --> DB[(Postgres)]

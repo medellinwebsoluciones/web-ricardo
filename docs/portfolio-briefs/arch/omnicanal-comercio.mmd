@@ -1,0 +1,8 @@
+flowchart TB
+  Dropi[Dropi Feeds] --> Worker[Worker Radar]
+  Worker --> Score[Scoring]
+  Score --> Panel[Panel HITL]
+  Panel -->|approve| API[FastAPI Catalog]
+  API --> Woo[WooCommerce CO]
+  API --> DB[(Postgres)]
+  Worker --> Redis[(Redis)]
