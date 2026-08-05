@@ -91,6 +91,9 @@ docker compose up -d --build
 Operación:
 - Logs: `docker compose logs -f app`
 - Re-sembrar corpus: `docker compose exec app npx tsx prisma/seed.ts`
+  ⚠️ El seed reingesta con `reset: true`: **borra lo que hayas entrenado desde
+  la consola** y vuelve a gastar embeddings. Para cambiar solo la contraseña del
+  admin usa `docker compose exec app npm run admin:password -- 'nueva-password'`.
 - Parar: `docker compose down` (conserva volúmenes). `docker compose down -v` borra DB **y documentos**.
 - Postgres solo en red interna; datos en volumen `postgres_data`.
 - Documentos del panel en volumen `app_uploads` (montado en `/app/storage/uploads`).

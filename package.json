@@ -11,6 +11,7 @@
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate deploy",
     "db:seed": "tsx prisma/seed.ts",
+    "admin:password": "tsx scripts/set-admin-password.ts",
     "rag:ingest": "tsx scripts/ingest.ts",
     "cv:pdf": "node scripts/generate-cv.mjs",
     "portfolio:diagrams": "node scripts/generate-arch-diagrams.mjs",
