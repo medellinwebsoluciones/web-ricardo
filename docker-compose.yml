@@ -40,7 +40,9 @@ services:
     volumes:
       - app_uploads:/app/storage/uploads
     ports:
-      - "127.0.0.1:3000:3000"
+      # Puerto del host configurable: en un VPS con varios sitios el 3000
+      # puede estar tomado. Nginx apunta al valor de APP_PORT.
+      - "127.0.0.1:${APP_PORT:-3000}:3000"
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000/es"]
       interval: 30s
