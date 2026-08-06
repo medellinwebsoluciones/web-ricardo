@@ -12,6 +12,7 @@ import {
   Sparkles,
   X,
   Radar,
+  Wand2,
 } from "lucide-react";
 import {
   PageHeader,
@@ -431,6 +432,65 @@ export function OpportunitiesBoard({
     }
   }
 
+  /** Reescribe empresa/cargo/ubicación/tipo desde el texto guardado. */
+  async function enrich(opts: {
+    id?: string;
+    all?: boolean;
+    force?: boolean;
+  }) {
+    const withDesc = opts.all
+      ? opps.filter((o) => (o.jobDescription || "").trim().length >= 40).length
+      : 1;
+    if (opts.all) {
+      if (withDesc === 0) {
+        setMessage("Ninguna oportunidad tiene descripción para reorganizar.");
+        return;
+      }
+      if (
+        !confirm(
+          `¿Reorganizar datos de ${withDesc} oferta(s) con descripción? Rellena huecos (empresa, cargo, ubicación, tipo) y limpia el texto de LinkedIn.`,
+        )
+      ) {
+        return;
+      }
+    }
+    setBusy(true);
+    setMessage("");
+    try {
+      const res = await fetch("/api/admin/opportunities/enrich", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          id: opts.id,
+          all: opts.all,
+          force: Boolean(opts.force),
+          cleanDescription: true,
+          rescore: true,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "error");
+      if (opts.id && data.opportunity) {
+        replace(data.opportunity);
+      } else {
+        await reloadOpps();
+      }
+      setMessage(
+        data.updated
+          ? `Reorganizadas ${data.updated} de ${data.total}. ${data.skipped ? `${data.skipped} sin cambios.` : ""}`
+          : data.results?.[0]?.reason === "already_organized"
+            ? "Ya estaba organizada; no hubo cambios."
+            : data.results?.[0]?.reason === "no_description"
+              ? "Esta oferta no tiene descripción suficiente."
+              : "Sin cambios.",
+      );
+    } catch (e) {
+      setMessage(e instanceof Error ? e.message : "Error al reorganizar");
+    } finally {
+      setBusy(false);
+    }
+  }
+
   return (
     <>
       <PageHeader
@@ -465,6 +525,14 @@ export function OpportunitiesBoard({
               className="btn-secondary px-3 py-2 text-xs"
             >
               <Radar className="h-3.5 w-3.5" /> Radar
+            </button>
+            <button
+              onClick={() => void enrich({ all: true })}
+              disabled={busy}
+              className="btn-secondary px-3 py-2 text-xs"
+              title="Rellena empresa, cargo, ubicación y tipo desde el texto ya guardado"
+            >
+              <Wand2 className="h-3.5 w-3.5" /> Reorganizar datos
             </button>
             <button
               onClick={() => {
@@ -982,14 +1050,34 @@ export function OpportunitiesBoard({
                 )}
 
                 {selected.jobDescription && (
-                  <details className="rounded-lg border border-zinc-800 bg-zinc-900/40 p-3">
-                    <summary className="cursor-pointer text-xs text-zinc-300">
-                      Descripción de la oferta
-                    </summary>
-                    <p className="mt-2 whitespace-pre-wrap text-[11px] text-zinc-400">
-                      {selected.jobDescription}
-                    </p>
-                  </details>
+                  <div className="space-y-2">
+                    <button
+                      onClick={() =>
+                        void enrich({
+                          id: selected.id,
+                          force: true,
+                        })
+                      }
+                      disabled={busy}
+                      className="btn-secondary w-full py-2 text-xs"
+                      title="Extrae empresa, cargo, ubicación y tipo del texto guardado"
+                    >
+                      {busy ? (
+                        <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                      ) : (
+                        <Wand2 className="h-3.5 w-3.5" />
+                      )}
+                      Extraer / reorganizar datos
+                    </button>
+                    <details className="rounded-lg border border-zinc-800 bg-zinc-900/40 p-3">
+                      <summary className="cursor-pointer text-xs text-zinc-300">
+                        Descripción de la oferta
+                      </summary>
+                      <p className="mt-2 whitespace-pre-wrap text-[11px] text-zinc-400">
+                        {selected.jobDescription}
+                      </p>
+                    </details>
+                  </div>
                 )}
 
                 <div>
