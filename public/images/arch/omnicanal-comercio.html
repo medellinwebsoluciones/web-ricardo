@@ -2,7 +2,7 @@
 <html lang="es"><head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Auge Urbano — PropTech — Architecture</title>
+<title>Omnicanal — commerce brain — Architecture</title>
 <style>
   :root {
     --bg0: #050506;
@@ -126,57 +126,54 @@
 </head>
 <body>
   <div class="eyebrow">Architecture</div>
-  <h1>Auge Urbano — PropTech</h1>
-  <p class="focus">Vista parcial: audiencias → edge → app → dominio / IA / datos</p>
+  <h1>Omnicanal — commerce brain</h1>
+  <p class="focus">Vista parcial: ingestión → decisión HITL → canal de venta</p>
   <div class="map">
       <div class="layer" style="--d:0ms">
         <div class="layer-meta">
-          <span class="layer-name">Audiencias</span>
-          <span class="layer-role">Canales con auth propia</span>
+          <span class="layer-name">Ingestión</span>
+          <span class="layer-role">Señales de oferta</span>
         </div>
-        <div class="nodes" style="--cols:3">
-          <button type="button" class="node" data-tip="Catálogo y lead capture públicos; sesión distinta al admin." style="--d:0ms" aria-describedby="tip">
-            <span class="node-label">Compradores</span>
+        <div class="nodes" style="--cols:2">
+          <button type="button" class="node" data-tip="Fuentes externas de stock/precio; no se publican crudas." style="--d:0ms" aria-describedby="tip">
+            <span class="node-label">Feeds proveedores</span>
           </button>
-          <button type="button" class="node" data-tip="Portales B2B con ownership de inmuebles y agenda." style="--d:40ms" aria-describedby="tip">
-            <span class="node-label">Colegas / captadores</span>
-          </button>
-          <button type="button" class="node" data-tip="Admin interno: CRM, finanzas y publicación." style="--d:80ms" aria-describedby="tip">
-            <span class="node-label">Operación</span>
+          <button type="button" class="node" data-tip="Normaliza y puntúa oportunidades antes del humano." style="--d:40ms" aria-describedby="tip">
+            <span class="node-label">Worker / scoring</span>
           </button></div>
       </div>
       <div class="flow" aria-hidden="true"><span></span></div>
       <div class="layer" style="--d:90ms">
         <div class="layer-meta">
-          <span class="layer-name">Edge + App</span>
-          <span class="layer-role">Runtime de producción</span>
+          <span class="layer-name">Decisión</span>
+          <span class="layer-role">HITL + catálogo</span>
         </div>
-        <div class="nodes" style="--cols:2">
-          <button type="button" class="node" data-tip="TLS, apex canónico y límites de body — borde del sistema." style="--d:90ms" aria-describedby="tip">
-            <span class="node-label">Reverse proxy TLS</span>
+        <div class="nodes" style="--cols:3">
+          <button type="button" class="node" data-tip="Humano aprueba qué entra al catálogo — control de margen/riesgo." style="--d:90ms" aria-describedby="tip">
+            <span class="node-label">Panel HITL</span>
           </button>
-          <button type="button" class="node" data-tip="Monolito modular: un proceso, dominios partidos en módulos." style="--d:130ms" aria-describedby="tip">
-            <span class="node-label">App modular</span>
+          <button type="button" class="node" data-tip="Contrato hacia la tienda; el brain no es el checkout." style="--d:130ms" aria-describedby="tip">
+            <span class="node-label">API catálogo</span>
+          </button>
+          <button type="button" class="node" data-tip="Copy/atributos asistidos; no sustituye la decisión comercial." style="--d:170ms" aria-describedby="tip">
+            <span class="node-label">Enrich IA</span>
           </button></div>
       </div>
       <div class="flow" aria-hidden="true"><span></span></div>
       <div class="layer" style="--d:180ms">
         <div class="layer-meta">
-          <span class="layer-name">Capacidades</span>
-          <span class="layer-role">Dominio + descubrimiento</span>
+          <span class="layer-name">Canal</span>
+          <span class="layer-role">Venta + estado</span>
         </div>
-        <div class="nodes" style="--cols:4">
-          <button type="button" class="node" data-tip="Geo, fichas, leads, finanzas — el core del negocio." style="--d:180ms" aria-describedby="tip">
-            <span class="node-label">Dominio inmobiliario</span>
+        <div class="nodes" style="--cols:3">
+          <button type="button" class="node" data-tip="Canal de cobro separado del motor de decisión." style="--d:180ms" aria-describedby="tip">
+            <span class="node-label">Tienda checkout</span>
           </button>
-          <button type="button" class="node" data-tip="IA expuesta con rate limit, honeypot y anti prompt-injection." style="--d:220ms" aria-describedby="tip">
-            <span class="node-label">Agentes IA + guards</span>
+          <button type="button" class="node" data-tip="Estado del catálogo y oportunidades." style="--d:220ms" aria-describedby="tip">
+            <span class="node-label">Postgres</span>
           </button>
-          <button type="button" class="node" data-tip="Indexabilidad humana + citabilidad por LLM (sitemaps, llms.txt)." style="--d:260ms" aria-describedby="tip">
-            <span class="node-label">SEO / GEO / AEO</span>
-          </button>
-          <button type="button" class="node" data-tip="Esquema autocurado; volumen aparte para media y rescate." style="--d:300ms" aria-describedby="tip">
-            <span class="node-label">Persistencia relacional</span>
+          <button type="button" class="node" data-tip="Amortigua picos de feeds y jobs." style="--d:260ms" aria-describedby="tip">
+            <span class="node-label">Cola / cache</span>
           </button></div>
       </div>
       </div>
@@ -184,7 +181,7 @@
     <span class="tip-k">Insight</span>
     <span class="tip-v" id="tip-text">Pasa el cursor o enfoca un bloque para ver el criterio arquitectónico de esa capa.</span>
   </div>
-  <div class="chips"><span class="chip">Monolito modular vs microservicios</span><span class="chip">MySQL prod + SQLite rescate</span><span class="chip">IA pública vs superficie de ataque</span></div>
+  <div class="chips"><span class="chip">HITL vs automatización total</span><span class="chip">Brain vs tienda (límites claros)</span><span class="chip">Velocidad de feed vs calidad</span></div>
   <div class="footer">
     <span>Ricardo Zuluaga · Medellín Web Soluciones · Mapa parcial (portfolio)</span>
     <span>No revela internals propietarios</span>

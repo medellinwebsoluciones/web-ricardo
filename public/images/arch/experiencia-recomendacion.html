@@ -2,7 +2,7 @@
 <html lang="es"><head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Auge Urbano — PropTech — Architecture</title>
+<title>Embudo de recomendación — Architecture</title>
 <style>
   :root {
     --bg0: #050506;
@@ -126,57 +126,54 @@
 </head>
 <body>
   <div class="eyebrow">Architecture</div>
-  <h1>Auge Urbano — PropTech</h1>
-  <p class="focus">Vista parcial: audiencias → edge → app → dominio / IA / datos</p>
+  <h1>Embudo de recomendación</h1>
+  <p class="focus">Vista parcial: pasos → motor de reglas → CTA</p>
   <div class="map">
       <div class="layer" style="--d:0ms">
         <div class="layer-meta">
-          <span class="layer-name">Audiencias</span>
-          <span class="layer-role">Canales con auth propia</span>
+          <span class="layer-name">Entrada</span>
+          <span class="layer-role">Calificación</span>
         </div>
         <div class="nodes" style="--cols:3">
-          <button type="button" class="node" data-tip="Catálogo y lead capture públicos; sesión distinta al admin." style="--d:0ms" aria-describedby="tip">
-            <span class="node-label">Compradores</span>
+          <button type="button" class="node" data-tip="Contexto mínimo; reduce abandono temprano." style="--d:0ms" aria-describedby="tip">
+            <span class="node-label">Bienvenida</span>
           </button>
-          <button type="button" class="node" data-tip="Portales B2B con ownership de inmuebles y agenda." style="--d:40ms" aria-describedby="tip">
-            <span class="node-label">Colegas / captadores</span>
+          <button type="button" class="node" data-tip="Señal de dominio — alimenta el motor de reglas." style="--d:40ms" aria-describedby="tip">
+            <span class="node-label">Interés</span>
           </button>
-          <button type="button" class="node" data-tip="Admin interno: CRM, finanzas y publicación." style="--d:80ms" aria-describedby="tip">
-            <span class="node-label">Operación</span>
+          <button type="button" class="node" data-tip="Restricciones prácticas (ritmo, formato)." style="--d:80ms" aria-describedby="tip">
+            <span class="node-label">Tiempo / modalidad</span>
           </button></div>
       </div>
       <div class="flow" aria-hidden="true"><span></span></div>
       <div class="layer" style="--d:90ms">
         <div class="layer-meta">
-          <span class="layer-name">Edge + App</span>
-          <span class="layer-role">Runtime de producción</span>
+          <span class="layer-name">Motor</span>
+          <span class="layer-role">Decisión determinística</span>
         </div>
         <div class="nodes" style="--cols:2">
-          <button type="button" class="node" data-tip="TLS, apex canónico y límites de body — borde del sistema." style="--d:90ms" aria-describedby="tip">
-            <span class="node-label">Reverse proxy TLS</span>
+          <button type="button" class="node" data-tip="Explicable y testeable; no caja negra de ranking." style="--d:90ms" aria-describedby="tip">
+            <span class="node-label">Motor de reglas</span>
           </button>
-          <button type="button" class="node" data-tip="Monolito modular: un proceso, dominios partidos en módulos." style="--d:130ms" aria-describedby="tip">
-            <span class="node-label">App modular</span>
+          <button type="button" class="node" data-tip="Paradoja de elección: pocas recomendaciones fuertes." style="--d:130ms" aria-describedby="tip">
+            <span class="node-label">Menú ≤3 opciones</span>
           </button></div>
       </div>
       <div class="flow" aria-hidden="true"><span></span></div>
       <div class="layer" style="--d:180ms">
         <div class="layer-meta">
-          <span class="layer-name">Capacidades</span>
-          <span class="layer-role">Dominio + descubrimiento</span>
+          <span class="layer-name">Salida</span>
+          <span class="layer-role">Conversión</span>
         </div>
-        <div class="nodes" style="--cols:4">
-          <button type="button" class="node" data-tip="Geo, fichas, leads, finanzas — el core del negocio." style="--d:180ms" aria-describedby="tip">
-            <span class="node-label">Dominio inmobiliario</span>
+        <div class="nodes" style="--cols:3">
+          <button type="button" class="node" data-tip="Puente claro al checkout / catálogo." style="--d:180ms" aria-describedby="tip">
+            <span class="node-label">CTA tienda</span>
           </button>
-          <button type="button" class="node" data-tip="IA expuesta con rate limit, honeypot y anti prompt-injection." style="--d:220ms" aria-describedby="tip">
-            <span class="node-label">Agentes IA + guards</span>
+          <button type="button" class="node" data-tip="Estado efímero del embudo; sin PII innecesaria." style="--d:220ms" aria-describedby="tip">
+            <span class="node-label">Sesión web</span>
           </button>
-          <button type="button" class="node" data-tip="Indexabilidad humana + citabilidad por LLM (sitemaps, llms.txt)." style="--d:260ms" aria-describedby="tip">
-            <span class="node-label">SEO / GEO / AEO</span>
-          </button>
-          <button type="button" class="node" data-tip="Esquema autocurado; volumen aparte para media y rescate." style="--d:300ms" aria-describedby="tip">
-            <span class="node-label">Persistencia relacional</span>
+          <button type="button" class="node" data-tip="UI ligera; el valor está en el flujo, no en SPA pesada." style="--d:260ms" aria-describedby="tip">
+            <span class="node-label">Templates</span>
           </button></div>
       </div>
       </div>
@@ -184,7 +181,7 @@
     <span class="tip-k">Insight</span>
     <span class="tip-v" id="tip-text">Pasa el cursor o enfoca un bloque para ver el criterio arquitectónico de esa capa.</span>
   </div>
-  <div class="chips"><span class="chip">Monolito modular vs microservicios</span><span class="chip">MySQL prod + SQLite rescate</span><span class="chip">IA pública vs superficie de ataque</span></div>
+  <div class="chips"><span class="chip">Reglas vs ML opaco</span><span class="chip">Pocas opciones vs catálogo completo</span><span class="chip">Sesión ligera vs perfil persistente</span></div>
   <div class="footer">
     <span>Ricardo Zuluaga · Medellín Web Soluciones · Mapa parcial (portfolio)</span>
     <span>No revela internals propietarios</span>

@@ -1,11 +1,11 @@
 flowchart TB
-  Clients[Clientes] --> LB[Load Balancer]
-  LB --> S1[Service A]
-  LB --> S2[Service B]
-  LB --> S3[Service C]
-  S1 --> DB[(Primary DB)]
-  S2 --> DB
-  S3 --> Replica[(Replica DB)]
-  S1 --> Obs[Observabilidad]
-  S2 --> Obs
-  S3 --> Obs
+  C[Clientes] --> LB[Load balancer]
+  LB --> A[Servicio A]
+  LB --> B[Servicio B]
+  LB --> C2[Servicio C]
+  A --> P[(Primary)]
+  B --> P
+  C2 --> R[(Réplica)]
+  A --> O[Observabilidad]
+  B --> O
+  C2 --> O

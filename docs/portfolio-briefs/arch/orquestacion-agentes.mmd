@@ -1,12 +1,9 @@
 flowchart TB
-  Operator[Operador] --> API[FastAPI Nova]
-  API --> CEO[CEO Agent]
-  CEO --> D1[Division Hub]
-  CEO --> D2[Division Hub]
-  D1 --> Specs[29 Especialistas]
-  D2 --> Specs
-  Specs --> Tools[Tools MCP Composio MWS]
-  Specs --> LLM[Ollama Local LLM]
-  API --> Visual[Panel Visual 3D]
-  API --> Vivo[SSE Vivo]
-  API --> DB[(SQLite or Postgres)]
+  Op[Operador] --> API[API orquestación]
+  UI[Panel vivo] --> API
+  API --> Hub[Hub director]
+  Hub --> Div[Divisiones]
+  Div --> Spec[Especialistas]
+  Spec --> LLM[Inferencia local]
+  Spec --> Tools[Tools acotadas]
+  Spec --> DB[(Estado / memoria)]

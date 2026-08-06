@@ -15,6 +15,8 @@ import { join } from "node:path";
 import {
   captureGroup,
   djangoLogin,
+  formLogin,
+  streamlitFormLogin,
   recordShortVideo,
   reachable,
   captureRoot,
@@ -80,6 +82,7 @@ const groups = {
     }
     // Prefer local; fall back to prod admin if local down (may 302 login)
     const base = (await reachable(`${MWS_BASE}/admin/`)) ? MWS_BASE : MWS_PROD;
+    const leadPk = process.env.PORTFOLIO_CRM_LEAD_PK || "310";
     return captureGroup({
       folder: "crm",
       waitMs: 2500,
@@ -93,6 +96,7 @@ const groups = {
           uiSlug: "crm-mws",
         },
         { name: "crm-dashboard", url: `${base}/admin/crm/` },
+        { name: "crm-lead", url: `${base}/admin/crm/embudo/${leadPk}/` },
         { name: "crm-scrapeo", url: `${base}/admin/crm/scrapeo/` },
         { name: "crm-cotizaciones", url: `${base}/admin/crm/cotizaciones/` },
         { name: "crm-finanzas", url: `${base}/admin/finance/` },
@@ -100,16 +104,32 @@ const groups = {
     });
   },
 
-  lexia: () =>
-    captureGroup({
+  lexia: async () => {
+    const statePath = join(root, ".cache", "lexia-storage.json");
+    const email = process.env.PORTFOLIO_LEXIA_EMAIL;
+    const pass = process.env.PORTFOLIO_LEXIA_PASS;
+    let storage = null;
+    if (email && pass) {
+      storage = await streamlitFormLogin("http://127.0.0.1:8501", email, pass, statePath);
+    }
+    return captureGroup({
       folder: "lexia",
-      waitMs: 3500,
+      waitMs: 4000,
+      storageState: storage || undefined,
       shots: [
-        { name: "lexia-os", url: `${LEXIA_BASE}/`, card: true, mobile: true, uiSlug: "lexia-legal-os" },
-        { name: "lexia-os-alt", url: "http://127.0.0.1:8501/" },
+        {
+          name: "lexia-os",
+          url: storage ? "http://127.0.0.1:8501/" : `${LEXIA_BASE}/`,
+          card: true,
+          mobile: true,
+          uiSlug: "lexia-legal-os",
+        },
+        { name: "lexia-os-alt", url: "http://127.0.0.1:8501/?v=login" },
         { name: "lexia-dash", url: "http://127.0.0.1:8050/" },
+        { name: "lexia-workspace", url: "http://127.0.0.1:8501/" },
       ],
-    }),
+    });
+  },
 
   nova: () =>
     captureGroup({
@@ -132,21 +152,40 @@ const groups = {
       ],
     }),
 
-  omnicanal: () =>
-    captureGroup({
+  omnicanal: async () => {
+    const statePath = join(root, ".cache", "omni-storage.json");
+    const email = process.env.PORTFOLIO_OMNI_EMAIL;
+    const pass = process.env.PORTFOLIO_OMNI_PASS;
+    let storage = null;
+    if (email && pass) {
+      storage = await formLogin({
+        loginUrl: `${OMNI_BASE}/panel/login`,
+        user: email,
+        pass,
+        statePath,
+      });
+    }
+    return captureGroup({
       folder: "omnicanal",
-      waitMs: 2500,
+      waitMs: 2800,
+      storageState: storage || undefined,
       shots: [
         {
           name: "omnicanal-panel",
-          url: `${OMNI_BASE}/panel`,
+          url: `${OMNI_BASE}/panel/`,
           card: true,
           mobile: true,
           uiSlug: "omnicanal-comercio",
         },
+        { name: "omnicanal-productos", url: `${OMNI_BASE}/panel/products` },
+        { name: "omnicanal-oportunidades", url: `${OMNI_BASE}/panel/opportunities` },
+        { name: "omnicanal-trends", url: `${OMNI_BASE}/panel/trends` },
+        { name: "omnicanal-stock", url: `${OMNI_BASE}/panel/stock` },
+        { name: "omnicanal-settings", url: `${OMNI_BASE}/panel/settings` },
         { name: "omnicanal-home", url: `${OMNI_BASE}/` },
       ],
-    }),
+    });
+  },
 
   curso: () =>
     captureGroup({
@@ -165,14 +204,39 @@ const groups = {
       ],
     }),
 
-  bold: () =>
-    captureGroup({
+  bold: async () => {
+    const statePath = join(root, ".cache", "bold-storage.json");
+    const email = process.env.PORTFOLIO_BOLD_EMAIL;
+    const pass = process.env.PORTFOLIO_BOLD_PASS;
+    let storage = null;
+    if (email && pass) {
+      storage = await formLogin({
+        loginUrl: `${BOLD_BASE}/`,
+        user: email,
+        pass,
+        statePath,
+        successWhen: async (page) => {
+          const title = await page.title();
+          const pwd = await page.locator('input[type="password"]').count();
+          return pwd === 0 && !/iniciar sesion/i.test(title);
+        },
+      });
+    }
+    const admin = `${BOLD_BASE}/bold/admin`;
+    return captureGroup({
       folder: "bold",
-      waitMs: 2000,
+      waitMs: 2500,
+      storageState: storage || undefined,
       shots: [
-        { name: "bold-console", url: `${BOLD_BASE}/`, card: true, uiSlug: "pagos-bold" },
+        { name: "bold-console", url: `${admin}/`, card: true, uiSlug: "pagos-bold" },
+        { name: "bold-screen-01", url: `${admin}/transactions` },
+        { name: "bold-screen-02", url: `${admin}/tenants` },
+        { name: "bold-screen-03", url: `${admin}/integration` },
+        { name: "bold-screen-04", url: `${admin}/wizard` },
+        { name: "bold-screen-05", url: `${admin}/pay` },
       ],
-    }),
+    });
+  },
 };
 
 async function main() {

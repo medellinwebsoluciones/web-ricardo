@@ -2,7 +2,7 @@
 <html lang="es"><head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Auge Urbano — PropTech — Architecture</title>
+<title>Landing boutique — Architecture</title>
 <style>
   :root {
     --bg0: #050506;
@@ -126,57 +126,57 @@
 </head>
 <body>
   <div class="eyebrow">Architecture</div>
-  <h1>Auge Urbano — PropTech</h1>
-  <p class="focus">Vista parcial: audiencias → edge → app → dominio / IA / datos</p>
+  <h1>Landing boutique</h1>
+  <p class="focus">Vista parcial: marca → build estático → publicación</p>
   <div class="map">
       <div class="layer" style="--d:0ms">
         <div class="layer-meta">
-          <span class="layer-name">Audiencias</span>
-          <span class="layer-role">Canales con auth propia</span>
+          <span class="layer-name">Marca</span>
+          <span class="layer-role">Contenido</span>
         </div>
         <div class="nodes" style="--cols:3">
-          <button type="button" class="node" data-tip="Catálogo y lead capture públicos; sesión distinta al admin." style="--d:0ms" aria-describedby="tip">
-            <span class="node-label">Compradores</span>
+          <button type="button" class="node" data-tip="Narrativa y visuales primero; la tech sirve a la marca." style="--d:0ms" aria-describedby="tip">
+            <span class="node-label">Marca personal</span>
           </button>
-          <button type="button" class="node" data-tip="Portales B2B con ownership de inmuebles y agenda." style="--d:40ms" aria-describedby="tip">
-            <span class="node-label">Colegas / captadores</span>
+          <button type="button" class="node" data-tip="Stack mínimo: performance y control total del pixel." style="--d:40ms" aria-describedby="tip">
+            <span class="node-label">HTML / CSS / JS</span>
           </button>
-          <button type="button" class="node" data-tip="Admin interno: CRM, finanzas y publicación." style="--d:80ms" aria-describedby="tip">
-            <span class="node-label">Operación</span>
+          <button type="button" class="node" data-tip="Imágenes optimizadas; LCP como KPI de diseño." style="--d:80ms" aria-describedby="tip">
+            <span class="node-label">Assets</span>
           </button></div>
       </div>
       <div class="flow" aria-hidden="true"><span></span></div>
       <div class="layer" style="--d:90ms">
         <div class="layer-meta">
-          <span class="layer-name">Edge + App</span>
-          <span class="layer-role">Runtime de producción</span>
+          <span class="layer-name">Build</span>
+          <span class="layer-role">Artefacto</span>
         </div>
-        <div class="nodes" style="--cols:2">
-          <button type="button" class="node" data-tip="TLS, apex canónico y límites de body — borde del sistema." style="--d:90ms" aria-describedby="tip">
-            <span class="node-label">Reverse proxy TLS</span>
+        <div class="nodes" style="--cols:3">
+          <button type="button" class="node" data-tip="Salida estática reproducible." style="--d:90ms" aria-describedby="tip">
+            <span class="node-label">Build dist</span>
           </button>
-          <button type="button" class="node" data-tip="Monolito modular: un proceso, dominios partidos en módulos." style="--d:130ms" aria-describedby="tip">
-            <span class="node-label">App modular</span>
+          <button type="button" class="node" data-tip="Sin runtime de app = menos superficie de fallo." style="--d:130ms" aria-describedby="tip">
+            <span class="node-label">Deploy estático</span>
+          </button>
+          <button type="button" class="node" data-tip="Presupuesto de peso y CLS antes de features." style="--d:170ms" aria-describedby="tip">
+            <span class="node-label">Performance</span>
           </button></div>
       </div>
       <div class="flow" aria-hidden="true"><span></span></div>
       <div class="layer" style="--d:180ms">
         <div class="layer-meta">
-          <span class="layer-name">Capacidades</span>
-          <span class="layer-role">Dominio + descubrimiento</span>
+          <span class="layer-name">Resultado</span>
+          <span class="layer-role">Conversión</span>
         </div>
-        <div class="nodes" style="--cols:4">
-          <button type="button" class="node" data-tip="Geo, fichas, leads, finanzas — el core del negocio." style="--d:180ms" aria-describedby="tip">
-            <span class="node-label">Dominio inmobiliario</span>
+        <div class="nodes" style="--cols:3">
+          <button type="button" class="node" data-tip="Una acción primaria clara." style="--d:180ms" aria-describedby="tip">
+            <span class="node-label">CTA contacto</span>
           </button>
-          <button type="button" class="node" data-tip="IA expuesta con rate limit, honeypot y anti prompt-injection." style="--d:220ms" aria-describedby="tip">
-            <span class="node-label">Agentes IA + guards</span>
+          <button type="button" class="node" data-tip="Mobile-first: la mayoría del tráfico llega ahí." style="--d:220ms" aria-describedby="tip">
+            <span class="node-label">Responsive</span>
           </button>
-          <button type="button" class="node" data-tip="Indexabilidad humana + citabilidad por LLM (sitemaps, llms.txt)." style="--d:260ms" aria-describedby="tip">
-            <span class="node-label">SEO / GEO / AEO</span>
-          </button>
-          <button type="button" class="node" data-tip="Esquema autocurado; volumen aparte para media y rescate." style="--d:300ms" aria-describedby="tip">
-            <span class="node-label">Persistencia relacional</span>
+          <button type="button" class="node" data-tip="CDN / estático — costo y latencia bajos." style="--d:260ms" aria-describedby="tip">
+            <span class="node-label">Hosting</span>
           </button></div>
       </div>
       </div>
@@ -184,7 +184,7 @@
     <span class="tip-k">Insight</span>
     <span class="tip-v" id="tip-text">Pasa el cursor o enfoca un bloque para ver el criterio arquitectónico de esa capa.</span>
   </div>
-  <div class="chips"><span class="chip">Monolito modular vs microservicios</span><span class="chip">MySQL prod + SQLite rescate</span><span class="chip">IA pública vs superficie de ataque</span></div>
+  <div class="chips"><span class="chip">Estático vs CMS</span><span class="chip">Custom pixel vs template</span><span class="chip">Una CTA vs muchas ofertas</span></div>
   <div class="footer">
     <span>Ricardo Zuluaga · Medellín Web Soluciones · Mapa parcial (portfolio)</span>
     <span>No revela internals propietarios</span>

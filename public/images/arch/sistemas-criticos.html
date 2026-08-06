@@ -2,7 +2,7 @@
 <html lang="es"><head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Auge Urbano — PropTech — Architecture</title>
+<title>Alta disponibilidad — servicios críticos — Architecture</title>
 <style>
   :root {
     --bg0: #050506;
@@ -126,57 +126,54 @@
 </head>
 <body>
   <div class="eyebrow">Architecture</div>
-  <h1>Auge Urbano — PropTech</h1>
-  <p class="focus">Vista parcial: audiencias → edge → app → dominio / IA / datos</p>
+  <h1>Alta disponibilidad — servicios críticos</h1>
+  <p class="focus">Vista parcial: edge → servicios → datos + observabilidad</p>
   <div class="map">
       <div class="layer" style="--d:0ms">
         <div class="layer-meta">
-          <span class="layer-name">Audiencias</span>
-          <span class="layer-role">Canales con auth propia</span>
+          <span class="layer-name">Edge</span>
+          <span class="layer-role">Entrada y balanceo</span>
         </div>
-        <div class="nodes" style="--cols:3">
-          <button type="button" class="node" data-tip="Catálogo y lead capture públicos; sesión distinta al admin." style="--d:0ms" aria-describedby="tip">
-            <span class="node-label">Compradores</span>
+        <div class="nodes" style="--cols:2">
+          <button type="button" class="node" data-tip="Tráfico multi-canal que no debe acoplarse a un solo nodo." style="--d:0ms" aria-describedby="tip">
+            <span class="node-label">Clientes</span>
           </button>
-          <button type="button" class="node" data-tip="Portales B2B con ownership de inmuebles y agenda." style="--d:40ms" aria-describedby="tip">
-            <span class="node-label">Colegas / captadores</span>
-          </button>
-          <button type="button" class="node" data-tip="Admin interno: CRM, finanzas y publicación." style="--d:80ms" aria-describedby="tip">
-            <span class="node-label">Operación</span>
+          <button type="button" class="node" data-tip="Punto único de entrada; health checks y failover." style="--d:40ms" aria-describedby="tip">
+            <span class="node-label">Load balancer</span>
           </button></div>
       </div>
       <div class="flow" aria-hidden="true"><span></span></div>
       <div class="layer" style="--d:90ms">
         <div class="layer-meta">
-          <span class="layer-name">Edge + App</span>
-          <span class="layer-role">Runtime de producción</span>
+          <span class="layer-name">Servicios</span>
+          <span class="layer-role">Unidades desplegables</span>
         </div>
-        <div class="nodes" style="--cols:2">
-          <button type="button" class="node" data-tip="TLS, apex canónico y límites de body — borde del sistema." style="--d:90ms" aria-describedby="tip">
-            <span class="node-label">Reverse proxy TLS</span>
+        <div class="nodes" style="--cols:3">
+          <button type="button" class="node" data-tip="Bounded context independiente; falla sin tumbar todo el sistema." style="--d:90ms" aria-describedby="tip">
+            <span class="node-label">Servicio A</span>
           </button>
-          <button type="button" class="node" data-tip="Monolito modular: un proceso, dominios partidos en módulos." style="--d:130ms" aria-describedby="tip">
-            <span class="node-label">App modular</span>
+          <button type="button" class="node" data-tip="Escalado horizontal por demanda, no por monolito." style="--d:130ms" aria-describedby="tip">
+            <span class="node-label">Servicio B</span>
+          </button>
+          <button type="button" class="node" data-tip="Contratos claros entre servicios; sin DB compartida implícita." style="--d:170ms" aria-describedby="tip">
+            <span class="node-label">Servicio C</span>
           </button></div>
       </div>
       <div class="flow" aria-hidden="true"><span></span></div>
       <div class="layer" style="--d:180ms">
         <div class="layer-meta">
-          <span class="layer-name">Capacidades</span>
-          <span class="layer-role">Dominio + descubrimiento</span>
+          <span class="layer-name">Datos &amp; Ops</span>
+          <span class="layer-role">Resiliencia</span>
         </div>
-        <div class="nodes" style="--cols:4">
-          <button type="button" class="node" data-tip="Geo, fichas, leads, finanzas — el core del negocio." style="--d:180ms" aria-describedby="tip">
-            <span class="node-label">Dominio inmobiliario</span>
+        <div class="nodes" style="--cols:3">
+          <button type="button" class="node" data-tip="Escrituras; punto de verdad con réplica asíncrona." style="--d:180ms" aria-describedby="tip">
+            <span class="node-label">Primary DB</span>
           </button>
-          <button type="button" class="node" data-tip="IA expuesta con rate limit, honeypot y anti prompt-injection." style="--d:220ms" aria-describedby="tip">
-            <span class="node-label">Agentes IA + guards</span>
+          <button type="button" class="node" data-tip="Lecturas y failover — trade-off de consistencia eventual." style="--d:220ms" aria-describedby="tip">
+            <span class="node-label">Réplica</span>
           </button>
-          <button type="button" class="node" data-tip="Indexabilidad humana + citabilidad por LLM (sitemaps, llms.txt)." style="--d:260ms" aria-describedby="tip">
-            <span class="node-label">SEO / GEO / AEO</span>
-          </button>
-          <button type="button" class="node" data-tip="Esquema autocurado; volumen aparte para media y rescate." style="--d:300ms" aria-describedby="tip">
-            <span class="node-label">Persistencia relacional</span>
+          <button type="button" class="node" data-tip="Métricas, trazas y alertas: requisito de HA, no opcional." style="--d:260ms" aria-describedby="tip">
+            <span class="node-label">Observabilidad</span>
           </button></div>
       </div>
       </div>
@@ -184,7 +181,7 @@
     <span class="tip-k">Insight</span>
     <span class="tip-v" id="tip-text">Pasa el cursor o enfoca un bloque para ver el criterio arquitectónico de esa capa.</span>
   </div>
-  <div class="chips"><span class="chip">Monolito modular vs microservicios</span><span class="chip">MySQL prod + SQLite rescate</span><span class="chip">IA pública vs superficie de ataque</span></div>
+  <div class="chips"><span class="chip">Disponibilidad vs consistencia fuerte</span><span class="chip">Microservicios vs monolito modular</span><span class="chip">Costo de observabilidad vs MTTR</span></div>
   <div class="footer">
     <span>Ricardo Zuluaga · Medellín Web Soluciones · Mapa parcial (portfolio)</span>
     <span>No revela internals propietarios</span>

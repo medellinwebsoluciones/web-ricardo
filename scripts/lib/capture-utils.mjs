@@ -201,14 +201,16 @@ export async function djangoLogin(baseUrl, user, pass, statePath) {
       const page = await context.newPage();
       try {
         await page.goto(loginUrl, { waitUntil: "domcontentloaded", timeout: 30000 });
-        await page.fill('input[name="username"]', user);
-        await page.fill('input[name="password"]', pass);
+        const userSel =
+          'input[name="username"], input[name="email"], input[type="email"], input[autocomplete="username"]';
+        await page.fill(userSel, user);
+        await page.fill('input[name="password"], input[type="password"]', pass);
         await Promise.all([
           page.waitForNavigation({ waitUntil: "networkidle", timeout: 30000 }).catch(() => {}),
           page.click('input[type="submit"], button[type="submit"]'),
         ]);
         const url = page.url();
-        if (url.includes("/entrar") || url.includes("/login")) {
+        if (url.includes("/entrar") || /\/login\/?(\?|$)/.test(url)) {
           console.log("auth rejected", loginUrl, "->", url);
           await context.close();
           continue;
@@ -226,6 +228,137 @@ export async function djangoLogin(baseUrl, user, pass, statePath) {
     await browser.close().catch(() => {});
   }
   return null;
+}
+
+/**
+ * Generic email/password form login (Omnicanal panel, Bold console, etc.).
+ * @param {{
+ *   loginUrl: string,
+ *   user: string,
+ *   pass: string,
+ *   statePath: string,
+ *   userSelector?: string,
+ *   successUnless?: RegExp,
+ *   successWhen?: (page: import('playwright').Page) => Promise<boolean>,
+ * }} opts
+ */
+export async function formLogin(opts) {
+  const {
+    loginUrl,
+    user,
+    pass,
+    statePath,
+    userSelector = 'input[name="email"], input[type="email"], input[name="username"]',
+    successUnless = /\/login\/?(\?|$)/i,
+    successWhen,
+  } = opts;
+  if (!user || !pass || !loginUrl) return null;
+
+  await ensureDir(dirname(statePath));
+  const browser = await chromium.launch();
+  try {
+    if (!(await reachable(loginUrl))) {
+      console.log("auth skip (down)", loginUrl);
+      return null;
+    }
+    const context = await browser.newContext({ ignoreHTTPSErrors: true });
+    const page = await context.newPage();
+    try {
+      await page.goto(loginUrl, { waitUntil: "domcontentloaded", timeout: 30000 });
+      await page.fill(userSelector, user);
+      await page.fill('input[name="password"], input[type="password"]', pass);
+      await Promise.all([
+        page.waitForNavigation({ waitUntil: "networkidle", timeout: 30000 }).catch(() => {}),
+        page.click('button[type="submit"], input[type="submit"]'),
+      ]);
+      await page.waitForTimeout(800);
+      const url = page.url();
+      const title = await page.title();
+      let ok = !successUnless.test(url) && !successUnless.test(title);
+      if (typeof successWhen === "function") {
+        ok = await successWhen(page);
+      }
+      if (!ok) {
+        console.log("auth rejected", loginUrl, "->", url, title);
+        return null;
+      }
+      await context.storageState({ path: statePath });
+      console.log("auth ok", loginUrl, "->", url);
+      return statePath;
+    } catch (e) {
+      console.log("auth fail", loginUrl, e.message);
+      return null;
+    } finally {
+      await context.close().catch(() => {});
+    }
+  } finally {
+    await browser.close().catch(() => {});
+  }
+}
+
+/**
+ * Streamlit marketplace login (Lexia): ?v=login form.
+ */
+export async function streamlitFormLogin(baseUrl, email, pass, statePath) {
+  if (!email || !pass) return null;
+  const root = baseUrl.replace(/\/$/, "");
+  const loginUrl = `${root}/?v=login`;
+
+  await ensureDir(dirname(statePath));
+  const browser = await chromium.launch();
+  try {
+    if (!(await reachable(root))) return null;
+    const context = await browser.newContext({
+      ignoreHTTPSErrors: true,
+      viewport: { width: DESKTOP.width, height: DESKTOP.height },
+    });
+    const page = await context.newPage();
+    try {
+      await page.goto(loginUrl, { waitUntil: "networkidle", timeout: 60000 }).catch(() =>
+        page.goto(loginUrl, { waitUntil: "domcontentloaded", timeout: 60000 })
+      );
+      await page.waitForTimeout(3000);
+
+      const emailInput = page.locator('input[type="text"], input[type="email"]').first();
+      const passInput = page.locator('input[type="password"]').first();
+      await emailInput.waitFor({ timeout: 20000 });
+      await emailInput.click();
+      await emailInput.fill(email);
+      await passInput.click();
+      await passInput.fill(pass);
+
+      // Streamlit form submit: prefer button with visible "Ingresar" / "Entrar"
+      const labeled = page.getByRole("button", { name: /ingresar|entrar|login|acceder/i });
+      if ((await labeled.count()) > 0) {
+        await labeled.first().click();
+      } else {
+        await page.locator('button[data-testid="baseButton-primary"], .stForm button').first().click({
+          timeout: 10000,
+        });
+      }
+      await page.waitForTimeout(5000);
+
+      const body = (await page.locator("body").innerText().catch(() => "")).slice(0, 800);
+      const passLeft = await page.locator('input[type="password"]').count();
+      const rejected =
+        /contrase[nñ]a incorrecta|credenciales inv[aá]lid|invalid credentials/i.test(body) ||
+        (passLeft > 0 && /Ingresar|Correo electr|Contrase/i.test(body) && (await page.url()).includes("v=login"));
+      if (rejected) {
+        console.log("auth rejected", loginUrl);
+        return null;
+      }
+      await context.storageState({ path: statePath });
+      console.log("auth ok", loginUrl, "->", page.url());
+      return statePath;
+    } catch (e) {
+      console.log("auth fail", loginUrl, e.message);
+      return null;
+    } finally {
+      await context.close().catch(() => {});
+    }
+  } finally {
+    await browser.close().catch(() => {});
+  }
 }
 
 export async function recordShortVideo(url, outPath, { durationMs = 12000, scroll = false } = {}) {

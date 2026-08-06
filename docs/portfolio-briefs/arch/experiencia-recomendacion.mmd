@@ -1,7 +1,7 @@
-flowchart LR
-  P1[Bienvenida] --> P2[Interes]
-  P2 --> P3[Tiempo]
-  P3 --> P4[Modalidad]
-  P4 --> Engine[Reglas]
-  Engine --> Menu[Menu 3 cursos]
-  Menu --> Store[CTA Tienda]
+flowchart TB
+  W[Bienvenida] --> I[Interés]
+  I --> T[Tiempo / modalidad]
+  T --> R[Motor de reglas]
+  R --> M[Menú ≤3]
+  M --> CTA[CTA tienda]
+  R --> S[Sesión web]

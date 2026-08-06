@@ -15,6 +15,7 @@ import { SiteShell } from "@/components/SiteShell";
 import { PageHero } from "@/components/PageHero";
 import { Reveal } from "@/components/Reveal";
 import { VideoPlayer } from "@/components/VideoPlayer";
+import { ArchMap } from "@/components/ArchMap";
 
 export function generateStaticParams() {
   return locales.flatMap((locale) =>
@@ -246,15 +247,17 @@ export default async function SolutionDetailPage({
           </Reveal>
           <div className="mt-8 grid items-center gap-8 lg:grid-cols-5">
             <Reveal className="lg:col-span-3">
-              <div className="overflow-hidden rounded-xl border border-zinc-800">
-                <Image
-                  src={s.archImage}
-                  alt={`${c.ui.architectureLabel}: ${s.title}`}
-                  width={1024}
-                  height={576}
-                  className="h-auto w-full"
-                />
-              </div>
+              <ArchMap
+                title={s.title}
+                archImage={s.archImage}
+                archInteractive={s.archInteractive}
+                architectureLabel={c.ui.architectureLabel}
+                interactiveHint={
+                  l === "es"
+                    ? "Interactivo · cursor o foco en cada capa"
+                    : "Interactive · hover or focus each layer"
+                }
+              />
             </Reveal>
             <Reveal delay={0.1} className="lg:col-span-2">
               <p className="text-base leading-relaxed text-zinc-400">
@@ -398,11 +401,11 @@ export default async function SolutionDetailPage({
                 >
                   <div className="relative h-20 w-28 shrink-0 overflow-hidden rounded-lg">
                     <Image
-                      src={r.heroImage}
+                      src={r.productImage || r.heroImage}
                       alt={r.title}
                       fill
                       sizes="120px"
-                      className="object-cover"
+                      className="object-cover object-top"
                     />
                   </div>
                   <div>

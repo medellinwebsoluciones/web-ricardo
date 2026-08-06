@@ -1,0 +1,8 @@
+flowchart TB
+  Home[Home / servicios] --> BE[Backend web]
+  Blog[Blog / portal] --> BE
+  Bill[Billing / contacto] --> BE
+  BE --> Leg[Front legacy]
+  BE --> AK[Corpus agente]
+  AK --> RAG[Sync RAG]
+  BE --> ST[Estáticos]

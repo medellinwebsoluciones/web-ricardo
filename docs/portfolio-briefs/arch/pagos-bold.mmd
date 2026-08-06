@@ -1,8 +1,8 @@
-flowchart LR
-  App[Producto] --> SDK[pagos_bold SDK]
-  SDK --> Checkout[CheckoutService]
-  SDK --> Health[IntegrationHealth]
-  Checkout --> Bold[Bold API]
-  Bold --> WH[Webhooks]
-  WH --> App
-  Console[bold-console] --> SDK
+flowchart TB
+  Host[Producto host] --> SDK[SDK pagos]
+  SDK --> CO[CheckoutService]
+  SDK --> HH[IntegrationHealth]
+  SDK --> WH[Webhooks]
+  CO --> API[API proveedor]
+  WH --> SIG[Firma / HMAC]
+  SDK --> Ops[Consola ops]

@@ -71,11 +71,11 @@ export default async function SolucionesPage({
               >
                 <div className="relative aspect-video w-full overflow-hidden">
                   <Image
-                    src={s.heroImage}
+                    src={s.productImage || s.heroImage}
                     alt={s.title}
                     fill
                     sizes="(max-width: 1024px) 100vw, 400px"
-                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/20 to-transparent" />
                   <span className="absolute left-4 top-4 rounded-full border border-emerald-500/30 bg-zinc-950/70 px-3 py-1 text-[11px] font-medium uppercase tracking-wide text-emerald-400 backdrop-blur">

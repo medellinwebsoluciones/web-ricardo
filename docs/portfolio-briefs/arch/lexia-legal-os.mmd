@@ -1,7 +1,9 @@
-flowchart LR
-  User[Usuario juridico] --> OS[Streamlit OS]
-  User --> Analytics[Dash Analytics]
-  OS --> API[FastAPI]
-  Analytics --> API
-  API --> Domain[Dominio Legal IA]
-  Domain --> Data[(Data store)]
+flowchart TB
+  U[Usuario jurídico] --> OS[OS interactivo]
+  U --> Dash[Analytics]
+  OS --> API[API]
+  Dash --> API
+  API --> Dom[Dominio Legal IA]
+  API --> Auth[Auth / roles]
+  Dom --> DB[(Data store)]
+  Auth --> DB

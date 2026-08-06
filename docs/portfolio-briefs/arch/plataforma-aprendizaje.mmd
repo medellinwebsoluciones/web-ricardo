@@ -1,7 +1,10 @@
 flowchart TB
-  Visitor[Visitante] --> Django[Django LMS]
-  Django --> Pay[Bold and PayPal]
-  Pay --> Access[Acceso 12 meses]
-  Access --> Course[Lecciones y Examen]
-  Course --> Tutor[Tutor RAG]
-  Django --> DB[(Postgres)]
+  V[Visitante] --> LMS[LMS web]
+  LMS --> PA[Pasarela A]
+  LMS --> PB[Pasarela B]
+  PA --> Unlock[Contenido]
+  PB --> Unlock
+  Unlock --> Les[Lecciones / examen]
+  Unlock --> RAG[Tutor RAG]
+  Les --> DB[(Postgres)]
+  RAG --> DB

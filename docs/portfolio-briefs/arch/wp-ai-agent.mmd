@@ -1,0 +1,8 @@
+flowchart TB
+  V[Visitante WP] --> TH[Theme / plugin]
+  TH --> BR[AI bridge]
+  ADM[wp-admin] --> BR
+  BR --> LLM[LLM API]
+  BR --> G[Guardrails]
+  G --> WC[wp-content]
+  BR --> HK[Hooks WP]

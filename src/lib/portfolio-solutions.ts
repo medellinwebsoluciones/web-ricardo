@@ -63,6 +63,8 @@ export type SolutionDetail = {
   summary: string;
   heroImage: string;
   archImage: string;
+  /** Mapa HTML interactivo (parcial) cuando existe en /images/arch/{slug}.html */
+  archInteractive?: string;
   archCaption: string;
   /** Captura de producto/UI real (opcional; se muestra tras el contexto). */
   productImage?: string;
@@ -86,6 +88,7 @@ function img(slug: SolutionSlug) {
   return {
     heroImage: `/images/captures/${slug}-hero.png`,
     archImage: `/images/arch/${slug}.png`,
+    archInteractive: `/images/arch/${slug}.html`,
   };
 }
 
@@ -150,7 +153,7 @@ export const solutionsEs: SolutionDetail[] = [
       },
     ],
     archCaption:
-      "Operador → FastAPI Nova → CEO → hubs de division → 29 especialistas, con Ollama local, tools MCP/Composio/MWS y panel /visual + /vivo.",
+      "Mapa parcial del plano de control: operador y panel vivo → API de orquestacion → hub director / divisiones / especialistas → inferencia local, tools acotadas y estado. No expone configs ni el inventario completo de agentes.",
     video: "/media/ejecucion-agentes-ia.mp4",
     videoPoster: "/images/captures/nova/nova-engine-agentes.png",
     meta: [
@@ -594,7 +597,7 @@ export const solutionsEs: SolutionDetail[] = [
     summary:
       "Cerebro omnicanal (stock propio + dropship) con panel HITL, radar Dropi, API de catalogo y tienda Woo solo Colombia.",
     ...img("omnicanal-comercio"),
-    productImage: "/images/captures/omnicanal/omnicanal-card.webp",
+    productImage: "/images/captures/omnicanal/omnicanal-panel.png",
     gallery: [
       {
         src: "/images/captures/omnicanal/omnicanal-panel.png",
@@ -803,7 +806,7 @@ export const solutionsEs: SolutionDetail[] = [
     summary:
       "Libreria Python reutilizable para Bold: checkout, health checks, consola operativa y deploy Docker en VPS.",
     ...img("pagos-bold"),
-    productImage: "/images/captures/bold/bold-card.webp",
+    productImage: "/images/captures/bold/bold-console.png",
     gallery: [
       {
         src: "/images/captures/bold/bold-console.png",
@@ -1442,7 +1445,7 @@ export const solutionsEn: SolutionDetail[] = [
       },
     ],
     archCaption:
-      "Operator → FastAPI Nova → CEO → division hubs → 29 specialists, with local Ollama, MCP/Composio/MWS tools and /visual + /vivo panels.",
+      "Partial control-plane map: operator and live panel → orchestration API → director hub / divisions / specialists → local inference, bounded tools and state. No private configs or full agent inventory.",
     video: "/media/ejecucion-agentes-ia.mp4",
     videoPoster: "/images/captures/nova/nova-engine-agentes.png",
     meta: [
@@ -1883,7 +1886,7 @@ export const solutionsEn: SolutionDetail[] = [
     summary:
       "Omnichannel brain (owned stock + dropship) with HITL panel, Dropi radar, catalog API and Colombia-only Woo store.",
     ...img("omnicanal-comercio"),
-    productImage: "/images/captures/omnicanal/omnicanal-card.webp",
+    productImage: "/images/captures/omnicanal/omnicanal-panel.png",
     gallery: [
       {
         src: "/images/captures/omnicanal/omnicanal-panel.png",
@@ -2092,7 +2095,7 @@ export const solutionsEn: SolutionDetail[] = [
     summary:
       "Reusable Python library for Bold: checkout, health checks, ops console and Docker VPS deploy.",
     ...img("pagos-bold"),
-    productImage: "/images/captures/bold/bold-card.webp",
+    productImage: "/images/captures/bold/bold-console.png",
     gallery: [
       {
         src: "/images/captures/bold/bold-console.png",
