@@ -8,8 +8,13 @@
  *   node scripts/capture-portfolio-live.mjs --video-lab
  *
  * Auth CRM (opcional):
- *   PORTFOLIO_CRM_USER / PORTFOLIO_CRM_PASS
+ *   PORTFOLIO_CRM_USER / PORTFOLIO_CRM_PASS  (staff local MWS; README admin/admin123 puede no existir)
+ *   PORTFOLIO_CRM_LEAD_PK (detalle lead para crm-lead)
  *   PORTFOLIO_MWS_BASE (default http://127.0.0.1:8010)
+ * Auth Omnicanal / Bold / Lexia (opcional):
+ *   PORTFOLIO_OMNI_EMAIL / PORTFOLIO_OMNI_PASS  (ADMIN_* del .env omnicanal)
+ *   PORTFOLIO_BOLD_EMAIL / PORTFOLIO_BOLD_PASS  (BOLD_CONSOLE_ADMIN_* del .env)
+ *   PORTFOLIO_LEXIA_EMAIL / PORTFOLIO_LEXIA_PASS (demo README; requiere API Lexia up)
  */
 import { join } from "node:path";
 import {
@@ -182,7 +187,6 @@ const groups = {
         { name: "omnicanal-trends", url: `${OMNI_BASE}/panel/trends` },
         { name: "omnicanal-stock", url: `${OMNI_BASE}/panel/stock` },
         { name: "omnicanal-settings", url: `${OMNI_BASE}/panel/settings` },
-        { name: "omnicanal-home", url: `${OMNI_BASE}/` },
       ],
     });
   },
