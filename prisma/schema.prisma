@@ -439,6 +439,10 @@ model Opportunity {
   nextAction     String?
   nextActionAt   DateTime?
   notes          String?
+  /// Origen: manual | linkedin | remoteok | remotive | arbeitnow | email
+  source         String?
+  /// Id estable del origen (para no duplicar al re-escanear el radar).
+  externalId     String?
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
 
@@ -448,6 +452,8 @@ model Opportunity {
   @@index([stage])
   @@index([type])
   @@index([nextActionAt])
+  @@index([url])
+  @@unique([source, externalId])
 }
 
 model OpportunityEvent {

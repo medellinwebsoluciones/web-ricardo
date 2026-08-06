@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      body {
+        font: 12px/1.4 system-ui, sans-serif;
+        margin: 0;
+        padding: 12px;
+        width: 280px;
+        background: #09090b;
+        color: #e4e4e7;
+      }
+      button {
+        width: 100%;
+        padding: 8px 10px;
+        border: 0;
+        border-radius: 8px;
+        background: #10b981;
+        color: #052e1c;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      button:disabled {
+        opacity: 0.5;
+      }
+      .msg {
+        margin-top: 8px;
+        color: #a1a1aa;
+        white-space: pre-wrap;
+      }
+      a {
+        color: #34d399;
+      }
+    </style>
+  </head>
+  <body>
+    <button id="send">Enviar oferta a Oportunidades</button>
+    <p class="msg" id="msg">
+      Configura URL + token en
+      <a href="options.html" target="_blank">opciones</a>.
+    </p>
+    <script src="popup.js"></script>
+  </body>
+</html>

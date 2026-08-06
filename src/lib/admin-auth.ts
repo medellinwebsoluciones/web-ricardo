@@ -12,3 +12,17 @@ export async function denyIfNotAdmin(): Promise<Response | null> {
   }
   return null;
 }
+
+/**
+ * Sesión de admin O token de ingestión (`JOB_INGEST_TOKEN` / header
+ * `x-ingest-token`). Sirve para la extensión Chrome y el bookmarklet
+ * sin exigir cookies cross-origin desde LinkedIn.
+ */
+export async function denyIfNotAdminOrIngestToken(
+  req: Request,
+): Promise<Response | null> {
+  const token = (process.env.JOB_INGEST_TOKEN || "").trim();
+  const header = (req.headers.get("x-ingest-token") || "").trim();
+  if (token && header && header === token) return null;
+  return denyIfNotAdmin();
+}

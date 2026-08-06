@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>RZ Oportunidades — opciones</title>
+    <style>
+      body {
+        font: 14px/1.5 system-ui, sans-serif;
+        max-width: 520px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+        background: #09090b;
+        color: #e4e4e7;
+      }
+      label {
+        display: block;
+        margin-top: 1rem;
+        font-size: 12px;
+        color: #a1a1aa;
+      }
+      input {
+        width: 100%;
+        margin-top: 0.35rem;
+        padding: 0.6rem 0.75rem;
+        border-radius: 8px;
+        border: 1px solid #27272a;
+        background: #18181b;
+        color: #fafafa;
+      }
+      button {
+        margin-top: 1.25rem;
+        padding: 0.6rem 1rem;
+        border: 0;
+        border-radius: 8px;
+        background: #10b981;
+        color: #052e1c;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .hint {
+        font-size: 12px;
+        color: #71717a;
+        margin-top: 0.75rem;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Enviar a Oportunidades</h1>
+    <label>
+      URL del admin
+      <input
+        id="adminUrl"
+        placeholder="https://ricardozuluaga.medellinweb.co"
+      />
+    </label>
+    <label>
+      Token de ingestión (opcional)
+      <input
+        id="ingestToken"
+        placeholder="JOB_INGEST_TOKEN del .env del servidor"
+        type="password"
+      />
+    </label>
+    <p class="hint">
+      Con token, la extensión guarda directo vía API. Sin token, abre el panel
+      admin (necesitas estar logueado).
+    </p>
+    <button id="save">Guardar</button>
+    <p id="status" class="hint"></p>
+    <script src="options.js"></script>
+  </body>
+</html>

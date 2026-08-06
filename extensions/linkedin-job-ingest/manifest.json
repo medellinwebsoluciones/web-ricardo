@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "RZ → Oportunidades",
+  "version": "1.0.0",
+  "description": "Envía la oferta abierta en LinkedIn al tablero de Oportunidades de Ricardo (sin scrapear el feed).",
+  "permissions": ["storage", "activeTab"],
+  "host_permissions": [
+    "https://www.linkedin.com/*",
+    "https://ricardozuluaga.medellinweb.co/*",
+    "http://localhost:3000/*"
+  ],
+  "action": {
+    "default_title": "Enviar oferta a Oportunidades",
+    "default_popup": "popup.html"
+  },
+  "options_page": "options.html",
+  "content_scripts": [
+    {
+      "matches": ["https://www.linkedin.com/jobs/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

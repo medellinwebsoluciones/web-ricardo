@@ -36,6 +36,7 @@ export default async function OportunidadesPage() {
     nextAction: o.nextAction,
     nextActionAt: o.nextActionAt?.toISOString() ?? null,
     notes: o.notes,
+    source: o.source,
     createdAt: o.createdAt.toISOString(),
     updatedAt: o.updatedAt.toISOString(),
     events: o.events.map((e) => ({

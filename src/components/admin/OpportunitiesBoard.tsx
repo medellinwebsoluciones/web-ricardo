@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import {
   Plus,
@@ -11,6 +11,7 @@ import {
   Target,
   Sparkles,
   X,
+  Radar,
 } from "lucide-react";
 import {
   PageHeader,
@@ -22,6 +23,7 @@ import {
   STAGE_TONE,
   TEMPERATURE_TONE,
 } from "./ui";
+import { JobRadarPanel } from "./JobRadarPanel";
 
 export type OpportunityAsset = {
   id: string;
@@ -54,6 +56,7 @@ export type OpportunityRow = {
   nextAction: string | null;
   nextActionAt: string | null;
   notes: string | null;
+  source: string | null;
   createdAt: string;
   updatedAt: string;
   events: OpportunityEvent[];
@@ -114,15 +117,79 @@ export function OpportunitiesBoard({
 
   // --- Analizador de ofertas (triaje) ---
   const [showAnalyzer, setShowAnalyzer] = useState(false);
+  const [showRadar, setShowRadar] = useState(false);
   const [analyzing, setAnalyzing] = useState(false);
   const [scoreResult, setScoreResult] = useState<JobScoreResult | null>(null);
   const [analyzer, setAnalyzer] = useState({
     jobDescription: "",
     company: "",
     role: "",
+    location: "",
+    salaryRange: "",
+    type: "fijo-remoto",
     url: "",
     useLlm: false,
   });
+  const [extractHint, setExtractHint] = useState("");
+
+  // Import desde bookmarklet/extensión: #import=<base64 json>
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const hash = window.location.hash || "";
+    if (!hash.startsWith("#import=")) return;
+    try {
+      const b64 = hash.slice("#import=".length);
+      const json = decodeURIComponent(escape(atob(b64)));
+      const payload = JSON.parse(json) as {
+        company?: string;
+        role?: string;
+        url?: string;
+        jobDescription?: string;
+      };
+      if (payload.jobDescription && payload.jobDescription.length >= 40) {
+        setAnalyzer({
+          jobDescription: payload.jobDescription,
+          company: payload.company || "",
+          role: payload.role || "",
+          location: "",
+          salaryRange: "",
+          type: "fijo-remoto",
+          url: payload.url || "",
+          useLlm: false,
+        });
+        setExtractHint("");
+        setShowAnalyzer(true);
+        setShowForm(false);
+        setShowRadar(false);
+        setMessage("Oferta importada desde LinkedIn. Pulsa Analizar.");
+      }
+    } catch {
+      setMessage("No se pudo leer el import del bookmarklet.");
+    } finally {
+      history.replaceState(null, "", window.location.pathname);
+    }
+  }, []);
+
+  async function reloadOpps() {
+    try {
+      const res = await fetch("/api/admin/opportunities");
+      const data = await res.json();
+      if (res.ok && Array.isArray(data.opportunities)) {
+        setOpps(
+          data.opportunities.map(
+            (o: OpportunityRow & { source?: string | null }) => ({
+              ...o,
+              source: o.source ?? null,
+              events: o.events ?? [],
+              assets: o.assets ?? [],
+            }),
+          ),
+        );
+      }
+    } catch {
+      /* ignore */
+    }
+  }
 
   const filtered = useMemo(
     () => (typeFilter ? opps.filter((o) => o.type === typeFilter) : opps),
@@ -185,10 +252,70 @@ export function OpportunitiesBoard({
     }
   }
 
-  async function analyze() {
-    if (analyzer.jobDescription.trim().length < 40) {
+  function applyExtracted(data: {
+    filled?: {
+      company?: string;
+      role?: string;
+      location?: string | null;
+      salaryRange?: string | null;
+      type?: string;
+    };
+    extracted?: {
+      company?: string | null;
+      role?: string | null;
+      employer?: string | null;
+      location?: string | null;
+      remote?: boolean | null;
+      workTime?: string | null;
+      type?: string | null;
+      salaryRange?: string | null;
+      postedAgo?: string | null;
+      applicants?: string | null;
+    };
+  }) {
+    const f = data.filled;
+    const e = data.extracted;
+    if (!f && !e) return;
+    setAnalyzer((prev) => ({
+      ...prev,
+      company: prev.company.trim() || f?.company || e?.company || e?.employer || prev.company,
+      role: prev.role.trim() || f?.role || e?.role || prev.role,
+      location:
+        prev.location.trim() || f?.location || e?.location || prev.location,
+      salaryRange:
+        prev.salaryRange.trim() ||
+        f?.salaryRange ||
+        e?.salaryRange ||
+        prev.salaryRange,
+      type:
+        prev.type !== "fijo-remoto"
+          ? prev.type
+          : f?.type || e?.type || prev.type,
+    }));
+    if (e) {
+      const bits = [
+        e.company,
+        e.employer && e.employer !== e.company ? `empleador: ${e.employer}` : null,
+        e.role,
+        e.location,
+        e.remote === true ? "remoto" : e.remote === false ? "no remoto" : null,
+        e.workTime ? `jornada ${e.workTime}` : null,
+        e.type,
+        e.postedAgo,
+        e.applicants,
+      ].filter(Boolean);
+      setExtractHint(bits.join(" · "));
+    }
+  }
+
+  async function analyze(overrideText?: string) {
+    const jobDescription = (overrideText ?? analyzer.jobDescription).trim();
+    if (jobDescription.length < 40) {
       setMessage("Pega el texto de la oferta (al menos unas líneas).");
       return;
+    }
+    if (overrideText) {
+      setAnalyzer((prev) => ({ ...prev, jobDescription: overrideText }));
     }
     setAnalyzing(true);
     setMessage("");
@@ -198,13 +325,19 @@ export function OpportunitiesBoard({
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
-          jobDescription: analyzer.jobDescription,
+          jobDescription,
+          company: analyzer.company,
+          role: analyzer.role,
+          location: analyzer.location,
+          salaryRange: analyzer.salaryRange,
+          type: analyzer.type,
           useLlm: analyzer.useLlm,
         }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "error");
       setScoreResult(data.score);
+      applyExtracted(data);
     } catch (e) {
       setMessage(e instanceof Error ? e.message : "Error al analizar");
     } finally {
@@ -216,29 +349,44 @@ export function OpportunitiesBoard({
     setAnalyzing(true);
     setMessage("");
     try {
-      const res = await fetch("/api/admin/opportunities/score", {
+      const res = await fetch("/api/admin/opportunities/ingest", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
           jobDescription: analyzer.jobDescription,
           company: analyzer.company,
           role: analyzer.role,
+          location: analyzer.location || null,
+          salaryRange: analyzer.salaryRange || null,
+          type: analyzer.type,
           url: analyzer.url,
+          source: analyzer.url?.includes("linkedin.com") ? "linkedin" : "manual",
           useLlm: analyzer.useLlm,
-          save: true,
+          saveAll: true,
         }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "error");
-      setOpps((prev) => [
-        { ...data.opportunity, events: data.opportunity.events ?? [], assets: [] },
-        ...prev,
-      ]);
+      if (data.opportunity) {
+        await reloadOpps();
+      }
       setMessage(
-        `Guardada en el tablero con veredicto ${data.score.verdict.toUpperCase()} (${data.score.score}%).`,
+        data.saved
+          ? `Guardada: ${data.score.verdict.toUpperCase()} (${data.score.score}%).`
+          : `No guardada (${data.reason}).`,
       );
       setScoreResult(null);
-      setAnalyzer({ jobDescription: "", company: "", role: "", url: "", useLlm: analyzer.useLlm });
+      setExtractHint("");
+      setAnalyzer({
+        jobDescription: "",
+        company: "",
+        role: "",
+        location: "",
+        salaryRange: "",
+        type: "fijo-remoto",
+        url: "",
+        useLlm: analyzer.useLlm,
+      });
       setShowAnalyzer(false);
     } catch (e) {
       setMessage(e instanceof Error ? e.message : "Error al guardar");
@@ -310,8 +458,19 @@ export function OpportunitiesBoard({
             </a>
             <button
               onClick={() => {
+                setShowRadar((v) => !v);
+                setShowForm(false);
+                setShowAnalyzer(false);
+              }}
+              className="btn-secondary px-3 py-2 text-xs"
+            >
+              <Radar className="h-3.5 w-3.5" /> Radar
+            </button>
+            <button
+              onClick={() => {
                 setShowAnalyzer((v) => !v);
                 setShowForm(false);
+                setShowRadar(false);
               }}
               className="btn-secondary px-3 py-2 text-xs"
             >
@@ -321,6 +480,7 @@ export function OpportunitiesBoard({
               onClick={() => {
                 setShowForm((v) => !v);
                 setShowAnalyzer(false);
+                setShowRadar(false);
               }}
               className="btn-primary px-3 py-2 text-xs"
             >
@@ -344,6 +504,14 @@ export function OpportunitiesBoard({
           </p>
         )}
 
+        <JobRadarPanel
+          open={showRadar}
+          onClose={() => setShowRadar(false)}
+          onSaved={() => {
+            void reloadOpps();
+          }}
+        />
+
         {showAnalyzer && (
           <Panel
             title="Analizar oferta (triaje)"
@@ -364,13 +532,24 @@ export function OpportunitiesBoard({
                   onChange={(e) =>
                     setAnalyzer({ ...analyzer, jobDescription: e.target.value })
                   }
-                  placeholder="Pega aquí el texto completo de la oferta de LinkedIn (funciones y requisitos)..."
+                  onPaste={(e) => {
+                    const pasted = e.clipboardData.getData("text");
+                    if (pasted.trim().length >= 40) {
+                      window.setTimeout(() => {
+                        void analyze(pasted);
+                      }, 0);
+                    }
+                  }}
+                  placeholder="Pega aquí el texto completo de la oferta de LinkedIn (título, empresa, funciones y requisitos)..."
                   rows={10}
                   className="input-field resize-y py-2 text-xs"
                 />
+                {extractHint && (
+                  <p className="text-[11px] text-emerald-400/90">{extractHint}</p>
+                )}
                 <div className="flex flex-wrap items-center gap-3">
                   <button
-                    onClick={analyze}
+                    onClick={() => void analyze()}
                     disabled={analyzing || analyzer.jobDescription.trim().length < 40}
                     className="btn-primary px-4 py-2 text-xs"
                   >
@@ -392,13 +571,13 @@ export function OpportunitiesBoard({
                     Afinar con IA (opcional)
                   </label>
                 </div>
-                <div className="grid gap-2 sm:grid-cols-3">
+                <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
                   <input
                     value={analyzer.company}
                     onChange={(e) =>
                       setAnalyzer({ ...analyzer, company: e.target.value })
                     }
-                    placeholder="Empresa (para guardar)"
+                    placeholder="Empresa"
                     className="input-field py-2 text-xs"
                   />
                   <input
@@ -406,7 +585,36 @@ export function OpportunitiesBoard({
                     onChange={(e) =>
                       setAnalyzer({ ...analyzer, role: e.target.value })
                     }
-                    placeholder="Puesto (para guardar)"
+                    placeholder="Puesto / cargo"
+                    className="input-field py-2 text-xs"
+                  />
+                  <input
+                    value={analyzer.location}
+                    onChange={(e) =>
+                      setAnalyzer({ ...analyzer, location: e.target.value })
+                    }
+                    placeholder="Ubicación"
+                    className="input-field py-2 text-xs"
+                  />
+                  <select
+                    value={analyzer.type}
+                    onChange={(e) =>
+                      setAnalyzer({ ...analyzer, type: e.target.value })
+                    }
+                    className="input-field py-2 text-xs"
+                  >
+                    {TYPES.map((t) => (
+                      <option key={t} value={t}>
+                        {t}
+                      </option>
+                    ))}
+                  </select>
+                  <input
+                    value={analyzer.salaryRange}
+                    onChange={(e) =>
+                      setAnalyzer({ ...analyzer, salaryRange: e.target.value })
+                    }
+                    placeholder="Salario (si aparece)"
                     className="input-field py-2 text-xs"
                   />
                   <input
@@ -650,6 +858,7 @@ export function OpportunitiesBoard({
                               {o.matchScore}%
                             </Tag>
                           )}
+                          {o.source && <Tag>{o.source}</Tag>}
                           {late && <Tag tone="red">vencida</Tag>}
                         </div>
                       </button>
