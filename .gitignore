@@ -45,3 +45,5 @@ credentials.json
 # herramientas locales de agentes (no forman parte del producto)
 /.agents
 /skills-lock.json
+
+.cache/

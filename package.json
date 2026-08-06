@@ -17,6 +17,8 @@
     "cv:pdf": "node scripts/generate-cv.mjs",
     "portfolio:diagrams": "node scripts/generate-arch-diagrams.mjs",
     "portfolio:capture": "node scripts/capture-portfolio.mjs",
+    "portfolio:capture:live": "node scripts/capture-portfolio-live.mjs",
+    "portfolio:capture:auge": "node scripts/capture-auge.mjs",
     "portfolio:og": "node scripts/generate-og.mjs"
   },
   "prisma": {

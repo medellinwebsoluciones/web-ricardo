@@ -300,12 +300,25 @@ const es: InternalContent = {
       title: "Nova — panel visual",
       description:
         "Arquitectura operativa de Nova: CEO, divisiones y 29 especialistas visibles como sistema, no como demo.",
-      video: "/media/agentes-ia-red.mp4",
-      poster: "/images/captures/orquestacion-agentes-ui.png",
+      video: "/media/nova-lab-tour.webm",
+      poster: "/images/captures/nova/nova-engine-agentes.png",
       tags: ["Nova", "FastAPI", "Grafo 3D"],
       details: [
         "Panel /visual y trazas /vivo.",
         "Configuracion por agente sin redeploy.",
+      ],
+    },
+    {
+      slug: "nova-catalogo",
+      title: "Nova — catalogo MIT de roles",
+      description:
+        "Recorrido del catalogo agency-agents (licencia MIT) mapeado a los roles de Nova: 200+ perfiles para decidir que especialista atiende cada tarea.",
+      video: "/media/nova-catalogo-tour.webm",
+      poster: "/images/captures/nova/nova-catalogo-perfiles.png",
+      tags: ["MIT", "Roles", "Catalogo"],
+      details: [
+        "Catalogo open source navegable como grafo.",
+        "Mapeo directo al modelo de divisiones Nova.",
       ],
     },
     {
@@ -428,9 +441,29 @@ const es: InternalContent = {
       caption:
         "Grafo de la agencia Nova: 5 areas, 29 roles y 35 nodos. A la izquierda el timeline de ejecucion en tiempo real; a la derecha el directorio de crews, donde cada nodo es un especialista con su propia configuracion.",
       image: "/images/captures/nova/nova-engine-agentes.png",
-      width: 1024,
-      height: 487,
+      width: 1600,
+      height: 1000,
       tags: ["CrewAI", "FastAPI", "Grafo 3D"],
+    },
+    {
+      slug: "catalogo",
+      title: "Catalogo MIT de perfiles",
+      caption:
+        "202 perfiles de agentes de catalogos open source con licencia MIT, agrupados en 17 areas y mapeados al modelo de roles de Nova. Navegable como grafo para decidir que especialista atiende cada tarea.",
+      image: "/images/captures/nova/nova-catalogo-perfiles.png",
+      width: 1600,
+      height: 1000,
+      tags: ["Catalogo MIT", "Mapeo de roles", "Grafo"],
+    },
+    {
+      slug: "configuracion",
+      title: "Configuracion por agente",
+      caption:
+        "Centro de integracion Nova: prompts, modelos, tools y estado de modulos por especialista sin redeploy. Aqui se opera la red de roles, no solo se observa.",
+      image: "/images/captures/nova/nova-configuracion.png",
+      width: 1600,
+      height: 1000,
+      tags: ["Roles", "Config", "Ops"],
     },
     {
       slug: "arquitecturas",
@@ -438,8 +471,8 @@ const es: InternalContent = {
       caption:
         "13 topologias del sistema documentadas dentro del propio producto y versionadas en git: runtime, integraciones, datos y UI. La arquitectura se consulta donde se opera, no en un PDF aparte.",
       image: "/images/captures/nova/nova-arquitecturas.png",
-      width: 1024,
-      height: 486,
+      width: 1600,
+      height: 1000,
       tags: ["Documentacion", "Versionado", "Topologias"],
     },
     {
@@ -448,8 +481,8 @@ const es: InternalContent = {
       caption:
         "12,2 M de tokens y 296 llamadas de crew con USD 29,90 de costo estimado. Cascada de 14 proveedores combinando free tiers y Ollama local, con share y tendencia por modelo para decidir donde corre cada tarea.",
       image: "/images/captures/nova/nova-tokens.png",
-      width: 1024,
-      height: 488,
+      width: 1600,
+      height: 1000,
       tags: ["FinOps", "Multi-proveedor", "Observabilidad"],
     },
     {
@@ -458,8 +491,8 @@ const es: InternalContent = {
       caption:
         "2.749 chunks indexados en la coleccion nova_knowledge, 6 packs de dominio y 159 documentos propios. Validacion del RAG, desglose por categoria y mapa de conocimiento antes de pasar a fine-tune.",
       image: "/images/captures/nova/nova-rag-aprendizaje.png",
-      width: 1024,
-      height: 486,
+      width: 1600,
+      height: 1000,
       tags: ["RAG", "Embeddings", "Fine-tune"],
     },
     {
@@ -468,19 +501,19 @@ const es: InternalContent = {
       caption:
         "Once subsistemas monitoreados con estado y modelo activo: LLM, STT/TTS, vision, YOLO, toolkits y automatizaciones. La captura muestra 10/11 en linea y uno caido — el panel existe para verlo, no para esconderlo.",
       image: "/images/captures/nova/nova-hud-sistemas.png",
-      width: 762,
-      height: 486,
+      width: 1600,
+      height: 1000,
       tags: ["Observabilidad", "Voz", "Salud del sistema"],
     },
     {
-      slug: "catalogo",
-      title: "Catalogo de perfiles mapeado",
+      slug: "engine-mobile",
+      title: "Engine en mobile",
       caption:
-        "202 perfiles de agentes de catalogos open source con licencia MIT, agrupados en 17 areas y mapeados al modelo de roles de Nova. Navegable como grafo para decidir que especialista atiende cada tarea.",
-      image: "/images/captures/nova/nova-catalogo-perfiles.png",
-      width: 1024,
-      height: 579,
-      tags: ["Catalogo open source", "Mapeo de roles", "Grafo"],
+        "La misma superficie /visual en viewport mobile: roles y timeline legibles fuera del escritorio para demos y operacion en campo.",
+      image: "/images/captures/nova/nova-engine-agentes-mobile.png",
+      width: 780,
+      height: 1688,
+      tags: ["Mobile", "Nova", "Demo"],
     },
   ],
   process: [
@@ -794,12 +827,25 @@ const en: InternalContent = {
       title: "Nova — visual panel",
       description:
         "Nova's operational architecture: CEO, divisions and 29 specialists as a system—not a demo.",
-      video: "/media/agentes-ia-red.mp4",
-      poster: "/images/captures/orquestacion-agentes-ui.png",
+      video: "/media/nova-lab-tour.webm",
+      poster: "/images/captures/nova/nova-engine-agentes.png",
       tags: ["Nova", "FastAPI", "3D graph"],
       details: [
         "/visual panel and /vivo traces.",
         "Per-agent config without redeploy.",
+      ],
+    },
+    {
+      slug: "nova-catalogo",
+      title: "Nova — MIT role catalog",
+      description:
+        "Walkthrough of the agency-agents catalog (MIT license) mapped to Nova roles: 200+ profiles to decide which specialist handles each task.",
+      video: "/media/nova-catalogo-tour.webm",
+      poster: "/images/captures/nova/nova-catalogo-perfiles.png",
+      tags: ["MIT", "Roles", "Catalog"],
+      details: [
+        "Open-source catalog browsable as a graph.",
+        "Direct mapping to Nova's division model.",
       ],
     },
     {
@@ -922,9 +968,29 @@ const en: InternalContent = {
       caption:
         "Nova agency graph: 5 areas, 29 roles and 35 nodes. Real-time execution timeline on the left, crew directory on the right, where every node is a specialist with its own configuration.",
       image: "/images/captures/nova/nova-engine-agentes.png",
-      width: 1024,
-      height: 487,
+      width: 1600,
+      height: 1000,
       tags: ["CrewAI", "FastAPI", "3D graph"],
+    },
+    {
+      slug: "catalogo",
+      title: "MIT profile catalog",
+      caption:
+        "202 agent profiles from MIT-licensed open source catalogs, grouped into 17 areas and mapped onto Nova's role model. Browsable as a graph to decide which specialist handles each task.",
+      image: "/images/captures/nova/nova-catalogo-perfiles.png",
+      width: 1600,
+      height: 1000,
+      tags: ["MIT catalog", "Role mapping", "Graph"],
+    },
+    {
+      slug: "configuracion",
+      title: "Per-agent configuration",
+      caption:
+        "Nova integration hub: prompts, models, tools and module status per specialist without redeploy. This is where the role network is operated, not only observed.",
+      image: "/images/captures/nova/nova-configuracion.png",
+      width: 1600,
+      height: 1000,
+      tags: ["Roles", "Config", "Ops"],
     },
     {
       slug: "arquitecturas",
@@ -932,8 +998,8 @@ const en: InternalContent = {
       caption:
         "13 system topologies documented inside the product itself and versioned in git: runtime, integrations, data and UI. Architecture is read where the system is operated, not in a separate PDF.",
       image: "/images/captures/nova/nova-arquitecturas.png",
-      width: 1024,
-      height: 486,
+      width: 1600,
+      height: 1000,
       tags: ["Documentation", "Versioning", "Topologies"],
     },
     {
@@ -942,8 +1008,8 @@ const en: InternalContent = {
       caption:
         "12.2M tokens and 296 crew calls at an estimated USD 29.90. A 14-provider cascade mixing free tiers and local Ollama, with share and trend per model to decide where each task runs.",
       image: "/images/captures/nova/nova-tokens.png",
-      width: 1024,
-      height: 488,
+      width: 1600,
+      height: 1000,
       tags: ["FinOps", "Multi-provider", "Observability"],
     },
     {
@@ -952,8 +1018,8 @@ const en: InternalContent = {
       caption:
         "2,749 chunks indexed in the nova_knowledge collection, 6 domain packs and 159 first-party documents. RAG validation, per-category breakdown and knowledge map before moving to fine-tuning.",
       image: "/images/captures/nova/nova-rag-aprendizaje.png",
-      width: 1024,
-      height: 486,
+      width: 1600,
+      height: 1000,
       tags: ["RAG", "Embeddings", "Fine-tune"],
     },
     {
@@ -962,19 +1028,19 @@ const en: InternalContent = {
       caption:
         "Eleven monitored subsystems with status and active model: LLM, STT/TTS, vision, YOLO, toolkits and automations. The capture shows 10/11 online and one down — the panel exists to surface that, not to hide it.",
       image: "/images/captures/nova/nova-hud-sistemas.png",
-      width: 762,
-      height: 486,
+      width: 1600,
+      height: 1000,
       tags: ["Observability", "Voice", "System health"],
     },
     {
-      slug: "catalogo",
-      title: "Mapped profile catalog",
+      slug: "engine-mobile",
+      title: "Engine on mobile",
       caption:
-        "202 agent profiles from MIT-licensed open source catalogs, grouped into 17 areas and mapped onto Nova's role model. Browsable as a graph to decide which specialist handles each task.",
-      image: "/images/captures/nova/nova-catalogo-perfiles.png",
-      width: 1024,
-      height: 579,
-      tags: ["Open source catalog", "Role mapping", "Graph"],
+        "The same /visual surface on a mobile viewport: roles and timeline readable off the desktop for demos and field ops.",
+      image: "/images/captures/nova/nova-engine-agentes-mobile.png",
+      width: 780,
+      height: 1688,
+      tags: ["Mobile", "Nova", "Demo"],
     },
   ],
   process: [

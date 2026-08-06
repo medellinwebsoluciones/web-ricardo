@@ -126,14 +126,14 @@ Model: few clients, high seniority, ownership. Typical engagement: 15-min discov
     title: "Caso: Nova — Orquestación de Agentes",
     lang: "es",
     sourceType: "manual",
-    content: `Proyecto Nova MWS: orquestación CrewAI con CEO, 5 divisiones y 29 especialistas. API FastAPI, paneles /visual (grafo 3D), /vivo (SSE), /configuracion. Inferencia local Ollama, tools MCP/Composio/MWS. Resultado: operación continua observable, no un chatbot. Complemento: agente de leads inmobiliarios (agentes IA) con calificación alto/medio/bajo.`,
+    content: `Proyecto Nova MWS (ejército de agentes / laboratorio): orquestación CrewAI con CEO, 5 divisiones y 29 especialistas. API FastAPI, paneles /visual (grafo 3D), /vivo (SSE), /configuracion y /catalogo-agency. Inferencia local Ollama, tools MCP/Composio/MWS. Catálogo MIT: 200+ perfiles open source mapeados a roles Nova. En el sitio público se presenta en /soluciones/orquestacion-agentes y con capturas/video en /laboratorio. Resultado: operación continua observable, no un chatbot. Complemento: agente de leads inmobiliarios con calificación alto/medio/bajo.`,
   },
   {
     collectionSlug: "proyectos",
     title: "Case: Nova — Agent Orchestration",
     lang: "en",
     sourceType: "manual",
-    content: `Nova MWS project: CrewAI orchestration with CEO, 5 divisions and 29 specialists. FastAPI, /visual (3D graph), /vivo (SSE), /configuracion. Local Ollama inference, MCP/Composio/MWS tools. Outcome: continuous observable ops—not a chatbot. Companion: real-estate lead agent with high/medium/low scoring.`,
+    content: `Nova MWS project (agent army / lab): CrewAI orchestration with CEO, 5 divisions and 29 specialists. FastAPI, /visual (3D graph), /vivo (SSE), /configuracion and /catalogo-agency. Local Ollama inference, MCP/Composio/MWS tools. MIT catalog: 200+ open-source profiles mapped to Nova roles. Public site: /soluciones/orquestacion-agentes and captures/video on /laboratorio. Outcome: continuous observable ops—not a chatbot. Companion: real-estate lead agent with high/medium/low scoring.`,
   },
   {
     collectionSlug: "proyectos",
@@ -154,28 +154,28 @@ Model: few clients, high seniority, ownership. Typical engagement: 15-min discov
     title: "Caso: Auge Urbano",
     lang: "es",
     sourceType: "manual",
-    content: `Plataforma PropTech en Flask desplegada en VPS (Docker, Gunicorn, Nginx con TLS): 159 rutas, 45 tablas MySQL 8 InnoDB, CRM propio (leads, citas, cierres, ingresos y gastos), portal de colegas inmobiliarios y portal de captadores, blog, pagos con Bold y pila SEO/GEO/AEO con IndexNow, sitemaps y llms.txt. Agentes IA integrados (asesor público, copiloto de negocio, generación SEO de fichas) con guards de prompt injection. Resultado: el negocio completo operado desde un solo sistema, no un brochure.`,
+    content: `Plataforma PropTech operativa en producción (augeurbano.com) — Flask en VPS (Docker, Gunicorn, Nginx TLS): 159 rutas, 45 tablas MySQL 8, CRM propio, portales colegas/captadores, Bold, SEO/GEO/AEO (IndexNow, sitemaps, llms.txt). Agentes IA con guards. Caso público con galería desktop/mobile: /soluciones/auge-urbano. Resultado: negocio inmobiliario completo, no un brochure.`,
   },
   {
     collectionSlug: "proyectos",
     title: "Case: Auge Urbano",
     lang: "en",
     sourceType: "manual",
-    content: `Flask PropTech platform deployed on a VPS (Docker, Gunicorn, Nginx with TLS): 159 routes, 45 MySQL 8 InnoDB tables, in-house CRM (leads, viewings, closings, income and expenses), partner-agent portal and street-scout portal, blog, Bold payments and a SEO/GEO/AEO stack with IndexNow, sitemaps and llms.txt. Embedded AI agents (public advisor, business copilot, listing SEO generation) behind prompt-injection guards. Outcome: the whole business operated from one system—not a brochure.`,
+    content: `Operational PropTech platform in production (augeurbano.com) — Flask on VPS (Docker, Gunicorn, Nginx TLS): 159 routes, 45 MySQL 8 tables, in-house CRM, partner/scout portals, Bold, SEO/GEO/AEO (IndexNow, sitemaps, llms.txt). AI agents with guards. Public case with desktop/mobile gallery: /soluciones/auge-urbano. Outcome: full real-estate business system—not a brochure.`,
   },
   {
     collectionSlug: "proyectos",
     title: "Caso: LEXIA Legal OS",
     lang: "es",
     sourceType: "manual",
-    content: `LEXIA: sistema operativo jurídico. FastAPI + Streamlit OS + Dash analytics. Stack Python-only, seed demo, Docker dev/prod. Resultado: tres superficies de producto integradas para trabajo legal asistido por IA.`,
+    content: `LEXIA: sistema operativo jurídico en producción (lexia.medellinweb.co). FastAPI + Streamlit OS + Dash analytics. Stack Python-only, seed demo, Docker dev/prod. Marketplace cliente↔abogado, GTM tools y cobro Wompi/trial. Caso público: /soluciones/lexia-legal-os. Resultado: tres superficies de producto integradas para trabajo legal asistido por IA.`,
   },
   {
     collectionSlug: "proyectos",
     title: "Case: LEXIA Legal OS",
     lang: "en",
     sourceType: "manual",
-    content: `LEXIA: legal operating system. FastAPI + Streamlit OS + Dash analytics. Python-only stack, demo seed, Docker dev/prod. Outcome: three integrated product surfaces for AI-assisted legal work.`,
+    content: `LEXIA: legal operating system in production (lexia.medellinweb.co). FastAPI + Streamlit OS + Dash analytics. Python-only stack, demo seed, Docker dev/prod. Client↔lawyer marketplace, GTM tools and Wompi/trial billing. Public case: /soluciones/lexia-legal-os. Outcome: three integrated product surfaces for AI-assisted legal work.`,
   },
   {
     collectionSlug: "proyectos",
@@ -235,31 +235,31 @@ Model: few clients, high seniority, ownership. Typical engagement: 15-min discov
   },
   {
     collectionSlug: "proyectos",
-    title: "Caso: Sitio MWS",
+    title: "Caso: Sitio MWS (landing de ventas)",
     lang: "es",
     sourceType: "manual",
-    content: `Sitio Django de Medellín Web Soluciones: 18 servicios, blog, portal, billing y agent_knowledge (sync de arquitectura/equipo/cotizaciones al RAG). Angular legacy separado; Woo es checkout de productos aparte.`,
+    content: `Landing comercial de Medellín Web Soluciones en producción (www.medellinweb.co): home, /agentes-ia/ (atención con Nova), /servicios/, /contacto/, blog, portal, billing y agent_knowledge (sync al RAG). Es la vitrina de ventas con agentes; el CRM y el omnicanal son sistemas aparte. Caso: /soluciones/sitio-mws. Angular legacy separado; Woo es checkout de productos aparte.`,
   },
   {
     collectionSlug: "proyectos",
-    title: "Case: MWS site",
+    title: "Case: MWS site (sales landing)",
     lang: "en",
     sourceType: "manual",
-    content: `Medellín Web Soluciones Django site: 18 services, blog, portal, billing and agent_knowledge (architecture/team/quote sync into RAG). Legacy Angular separate; Woo is product checkout aside.`,
+    content: `Medellín Web Soluciones commercial landing in production (www.medellinweb.co): home, /agentes-ia/ (Nova-assisted attention), /servicios/, /contacto/, blog, portal, billing and agent_knowledge (RAG sync). Sales storefront with agents; CRM and omnichannel are separate systems. Case: /soluciones/sitio-mws. Legacy Angular separate; Woo is product checkout aside.`,
   },
   {
     collectionSlug: "proyectos",
     title: "Caso: CRM operativo MWS",
     lang: "es",
     sourceType: "manual",
-    content: `CRM Django custom de Medellín Web Soluciones: embudo con KPIs, import SECOP II, prospectos scraper/SERP con perfilado IA, temperatura/territorio/probabilidad, detalle de lead con conversión a cliente, y finanzas (ingresos/gastos/flujo) en el mismo admin.`,
+    content: `CRM Django custom (admin de landing-python-mws), separado de la landing pública: embudo con KPIs, scrapeo/SECOP, cotizaciones, prospectos scraper/SERP con IA, temperatura/territorio/probabilidad, conversión a cliente, y finanzas (ingresos/gastos/flujo) en el mismo admin. Caso: /soluciones/crm-mws.`,
   },
   {
     collectionSlug: "proyectos",
     title: "Case: MWS operational CRM",
     lang: "en",
     sourceType: "manual",
-    content: `Custom Django CRM for Medellín Web Soluciones: funnel with KPIs, SECOP II import, scraper/SERP prospects with AI profiling, temperature/territory/probability, lead detail with convert-to-client, and finance (income/expense/flow) in the same admin.`,
+    content: `Custom Django CRM (landing-python-mws admin), separate from the public landing: funnel with KPIs, scrape/SECOP, quotes, scraper/SERP prospects with AI, temperature/territory/probability, convert-to-client, and finance (income/expense/flow) in the same admin. Case: /soluciones/crm-mws.`,
   },
   {
     collectionSlug: "proyectos",
@@ -432,6 +432,29 @@ Respuesta: Cada proyecto se cotiza a la medida según alcance y complejidad — 
     sourceType: "faq",
     content: `Question: How much does it cost?
 Answer: Every project is quoted individually by scope and complexity — as a fixed-price project or as an ongoing retainer, whichever fits the case better. No fixed public prices. Exception: MWS AI (the WordPress/WooCommerce sales agent) is a SaaS product sold on annual Growth/Enterprise plans, including agency/reseller white-label in Spain. For anything else, the best step is to book a 15-minute technical call and get a quote there.`,
+  },
+
+  {
+    collectionSlug: "proyectos",
+    title: "Mapa del portafolio público y laboratorio",
+    lang: "es",
+    sourceType: "site",
+    content: `En ricardozuluaga.medellinweb.co el visitante encuentra:
+- Home con casos destacados (cards con capturas reales de producto).
+- /soluciones/[slug]: detalle de cada caso (Nova, LEXIA, omnicanal, LMS Claude, Bold, Auge, sitio MWS, CRM, MWS AI, etc.) con galería desktop/mobile.
+- /laboratorio: sección propia del ejército de agentes Nova — roles, catálogo MIT, HUD, RAG, tokens, videos cortos de /visual y catálogo. No confundir laboratorio con el CRM ni con la landing MWS.
+Productos en prod aparte: www.medellinweb.co (landing+agentes), lexia.medellinweb.co, augeurbano.com.`,
+  },
+  {
+    collectionSlug: "proyectos",
+    title: "Public portfolio and lab map",
+    lang: "en",
+    sourceType: "site",
+    content: `On ricardozuluaga.medellinweb.co visitors find:
+- Home with featured cases (cards using real product screenshots).
+- /soluciones/[slug]: case detail (Nova, LEXIA, omnichannel, Claude LMS, Bold, Auge, MWS site, CRM, MWS AI, etc.) with desktop/mobile galleries.
+- /laboratorio: dedicated Nova agent-army section — roles, MIT catalog, HUD, RAG, tokens, short /visual and catalog videos. Do not confuse the lab with the CRM or the MWS landing.
+Separate production products: www.medellinweb.co (landing+agents), lexia.medellinweb.co, augeurbano.com.`,
   },
 
   // ---- AGENDA ----

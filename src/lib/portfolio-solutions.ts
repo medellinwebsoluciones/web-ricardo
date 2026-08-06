@@ -97,10 +97,62 @@ export const solutionsEs: SolutionDetail[] = [
     summary:
       "Agencia de agentes CrewAI con CEO, 5 divisiones y 29 especialistas que ejecutan trabajo real 24/7 — API FastAPI, grafo 3D, trazas SSE e inferencia local. No es un chatbot: es un negocio operado por IA.",
     ...img("orquestacion-agentes"),
+    productImage: "/images/captures/nova/nova-card.webp",
+    gallery: [
+      {
+        src: "/images/captures/nova/nova-engine-agentes.png",
+        alt: "Nova — grafo de orquestacion con roles y timeline en vivo",
+        width: 1600,
+        height: 1000,
+        caption: "Panel /visual: CEO, divisiones y especialistas como sistema operable",
+      },
+      {
+        src: "/images/captures/nova/nova-catalogo-perfiles.png",
+        alt: "Nova — catalogo MIT de perfiles de agentes",
+        width: 1600,
+        height: 1000,
+        caption: "Catalogo MIT (agency-agents) mapeado a roles Nova",
+      },
+      {
+        src: "/images/captures/nova/nova-configuracion.png",
+        alt: "Nova — centro de configuracion por agente",
+        width: 1600,
+        height: 1000,
+        caption: "Configuracion por agente sin redeploy",
+      },
+      {
+        src: "/images/captures/nova/nova-hud-sistemas.png",
+        alt: "Nova — HUD de salud de subsistemas",
+        width: 1600,
+        height: 1000,
+        caption: "HUD de subsistemas LLM, voz, vision y tools",
+      },
+      {
+        src: "/images/captures/nova/nova-rag-aprendizaje.png",
+        alt: "Nova — consola RAG y aprendizaje",
+        width: 1600,
+        height: 1000,
+        caption: "Consola RAG: chunks, packs de dominio y validacion",
+      },
+      {
+        src: "/images/captures/nova/nova-tokens.png",
+        alt: "Nova — consumo de tokens y proveedores",
+        width: 1600,
+        height: 1000,
+        caption: "FinOps: tokens, llamadas y cascada de proveedores",
+      },
+      {
+        src: "/images/captures/nova/nova-engine-agentes-mobile.png",
+        alt: "Nova — panel visual en mobile",
+        width: 780,
+        height: 1688,
+        caption: "Superficie operativa en viewport mobile",
+      },
+    ],
     archCaption:
       "Operador → FastAPI Nova → CEO → hubs de division → 29 especialistas, con Ollama local, tools MCP/Composio/MWS y panel /visual + /vivo.",
     video: "/media/ejecucion-agentes-ia.mp4",
-    videoPoster: "/images/poster-agentes.png",
+    videoPoster: "/images/captures/nova/nova-engine-agentes.png",
     meta: [
       { label: "Dominio", value: "Agentic AI / Ops" },
       { label: "Rol", value: "Solutions Architect / Owner" },
@@ -268,7 +320,7 @@ export const solutionsEs: SolutionDetail[] = [
     summary:
       "Portal inmobiliario desplegado en VPS: 159 rutas Flask sobre MySQL 8 con 45 tablas, CRM propio, portales de colegas y captadores, agentes IA integrados y una pila SEO/GEO/AEO con IndexNow. ~43.000 lineas de Python que operan el negocio completo, no una landing con formulario.",
     ...img("auge-urbano"),
-    productImage: "/images/captures/auge/auge-home.webp",
+    productImage: "/images/captures/auge/auge-card.webp",
     gallery: [
       {
         src: "/images/captures/auge/auge-home.webp",
@@ -297,6 +349,20 @@ export const solutionsEs: SolutionDetail[] = [
         width: 1600,
         height: 1000,
         caption: "Zonas: filtros por presupuesto y agregados de precio y costo por m2",
+      },
+      {
+        src: "/images/captures/auge/auge-home-mobile.png",
+        alt: "Auge Urbano — home mobile",
+        width: 780,
+        height: 1688,
+        caption: "Home en viewport mobile",
+      },
+      {
+        src: "/images/captures/auge/auge-catalogo-mobile.png",
+        alt: "Auge Urbano — catalogo mobile",
+        width: 780,
+        height: 1688,
+        caption: "Catalogo en viewport mobile",
       },
     ],
     archCaption:
@@ -420,6 +486,37 @@ export const solutionsEs: SolutionDetail[] = [
     summary:
       "Sistema operativo juridico con API FastAPI, OS Streamlit y analytics Dash: producto Python completo para trabajo legal asistido por IA.",
     ...img("lexia-legal-os"),
+    productImage: "/images/captures/lexia/lexia-card.webp",
+    gallery: [
+      {
+        src: "/images/captures/lexia/lexia-os.png",
+        alt: "LEXIA — OS juridico en produccion",
+        width: 1600,
+        height: 1000,
+        caption: "OS Streamlit en produccion (lexia.medellinweb.co)",
+      },
+      {
+        src: "/images/captures/lexia/lexia-dash.png",
+        alt: "LEXIA — analytics Dash",
+        width: 1600,
+        height: 1000,
+        caption: "Analytics Dash: superficie de metricas del estudio",
+      },
+      {
+        src: "/images/captures/lexia/lexia-os-alt.png",
+        alt: "LEXIA — OS local demo",
+        width: 1600,
+        height: 1000,
+        caption: "OS local con flujo demo reproducible",
+      },
+      {
+        src: "/images/captures/lexia/lexia-os-mobile.png",
+        alt: "LEXIA — OS en mobile",
+        width: 780,
+        height: 1688,
+        caption: "Vista mobile del OS juridico",
+      },
+    ],
     archCaption:
       "Usuario → Streamlit OS / Dash analytics → FastAPI → dominio legal IA + data store, empaquetado en Docker.",
     meta: [
@@ -497,6 +594,30 @@ export const solutionsEs: SolutionDetail[] = [
     summary:
       "Cerebro omnicanal (stock propio + dropship) con panel HITL, radar Dropi, API de catalogo y tienda Woo solo Colombia.",
     ...img("omnicanal-comercio"),
+    productImage: "/images/captures/omnicanal/omnicanal-card.webp",
+    gallery: [
+      {
+        src: "/images/captures/omnicanal/omnicanal-panel.png",
+        alt: "Omnicanal MWS — panel HITL de oportunidades",
+        width: 1600,
+        height: 1000,
+        caption: "Panel operador: radar, scoring y aprobacion humana",
+      },
+      {
+        src: "/images/captures/omnicanal/omnicanal-home.png",
+        alt: "Omnicanal MWS — API / superficie base",
+        width: 1600,
+        height: 1000,
+        caption: "API FastAPI del cerebro omnicanal",
+      },
+      {
+        src: "/images/captures/omnicanal/omnicanal-panel-mobile.png",
+        alt: "Omnicanal — panel en mobile",
+        width: 780,
+        height: 1688,
+        caption: "Panel HITL en viewport mobile",
+      },
+    ],
     archCaption:
       "Feeds Dropi → worker/scoring → panel HITL → FastAPI catalogo → WooCommerce CO, con Postgres/Redis.",
     meta: [
@@ -574,6 +695,37 @@ export const solutionsEs: SolutionDetail[] = [
     summary:
       "Django bilingue para vender curso experto: checkout invitado, Bold + PayPal, acceso 12 meses, examen de 100 preguntas y tutor IA con control de costo.",
     ...img("plataforma-aprendizaje"),
+    productImage: "/images/captures/plataforma-aprendizaje/plataforma-aprendizaje-card.webp",
+    gallery: [
+      {
+        src: "/images/captures/plataforma-aprendizaje/curso-home.png",
+        alt: "Curso Claude Architect — landing ES",
+        width: 1600,
+        height: 1000,
+        caption: "Landing bilingue ES: planes, promesa y CTA de checkout",
+      },
+      {
+        src: "/images/captures/plataforma-aprendizaje/curso-home-en.png",
+        alt: "Claude Architect course — English landing",
+        width: 1600,
+        height: 1000,
+        caption: "Landing EN del mismo producto LMS",
+      },
+      {
+        src: "/images/captures/plataforma-aprendizaje/curso-planes.png",
+        alt: "Curso — planes y oferta",
+        width: 1600,
+        height: 1000,
+        caption: "Oferta Fast-Track / Mentoring / B2B",
+      },
+      {
+        src: "/images/captures/plataforma-aprendizaje/curso-home-mobile.png",
+        alt: "Curso — landing mobile",
+        width: 780,
+        height: 1688,
+        caption: "Landing mobile ES",
+      },
+    ],
     archCaption:
       "Visitante → Django LMS → Bold/PayPal → acceso 12 meses → lecciones/examen + tutor RAG sobre Postgres.",
     meta: [
@@ -651,6 +803,51 @@ export const solutionsEs: SolutionDetail[] = [
     summary:
       "Libreria Python reutilizable para Bold: checkout, health checks, consola operativa y deploy Docker en VPS.",
     ...img("pagos-bold"),
+    productImage: "/images/captures/bold/bold-card.webp",
+    gallery: [
+      {
+        src: "/images/captures/bold/bold-console.png",
+        alt: "pagos_bold — consola operativa",
+        width: 1600,
+        height: 1000,
+        caption: "Consola bold-console: operacion y health de la integracion",
+      },
+      {
+        src: "/images/captures/bold/bold-screen-05.png",
+        alt: "pagos_bold — flujo seguro de checkout",
+        width: 1051,
+        height: 765,
+        caption: "Flujo seguro de checkout con firma e integridad",
+      },
+      {
+        src: "/images/captures/bold/bold-screen-01.png",
+        alt: "pagos_bold — superficie de checkout",
+        width: 1470,
+        height: 565,
+        caption: "Checkout integrado en producto host",
+      },
+      {
+        src: "/images/captures/bold/bold-screen-02.png",
+        alt: "pagos_bold — panel de configuracion",
+        width: 776,
+        height: 667,
+        caption: "Configuracion y estado de la integracion",
+      },
+      {
+        src: "/images/captures/bold/bold-screen-03.png",
+        alt: "pagos_bold — detalle operativo",
+        width: 763,
+        height: 554,
+        caption: "Detalle operativo de pagos y webhooks",
+      },
+      {
+        src: "/images/captures/bold/bold-screen-04.png",
+        alt: "pagos_bold — vista mobile/compacta",
+        width: 455,
+        height: 695,
+        caption: "Superficie compacta de la consola",
+      },
+    ],
     archCaption:
       "Producto host → SDK pagos_bold (Checkout + Health) → Bold API/webhooks; consola bold-console para operacion.",
     meta: [
@@ -794,6 +991,44 @@ export const solutionsEs: SolutionDetail[] = [
     summary:
       "Sitio Django de la firma: servicios, proyectos, FAQ, portal, billing y hub de knowledge para el agente (sync de arquitectura/equipo/cotizaciones).",
     ...img("sitio-mws"),
+    productImage: "/images/captures/sitio-mws/sitio-mws-card.webp",
+    gallery: [
+      {
+        src: "/images/captures/sitio-mws/mws-home.png",
+        alt: "Medellin Web Soluciones — home en produccion",
+        width: 1600,
+        height: 1000,
+        caption: "Landing comercial en www.medellinweb.co",
+      },
+      {
+        src: "/images/captures/sitio-mws/mws-agentes.png",
+        alt: "MWS — pagina Agentes IA con atencion Nova",
+        width: 1600,
+        height: 1000,
+        caption: "Agentes IA: oferta y atencion con Nova",
+      },
+      {
+        src: "/images/captures/sitio-mws/mws-servicios.png",
+        alt: "MWS — catalogo de servicios",
+        width: 1600,
+        height: 1000,
+        caption: "Catalogo de servicios de la firma",
+      },
+      {
+        src: "/images/captures/sitio-mws/mws-contacto.png",
+        alt: "MWS — contacto y cotizacion",
+        width: 1600,
+        height: 1000,
+        caption: "Contacto / cotizacion (entrada a CRM)",
+      },
+      {
+        src: "/images/captures/sitio-mws/mws-home-mobile.png",
+        alt: "MWS — home mobile",
+        width: 780,
+        height: 1688,
+        caption: "Home mobile de la landing",
+      },
+    ],
     archCaption:
       "Django 6 sirve el sitio + agent_knowledge (RAG sync); Angular legacy permanece separado; Woo es checkout aparte.",
     meta: [
@@ -866,7 +1101,7 @@ export const solutionsEs: SolutionDetail[] = [
     summary:
       "Embudo comercial con captacion SECOP/scraper+IA, temperatura y probabilidad, conversion a cliente y puente a finanzas — operacion diaria, no un CRM generico.",
     ...img("crm-mws"),
-    productImage: "/images/captures/crm/crm-embudo.png",
+    productImage: "/images/captures/crm/crm-card.webp",
     gallery: [
       {
         src: "/images/captures/crm/crm-embudo.png",
@@ -1050,7 +1285,7 @@ export const solutionsEs: SolutionDetail[] = [
     summary:
       "Plugin WordPress + SaaS con ingresos anuales recurrentes: un agente de ventas y soporte 24/7 que conoce tu inventario WooCommerce en tiempo real (RAG), responde en <2s y escala a un humano cuando importa.",
     ...img("wp-ai-agent"),
-    productImage: "/images/captures/mws-ai/mws-ai-hero-chat.png",
+    productImage: "/images/captures/mws-ai/mws-ai-card.webp",
     gallery: [
       {
         src: "/images/captures/mws-ai/mws-ai-hero-chat.png",
@@ -1154,10 +1389,62 @@ export const solutionsEn: SolutionDetail[] = [
     summary:
       "CrewAI agency with CEO, 5 divisions and 29 specialists running real work 24/7 — FastAPI, 3D graph, SSE traces and local inference. This isn't a chatbot with a nice name: it's a business operated by AI.",
     ...img("orquestacion-agentes"),
+    productImage: "/images/captures/nova/nova-card.webp",
+    gallery: [
+      {
+        src: "/images/captures/nova/nova-engine-agentes.png",
+        alt: "Nova — live orchestration graph with roles and timeline",
+        width: 1600,
+        height: 1000,
+        caption: "/visual panel: CEO, divisions and specialists as an operable system",
+      },
+      {
+        src: "/images/captures/nova/nova-catalogo-perfiles.png",
+        alt: "Nova — MIT agent profile catalog",
+        width: 1600,
+        height: 1000,
+        caption: "MIT agency-agents catalog mapped to Nova roles",
+      },
+      {
+        src: "/images/captures/nova/nova-configuracion.png",
+        alt: "Nova — per-agent configuration hub",
+        width: 1600,
+        height: 1000,
+        caption: "Per-agent configuration without redeploy",
+      },
+      {
+        src: "/images/captures/nova/nova-hud-sistemas.png",
+        alt: "Nova — subsystem health HUD",
+        width: 1600,
+        height: 1000,
+        caption: "HUD for LLM, voice, vision and tool subsystems",
+      },
+      {
+        src: "/images/captures/nova/nova-rag-aprendizaje.png",
+        alt: "Nova — RAG and learning console",
+        width: 1600,
+        height: 1000,
+        caption: "RAG console: chunks, domain packs and validation",
+      },
+      {
+        src: "/images/captures/nova/nova-tokens.png",
+        alt: "Nova — token usage and providers",
+        width: 1600,
+        height: 1000,
+        caption: "FinOps: tokens, calls and provider cascade",
+      },
+      {
+        src: "/images/captures/nova/nova-engine-agentes-mobile.png",
+        alt: "Nova — visual panel on mobile",
+        width: 780,
+        height: 1688,
+        caption: "Operational surface on mobile viewport",
+      },
+    ],
     archCaption:
       "Operator → FastAPI Nova → CEO → division hubs → 29 specialists, with local Ollama, MCP/Composio/MWS tools and /visual + /vivo panels.",
     video: "/media/ejecucion-agentes-ia.mp4",
-    videoPoster: "/images/poster-agentes.png",
+    videoPoster: "/images/captures/nova/nova-engine-agentes.png",
     meta: [
       { label: "Domain", value: "Agentic AI / Ops" },
       { label: "Role", value: "Solutions Architect / Owner" },
@@ -1322,7 +1609,7 @@ export const solutionsEn: SolutionDetail[] = [
     summary:
       "Real-estate portal deployed on a VPS: 159 Flask routes over MySQL 8 with 45 tables, an in-house CRM, partner and street-scout portals, embedded AI agents and a SEO/GEO/AEO stack with IndexNow. ~43,000 lines of Python that run the whole business, not a landing page with a form.",
     ...img("auge-urbano"),
-    productImage: "/images/captures/auge/auge-home.webp",
+    productImage: "/images/captures/auge/auge-card.webp",
     gallery: [
       {
         src: "/images/captures/auge/auge-home.webp",
@@ -1351,6 +1638,20 @@ export const solutionsEn: SolutionDetail[] = [
         width: 1600,
         height: 1000,
         caption: "Zones: budget filters plus aggregated price and cost per m2",
+      },
+      {
+        src: "/images/captures/auge/auge-home-mobile.png",
+        alt: "Auge Urbano — mobile home",
+        width: 780,
+        height: 1688,
+        caption: "Home on mobile viewport",
+      },
+      {
+        src: "/images/captures/auge/auge-catalogo-mobile.png",
+        alt: "Auge Urbano — mobile catalogue",
+        width: 780,
+        height: 1688,
+        caption: "Catalogue on mobile viewport",
       },
     ],
     archCaption:
@@ -1474,6 +1775,37 @@ export const solutionsEn: SolutionDetail[] = [
     summary:
       "Legal operating system with FastAPI, Streamlit OS and Dash analytics: a full Python product for AI-assisted legal work.",
     ...img("lexia-legal-os"),
+    productImage: "/images/captures/lexia/lexia-card.webp",
+    gallery: [
+      {
+        src: "/images/captures/lexia/lexia-os.png",
+        alt: "LEXIA — legal OS in production",
+        width: 1600,
+        height: 1000,
+        caption: "Streamlit OS in production (lexia.medellinweb.co)",
+      },
+      {
+        src: "/images/captures/lexia/lexia-dash.png",
+        alt: "LEXIA — Dash analytics",
+        width: 1600,
+        height: 1000,
+        caption: "Dash analytics surface for firm metrics",
+      },
+      {
+        src: "/images/captures/lexia/lexia-os-alt.png",
+        alt: "LEXIA — local demo OS",
+        width: 1600,
+        height: 1000,
+        caption: "Local OS with reproducible demo flow",
+      },
+      {
+        src: "/images/captures/lexia/lexia-os-mobile.png",
+        alt: "LEXIA — OS on mobile",
+        width: 780,
+        height: 1688,
+        caption: "Legal OS on mobile viewport",
+      },
+    ],
     archCaption:
       "User → Streamlit OS / Dash analytics → FastAPI → legal AI domain + data store, Docker-packaged.",
     meta: [
@@ -1551,6 +1883,30 @@ export const solutionsEn: SolutionDetail[] = [
     summary:
       "Omnichannel brain (owned stock + dropship) with HITL panel, Dropi radar, catalog API and Colombia-only Woo store.",
     ...img("omnicanal-comercio"),
+    productImage: "/images/captures/omnicanal/omnicanal-card.webp",
+    gallery: [
+      {
+        src: "/images/captures/omnicanal/omnicanal-panel.png",
+        alt: "Omnichannel MWS — HITL opportunities panel",
+        width: 1600,
+        height: 1000,
+        caption: "Operator panel: radar, scoring and human approval",
+      },
+      {
+        src: "/images/captures/omnicanal/omnicanal-home.png",
+        alt: "Omnichannel MWS — API surface",
+        width: 1600,
+        height: 1000,
+        caption: "FastAPI surface of the omnichannel brain",
+      },
+      {
+        src: "/images/captures/omnicanal/omnicanal-panel-mobile.png",
+        alt: "Omnichannel — panel on mobile",
+        width: 780,
+        height: 1688,
+        caption: "HITL panel on mobile viewport",
+      },
+    ],
     archCaption:
       "Dropi feeds → worker/scoring → HITL panel → FastAPI catalog → WooCommerce CO, with Postgres/Redis.",
     meta: [
@@ -1628,6 +1984,37 @@ export const solutionsEn: SolutionDetail[] = [
     summary:
       "Bilingual Django LMS: guest checkout, Bold + PayPal, 12-month access, 100-question exam and cost-controlled AI tutor.",
     ...img("plataforma-aprendizaje"),
+    productImage: "/images/captures/plataforma-aprendizaje/plataforma-aprendizaje-card.webp",
+    gallery: [
+      {
+        src: "/images/captures/plataforma-aprendizaje/curso-home.png",
+        alt: "Claude Architect course — Spanish landing",
+        width: 1600,
+        height: 1000,
+        caption: "ES landing: plans, promise and checkout CTA",
+      },
+      {
+        src: "/images/captures/plataforma-aprendizaje/curso-home-en.png",
+        alt: "Claude Architect course — English landing",
+        width: 1600,
+        height: 1000,
+        caption: "EN landing of the same LMS product",
+      },
+      {
+        src: "/images/captures/plataforma-aprendizaje/curso-planes.png",
+        alt: "Course — plans and offer",
+        width: 1600,
+        height: 1000,
+        caption: "Fast-Track / Mentoring / B2B offer",
+      },
+      {
+        src: "/images/captures/plataforma-aprendizaje/curso-home-mobile.png",
+        alt: "Course — mobile landing",
+        width: 780,
+        height: 1688,
+        caption: "ES landing on mobile",
+      },
+    ],
     archCaption:
       "Visitor → Django LMS → Bold/PayPal → 12-month access → lessons/exam + RAG tutor on Postgres.",
     meta: [
@@ -1705,6 +2092,51 @@ export const solutionsEn: SolutionDetail[] = [
     summary:
       "Reusable Python library for Bold: checkout, health checks, ops console and Docker VPS deploy.",
     ...img("pagos-bold"),
+    productImage: "/images/captures/bold/bold-card.webp",
+    gallery: [
+      {
+        src: "/images/captures/bold/bold-console.png",
+        alt: "pagos_bold — ops console",
+        width: 1600,
+        height: 1000,
+        caption: "bold-console: integration ops and health",
+      },
+      {
+        src: "/images/captures/bold/bold-screen-05.png",
+        alt: "pagos_bold — secure checkout flow",
+        width: 1051,
+        height: 765,
+        caption: "Secure checkout flow with integrity signing",
+      },
+      {
+        src: "/images/captures/bold/bold-screen-01.png",
+        alt: "pagos_bold — checkout surface",
+        width: 1470,
+        height: 565,
+        caption: "Checkout embedded in a host product",
+      },
+      {
+        src: "/images/captures/bold/bold-screen-02.png",
+        alt: "pagos_bold — configuration panel",
+        width: 776,
+        height: 667,
+        caption: "Integration configuration and status",
+      },
+      {
+        src: "/images/captures/bold/bold-screen-03.png",
+        alt: "pagos_bold — ops detail",
+        width: 763,
+        height: 554,
+        caption: "Payments and webhook ops detail",
+      },
+      {
+        src: "/images/captures/bold/bold-screen-04.png",
+        alt: "pagos_bold — compact view",
+        width: 455,
+        height: 695,
+        caption: "Compact console surface",
+      },
+    ],
     archCaption:
       "Host product → pagos_bold SDK (Checkout + Health) → Bold API/webhooks; bold-console for ops.",
     meta: [
@@ -1848,6 +2280,44 @@ export const solutionsEn: SolutionDetail[] = [
     summary:
       "Firm Django site: services, projects, FAQ, portal, billing and knowledge hub for the agent (architecture/team/quote sync).",
     ...img("sitio-mws"),
+    productImage: "/images/captures/sitio-mws/sitio-mws-card.webp",
+    gallery: [
+      {
+        src: "/images/captures/sitio-mws/mws-home.png",
+        alt: "Medellín Web Soluciones — production home",
+        width: 1600,
+        height: 1000,
+        caption: "Commercial landing at www.medellinweb.co",
+      },
+      {
+        src: "/images/captures/sitio-mws/mws-agentes.png",
+        alt: "MWS — AI Agents page with Nova attention",
+        width: 1600,
+        height: 1000,
+        caption: "AI Agents: offer and Nova-assisted attention",
+      },
+      {
+        src: "/images/captures/sitio-mws/mws-servicios.png",
+        alt: "MWS — services catalog",
+        width: 1600,
+        height: 1000,
+        caption: "Firm services catalog",
+      },
+      {
+        src: "/images/captures/sitio-mws/mws-contacto.png",
+        alt: "MWS — contact and quote",
+        width: 1600,
+        height: 1000,
+        caption: "Contact / quote (CRM entry)",
+      },
+      {
+        src: "/images/captures/sitio-mws/mws-home-mobile.png",
+        alt: "MWS — mobile home",
+        width: 780,
+        height: 1688,
+        caption: "Landing home on mobile",
+      },
+    ],
     archCaption:
       "Django 6 serves the site + agent_knowledge (RAG sync); legacy Angular stays separate; Woo is a separate checkout.",
     meta: [
@@ -1920,7 +2390,7 @@ export const solutionsEn: SolutionDetail[] = [
     summary:
       "Sales funnel with SECOP/scraper+AI capture, temperature and probability, convert-to-client and a bridge to finance — daily ops, not a generic CRM.",
     ...img("crm-mws"),
-    productImage: "/images/captures/crm/crm-embudo.png",
+    productImage: "/images/captures/crm/crm-card.webp",
     gallery: [
       {
         src: "/images/captures/crm/crm-embudo.png",
@@ -2103,7 +2573,7 @@ export const solutionsEn: SolutionDetail[] = [
     summary:
       "WordPress plugin + SaaS with recurring annual revenue: a 24/7 sales and support agent that knows your live WooCommerce inventory (RAG), replies in under 2s, and escalates to a human when it matters.",
     ...img("wp-ai-agent"),
-    productImage: "/images/captures/mws-ai/mws-ai-hero-chat.png",
+    productImage: "/images/captures/mws-ai/mws-ai-card.webp",
     gallery: [
       {
         src: "/images/captures/mws-ai/mws-ai-hero-chat.png",

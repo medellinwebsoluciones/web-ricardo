@@ -59,7 +59,7 @@ export function Hero({ dict }: { dict: Dictionary }) {
 
           <motion.p
             variants={item}
-            className="mt-8 max-w-2xl text-lg leading-relaxed text-zinc-400"
+            className="mt-8 max-w-2xl text-base leading-relaxed text-zinc-400"
           >
             {dict.hero.subtitle}
           </motion.p>
