@@ -44,9 +44,16 @@ function scoreTone(score: number) {
 export function EvalsTab({
   notify,
   onSaveExample,
+  onSavePreference,
 }: {
   notify: (msg: string) => void;
   onSaveExample: (question: string, answer: string, audience: string) => void;
+  onSavePreference?: (
+    question: string,
+    preferred: string,
+    rejected: string,
+    audience: string,
+  ) => void;
 }) {
   const [suites, setSuites] = useState<Suite[]>([]);
   const [suiteId, setSuiteId] = useState("");
@@ -331,6 +338,21 @@ export function EvalsTab({
                           >
                             <Save className="h-3 w-3" /> Guardar al corpus
                           </button>
+                          {onSavePreference && (
+                            <button
+                              onClick={() =>
+                                onSavePreference(
+                                  r.question,
+                                  r.improved,
+                                  r.answer,
+                                  r.audience,
+                                )
+                              }
+                              className="btn-secondary mt-2 ml-2 px-3 py-1.5 text-[11px]"
+                            >
+                              <Save className="h-3 w-3" /> Par preferencia SFT
+                            </button>
+                          )}
                         </div>
                       )}
                     </div>

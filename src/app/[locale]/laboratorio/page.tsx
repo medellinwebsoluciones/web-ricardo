@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { notFound } from "next/navigation";
-import { Info, Maximize2 } from "lucide-react";
+import { Info } from "lucide-react";
 import { isLocale, locales, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getInternalContent } from "@/lib/internal-content";
@@ -10,6 +9,7 @@ import { SiteShell } from "@/components/SiteShell";
 import { PageHero } from "@/components/PageHero";
 import { Reveal } from "@/components/Reveal";
 import { VideoPlayer } from "@/components/VideoPlayer";
+import { LabShowcase } from "@/components/LabShowcase";
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -52,6 +52,7 @@ export default async function LaboratorioPage({
   const l = locale as Locale;
   const dict = getDictionary(l);
   const c = getInternalContent(l);
+  const n = c.labNarrative;
 
   const [featured, ...rest] = c.lab;
 
@@ -68,7 +69,69 @@ export default async function LaboratorioPage({
         ]}
       />
 
-      {/* Capturas primero — CRM / MWS AI / Nova */}
+      {/* Narrativa: problema, aplicacion, validacion */}
+      <section className="border-b border-zinc-900 bg-zinc-950/40">
+        <div className="section-pad container-wide">
+          <Reveal>
+            <span className="eyebrow">{n.eyebrow}</span>
+          </Reveal>
+          <Reveal delay={0.05}>
+            <h2 className="mt-5 max-w-3xl text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+              {n.title}
+            </h2>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <p className="mt-5 max-w-3xl text-lg leading-relaxed text-zinc-400">
+              {n.intro}
+            </p>
+          </Reveal>
+
+          <div className="mt-12 grid gap-8 lg:grid-cols-3">
+            {n.blocks.map((block, i) => (
+              <Reveal
+                as="article"
+                key={block.title}
+                delay={0.06 * i}
+                className="relative border-l border-emerald-500/30 pl-5"
+              >
+                <h3 className="text-lg font-medium text-white">{block.title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-zinc-400">
+                  {block.body}
+                </p>
+              </Reveal>
+            ))}
+          </div>
+
+          <Reveal delay={0.15}>
+            <div className="mt-14">
+              <span className="eyebrow">{n.capabilitiesEyebrow}</span>
+              <h3 className="mt-4 max-w-2xl text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+                {n.capabilitiesTitle}
+              </h3>
+            </div>
+          </Reveal>
+
+          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {n.capabilities.map((cap, i) => (
+              <Reveal
+                as="article"
+                key={cap.title}
+                delay={0.04 * i}
+                className="rounded-xl border border-zinc-800/80 bg-zinc-900/30 p-5"
+              >
+                <h4 className="text-base font-medium text-emerald-300">
+                  {cap.title}
+                </h4>
+                <p className="mt-2 text-sm leading-relaxed text-zinc-400">
+                  {cap.description}
+                </p>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Carrusel profesional de superficies Nova */}
       <section id="capturas" className="border-b border-zinc-900 bg-zinc-950/60">
         <div className="section-pad container-wide">
           <Reveal>
@@ -92,81 +155,35 @@ export default async function LaboratorioPage({
             </p>
           </Reveal>
 
-          <div className="mt-12 grid gap-6 md:grid-cols-2">
-            {c.captures.map((cap, i) => (
-              <Reveal
-                as="figure"
-                key={cap.slug}
-                delay={0.04 * i}
-                className={
-                  i < 2
-                    ? "card overflow-hidden md:col-span-2 lg:grid lg:grid-cols-5"
-                    : "card overflow-hidden"
-                }
-              >
-                <a
-                  href={cap.image}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={
-                    i < 2
-                      ? "group relative block border-b border-zinc-800 bg-zinc-950 lg:col-span-3 lg:border-b-0 lg:border-r"
-                      : "group relative block border-b border-zinc-800 bg-zinc-950"
-                  }
-                  aria-label={`${cap.title} — ${c.ui.capturesZoom}`}
-                >
-                  <Image
-                    src={cap.image}
-                    alt={cap.title}
-                    width={cap.width}
-                    height={cap.height}
-                    sizes={
-                      i < 2
-                        ? "(min-width: 1024px) 60vw, 100vw"
-                        : "(min-width: 768px) 50vw, 100vw"
-                    }
-                    className="h-auto w-full"
-                    priority={i < 2}
-                  />
-                  <span className="absolute right-3 top-3 flex items-center gap-1.5 rounded-md border border-zinc-700 bg-zinc-950/85 px-2.5 py-1 text-[11px] text-zinc-300 opacity-90 transition-opacity group-hover:opacity-100">
-                    <Maximize2 className="h-3 w-3" />
-                    {c.ui.capturesZoom}
-                  </span>
-                </a>
-                <figcaption
-                  className={
-                    i < 2
-                      ? "flex flex-col justify-center p-6 lg:col-span-2 lg:p-7"
-                      : "flex flex-col justify-center p-5"
-                  }
-                >
-                  <div className="flex flex-wrap gap-2">
-                    {cap.tags.map((t) => (
-                      <span
-                        key={t}
-                        className="rounded-full border border-zinc-800 bg-zinc-900/60 px-2.5 py-0.5 text-[11px] font-medium text-zinc-400"
-                      >
-                        {t}
-                      </span>
-                    ))}
-                  </div>
-                  <h3 className="mt-3 text-lg font-medium text-white sm:text-xl">
-                    {cap.title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-zinc-400">
-                    {cap.caption}
-                  </p>
-                </figcaption>
-              </Reveal>
-            ))}
-          </div>
+          <Reveal delay={0.15} className="mt-12">
+            <LabShowcase
+              items={c.captures}
+              zoomLabel={c.ui.capturesZoom}
+              prevLabel={c.ui.labPrev}
+              nextLabel={c.ui.labNext}
+            />
+          </Reveal>
         </div>
       </section>
 
-      {/* Videos del laboratorio */}
+      {/* Videos de orquestacion */}
       <section className="section-pad container-wide">
+        <Reveal>
+          <span className="eyebrow">{c.ui.labVideosEyebrow}</span>
+        </Reveal>
+        <Reveal delay={0.05}>
+          <h2 className="mt-5 max-w-3xl text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+            {c.ui.labVideosTitle}
+          </h2>
+        </Reveal>
+        <Reveal delay={0.1}>
+          <p className="mt-5 max-w-3xl text-lg leading-relaxed text-zinc-400">
+            {c.ui.labVideosIntro}
+          </p>
+        </Reveal>
+
         {featured && (
-          <Reveal>
+          <Reveal delay={0.12} className="mt-12">
             <div className="grid items-center gap-8 lg:grid-cols-2">
               <VideoPlayer
                 src={featured.video}
@@ -186,9 +203,9 @@ export default async function LaboratorioPage({
                     </span>
                   ))}
                 </div>
-                <h2 className="mt-4 text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+                <h3 className="mt-4 text-2xl font-semibold tracking-tight text-white sm:text-3xl">
                   {featured.title}
-                </h2>
+                </h3>
                 <p className="mt-4 text-lg leading-relaxed text-zinc-400">
                   {featured.description}
                 </p>

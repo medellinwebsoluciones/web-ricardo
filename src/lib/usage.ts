@@ -6,7 +6,8 @@ export type UsageChannel =
   | "embeddings"
   | "analyst"
   | "judge"
-  | "simulation";
+  | "simulation"
+  | "practice";
 
 export async function logUsage(params: {
   channel: UsageChannel;

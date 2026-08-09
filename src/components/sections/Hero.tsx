@@ -2,11 +2,13 @@
 
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowRight, Calendar } from "lucide-react";
-import { site } from "@/lib/site";
+import { ArrowRight, Calendar, Download } from "lucide-react";
+import { LinkedInIcon } from "@/components/icons";
+import { cvPath, site } from "@/lib/site";
+import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 
-export function Hero({ dict }: { dict: Dictionary }) {
+export function Hero({ dict, locale }: { dict: Dictionary; locale: Locale }) {
   const reduce = useReducedMotion();
 
   const container = {
@@ -52,8 +54,10 @@ export function Hero({ dict }: { dict: Dictionary }) {
           >
             <span className="text-gradient">Ricardo Zuluaga</span>
             <span className="mt-2 block text-2xl font-normal text-zinc-400 sm:text-3xl lg:text-4xl">
-              Senior Solutions Architect{" "}
-              <span className="text-emerald-400">&</span> AI Automation Expert
+              {dict.hero.role}
+            </span>
+            <span className="mt-3 block text-base font-normal tracking-wide text-emerald-400 sm:text-lg">
+              {dict.hero.roleSpec}
             </span>
           </motion.h1>
 
@@ -64,12 +68,54 @@ export function Hero({ dict }: { dict: Dictionary }) {
             {dict.hero.subtitle}
           </motion.p>
 
+          <motion.div variants={item} className="mt-8 max-w-2xl">
+            <h2 className="text-xs font-semibold uppercase tracking-[0.15em] text-zinc-500">
+              {dict.hero.rolesLabel}
+            </h2>
+            <ul className="mt-3 flex flex-wrap gap-2">
+              {dict.hero.roles.map((role) => (
+                <li
+                  key={role}
+                  className="rounded-lg border border-zinc-800 bg-zinc-900/50 px-2.5 py-1 text-[13px] text-zinc-300"
+                >
+                  {role}
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+
           <motion.div variants={item} className="mt-10 flex flex-col gap-3 sm:flex-row">
             <a href="#agenda" className="btn-primary">
               <Calendar className="h-4 w-4" />
               {dict.hero.ctaPrimary}
             </a>
-            <a href="#casos" className="btn-secondary group">
+            <a
+              href={cvPath(locale)}
+              download
+              className="btn-secondary group"
+            >
+              <Download className="h-4 w-4" />
+              {dict.hero.ctaCv}
+            </a>
+          </motion.div>
+
+          <motion.div
+            variants={item}
+            className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm"
+          >
+            <a
+              href={site.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-zinc-400 transition-colors hover:text-white"
+            >
+              <LinkedInIcon className="h-4 w-4" />
+              {dict.hero.ctaLinkedin}
+            </a>
+            <a
+              href="#casos"
+              className="group inline-flex items-center gap-2 font-medium text-emerald-400 hover:text-emerald-300"
+            >
               {dict.hero.ctaSecondary}
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </a>

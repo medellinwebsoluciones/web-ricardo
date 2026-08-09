@@ -6,7 +6,15 @@ import { solutionSlugs } from "@/lib/internal-content";
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
 
-  const staticPaths = ["", "/perfil", "/soluciones", "/laboratorio", "/servicios"];
+  const staticPaths = [
+    "",
+    "/para-recruiters",
+    "/perfil",
+    "/soluciones",
+    "/trayectoria",
+    "/laboratorio",
+    "/servicios",
+  ];
   const solutionPaths = solutionSlugs.map((slug) => `/soluciones/${slug}`);
   const paths = [...staticPaths, ...solutionPaths];
 
@@ -15,7 +23,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${site.url}/${locale}${path}`,
       lastModified: now,
       changeFrequency: "monthly" as const,
-      priority: path === "" ? (locale === "es" ? 1 : 0.9) : 0.7,
+      priority:
+        path === ""
+          ? locale === "es"
+            ? 1
+            : 0.9
+          : path === "/para-recruiters"
+            ? 0.9
+            : 0.7,
       alternates: {
         languages: {
           es: `${site.url}/es${path}`,

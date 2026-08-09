@@ -1,25 +1,40 @@
 {
-  "_nota": "Fuente única del CV. Los valores con TODO: los debe confirmar Ricardo antes de enviar. Regenerar con: npm run cv:pdf",
+  "_nota": "Fuente única del CV. Regenerar: npm run cv:pdf [--variant=fullstack] [--lang=en]. MWS = Independent (no Founder). Proyectos con en_cv:false quedan en inventario pero no salen en el PDF.",
+  "posicionamiento_mws": {
+    "regla": "Cargo = rol técnico IC senior. Tipo = Profesional independiente. NUNCA Founder/CEO/Partner/Asesor como título principal en búsqueda activa.",
+    "linkedin_tipo": "Profesional independiente",
+    "cargo_recomendado": {
+      "es": "Senior Software Architect / Solutions Architect",
+      "en": "Senior Software Architect / Solutions Architect"
+    },
+    "frase_entrevista": "Mantengo consultoría puntual y productos propios vía MWS; busco rol senior full-time o contractor B2B. Auge, Nova, LEXIA y MWS AI demuestran entrega en producción, no competencia con el empleador."
+  },
   "contacto": {
     "nombre": "Ricardo Luis Zuluaga Salazar",
-    "ubicacion": { "es": "Medellín, Colombia · Remoto", "en": "Medellín, Colombia · Remote" },
-    "email": "TODO:tu-correo@dominio.com",
+    "ubicacion": { "es": "Medellín, Colombia · Remoto (solape CET)", "en": "Medellín, Colombia · Remote (CET overlap)" },
+    "email": "ricki5789@gmail.com",
     "telefono": "TODO:+57 300 000 0000",
-    "web": "TODO:https://tu-dominio.com",
+    "web": "https://ricardozuluaga.medellinweb.co",
     "linkedin": "linkedin.com/in/ricardo-luis-zuluaga-salazar-974276103",
-    "github": "TODO:github.com/tu-usuario"
+    "github": "TODO:github.com/tu-usuario",
+    "sitios": [
+      "https://ricardozuluaga.medellinweb.co",
+      "https://www.medellinweb.co",
+      "https://augeurbano.com",
+      "https://lexia.medellinweb.co"
+    ]
   },
   "variantes": {
     "arquitecto": {
       "titulo": {
-        "es": "Solutions Architect · Telemetría, Integraciones y Agentic AI",
-        "en": "Solutions Architect · Telematics, Integrations & Agentic AI"
+        "es": "Senior Software Architect / Solutions Architect · IA, Backend y Sistemas Distribuidos",
+        "en": "Senior Software Architect / Solutions Architect · AI, Backend & Distributed Systems"
       },
       "resumen": {
-        "es": "Arquitecto de soluciones con más de 10 años y 12 sistemas entregados en producción. Responsable end-to-end de Sígueme 4, plataforma de telemetría satelital con más de 100 licencias contractuales en su lanzamiento y aún en operación. Arquitectura AWS, integraciones entre plataformas y entidades gubernamentales, y sistemas B2B para banca, telco y retail. Actualmente diseño arquitecturas agentic con orquestación multiagente y RAG sobre datos vivos. Ownership end-to-end: arquitectura, implementación, despliegue y observabilidad.",
-        "en": "Solutions architect with 10+ years and 12 systems delivered to production. End-to-end owner of Sígueme 4, a satellite telematics platform with 100+ contractual licences at launch and still in operation. AWS architecture, cross-platform and government integrations, and B2B systems for banking, telco and retail. Currently designing agentic architectures with multi-agent orchestration and RAG over live data. End-to-end ownership: architecture, implementation, deployment and observability."
+        "es": "Arquitecto de soluciones con +10 años y 12+ sistemas en producción. Owner end-to-end de Sígueme 4 (telemetría satelital, +100 licencias, aún operando). AWS, integraciones gubernamentales y B2B banca/telco/retail. Hoy: arquitecturas agentic (Nova: 29 agentes, RAG, observabilidad), PropTech (Auge Urbano), LegalTech (LEXIA) y commerce/Woo. Ownership: arquitectura → implementación → despliegue → métricas.",
+        "en": "Solutions architect with 10+ years and 12+ production systems. End-to-end owner of Sígueme 4 (satellite telematics, 100+ licences, still live). AWS, government integrations and B2B banking/telco/retail. Today: agentic architectures (Nova: 29 agents, RAG, observability), PropTech (Auge Urbano), LegalTech (LEXIA) and Woo commerce. Ownership: architecture → build → deploy → metrics."
       },
-      "orden": ["experiencia", "proyectos", "stack", "formacion", "idiomas"]
+      "orden": ["experiencia", "proyectos", "laboratorio", "stack", "certificaciones", "formacion", "idiomas"]
     },
     "fullstack": {
       "titulo": {
@@ -27,37 +42,79 @@
         "en": "Senior Full Stack Developer · TypeScript / Next.js / Python / AWS"
       },
       "resumen": {
-        "es": "Desarrollador full stack senior con más de 10 años entregando sistemas en producción para logística, banca, telco y retail. Desarrollé end-to-end Sígueme 4, plataforma de seguimiento satelital con más de 100 licencias contractuales en su lanzamiento y todavía en operación. React/Next.js, Node y TypeScript sobre PostgreSQL, y backends en Python (FastAPI, Django). Experiencia sólida en APIs REST, integraciones con plataformas de terceros y entidades gubernamentales, infraestructura AWS (EC2, RDS, S3, SNS, SES) y despliegue en contenedores. Entrego funcionalidad que queda operando, no prototipos.",
-        "en": "Senior full stack developer with 10+ years shipping production systems for logistics, banking, telco and retail. Sole developer of Sígueme 4, a satellite-tracking platform with 100+ contractual licences at launch that is still in operation. React/Next.js, Node and TypeScript over PostgreSQL, plus Python backends (FastAPI, Django). Strong experience in REST APIs, third-party and government integrations, AWS infrastructure (EC2, RDS, S3, SNS, SES) and containerised deployment."
+        "es": "Full stack senior con +10 años en producción (logística, banca, telco, retail, PropTech). Sígueme 4 end-to-end (+100 licencias). Stack: TypeScript/Next.js, Python (FastAPI/Flask/Django), Laravel/PHP, PostgreSQL/MySQL, AWS, Docker. Campañas nacionales (Feeling) bajo picos de tráfico. Entrego sistemas que quedan operando — no demos.",
+        "en": "Senior full stack with 10+ years in production (logistics, banking, telco, retail, PropTech). End-to-end Sígueme 4 (100+ licences). Stack: TypeScript/Next.js, Python (FastAPI/Flask/Django), Laravel/PHP, PostgreSQL/MySQL, AWS, Docker. National campaigns (Feeling) under traffic peaks. Ships systems that stay live — not demos."
       },
-      "orden": ["stack", "experiencia", "proyectos", "formacion", "idiomas"]
+      "orden": ["stack", "experiencia", "proyectos", "laboratorio", "certificaciones", "formacion", "idiomas"]
     }
   },
   "experiencia": [
     {
       "empresa": "Medellín Web Soluciones",
+      "tipo_empleo": {
+        "es": "Profesional independiente / Freelance",
+        "en": "Independent / Freelance"
+      },
       "cargo": {
-        "es": "Fundador y Solutions Architect",
-        "en": "Founder & Solutions Architect"
+        "es": "Senior Full Stack Developer y Solutions Architect",
+        "en": "Senior Full Stack Developer & Solutions Architect"
       },
       "ubicacion": { "es": "Remoto — Medellín, Colombia", "en": "Remote — Medellín, Colombia" },
-      "periodo": { "es": "TODO:mes año – Actualidad", "en": "TODO:month year – Present" },
+      "periodo": { "es": "Enero 2026 – Actualidad", "en": "January 2026 – Present" },
       "bullets": {
         "es": [
-          "Diseño y entrega de plataformas de IA aplicada y sistemas de negocio para clientes en Colombia y España: arquitectura, desarrollo, despliegue y operación.",
-          "Orquestación multiagente con CrewAI sobre FastAPI: 29 agentes especialistas con routing jerárquico, configuración en runtime sin redespliegue y trazas por ejecución.",
-          "RAG en producción sobre datos vivos (inventario, corpus jurídico, base de conocimiento) con PostgreSQL + pgvector y guardrails de citación de fuente.",
-          "Producto propio MWS AI: plugin de WordPress tipo SaaS que atiende tiendas WooCommerce en automático, con RAG sobre stock, tallas y precios reales y traspaso a agente humano.",
-          "Integraciones de negocio: WooCommerce REST y webhooks, pasarela de pagos Bold, Google Calendar/Meet, SMTP transaccional.",
-          "Infraestructura: contenerización con Docker, reverse proxy Nginx con TLS y despliegue en VPS."
+          "Diseño y entrega de plataformas de IA aplicada y sistemas de negocio para Colombia y España: arquitectura, implementación, despliegue y operación.",
+          "Nova (laboratorio / orquestación): CrewAI sobre FastAPI — CEO + 5 divisiones + 29 especialistas; SSE en vivo, grafo 3D, Ollama local, Langfuse, MCP/Composio; 2.749 chunks RAG y HUD de 11 subsistemas.",
+          "Auge Urbano (augeurbano.com): PropTech Flask en producción — 159 rutas, 45 tablas MySQL, CRM, 2 agentes IA con roles distintos, SEO/AEO/GEO, Bold.",
+          "LEXIA (lexia.medellinweb.co): Legal Intelligence OS — FastAPI + Streamlit + Dash, RAG con citación de fuente, Docker, marketplace y cobro.",
+          "MWS AI: plugin WordPress SaaS para WooCommerce 24/7 con RAG de inventario real, JWT, WebSockets y handoff humano (planes Growth/Enterprise).",
+          "Omnicanal + Woo Colombia: radar Dropi, scoring, panel HITL, publish Woo; LMS Django (Bold+PayPal, tutor RAG); CRM Django (SECOP + finanzas); librería pagos_bold reutilizable.",
+          "Infra recurrente: Docker, Nginx+TLS, VPS/Linux, PostgreSQL/MySQL/pgvector, observabilidad y guardrails anti prompt-injection."
         ],
         "en": [
-          "Design and delivery of applied-AI platforms and business systems for clients in Colombia and Spain: architecture, development, deployment and operations.",
-          "Multi-agent orchestration with CrewAI on FastAPI: 29 specialist agents with hierarchical routing, runtime configuration without redeploy and per-run tracing.",
-          "Production RAG over live data (inventory, legal corpus, knowledge base) using PostgreSQL + pgvector with source-citation guardrails.",
-          "Own product MWS AI: SaaS-style WordPress plugin that runs WooCommerce store support and sales automatically, with RAG over real stock, sizes and prices plus human handoff.",
-          "Business integrations: WooCommerce REST and webhooks, Bold payment gateway, Google Calendar/Meet, transactional SMTP.",
-          "Infrastructure: Docker containerisation, Nginx reverse proxy with TLS, VPS deployment."
+          "Design and delivery of applied-AI platforms and business systems for Colombia and Spain: architecture, implementation, deployment and operations.",
+          "Nova (lab / orchestration): CrewAI on FastAPI — CEO + 5 divisions + 29 specialists; live SSE, 3D graph, local Ollama, Langfuse, MCP/Composio; 2,749 RAG chunks and 11-subsystem HUD.",
+          "Auge Urbano (augeurbano.com): production Flask PropTech — 159 routes, 45 MySQL tables, CRM, 2 role-distinct AI agents, SEO/AEO/GEO, Bold.",
+          "LEXIA (lexia.medellinweb.co): Legal Intelligence OS — FastAPI + Streamlit + Dash, source-citing RAG, Docker, marketplace and billing.",
+          "MWS AI: SaaS WordPress plugin for WooCommerce 24/7 with live inventory RAG, JWT, WebSockets and human handoff (Growth/Enterprise plans).",
+          "Omnichannel + Woo Colombia: Dropi radar, scoring, HITL panel, Woo publish; Django LMS (Bold+PayPal, RAG tutor); Django CRM (SECOP + finance); reusable pagos_bold library.",
+          "Recurring infra: Docker, Nginx+TLS, VPS/Linux, PostgreSQL/MySQL/pgvector, observability and anti prompt-injection guardrails."
+        ]
+      }
+    },
+    {
+      "empresa": "Feeling Company S.A.S.",
+      "cargo": {
+        "es": "Desarrollador Full Stack Senior",
+        "en": "Senior Full Stack Developer"
+      },
+      "ubicacion": { "es": "Colombia (remoto / híbrido)", "en": "Colombia (remote / hybrid)" },
+      "periodo": {
+        "es": "Nov 2021 – 22 jun 2026 (FS nov 2021–jun 2022; Senior jun 2022–jun 2026)",
+        "en": "Nov 2021 – 22 Jun 2026 (FS Nov 2021–Jun 2022; Senior Jun 2022–Jun 2026)"
+      },
+      "_linkedin_roles": [
+        { "title": "Desarrollador full stack", "from": "2021-11", "to": "2022-06", "modalidad": "Híbrido" },
+        { "title": "Desarrollador sénior", "from": "2022-06", "to": "2026-06-22", "modalidad": "Remoto" }
+      ],
+      "bullets": {
+        "es": [
+          "Sistemas B2B y campañas nacionales para Bancolombia, Comfama, Tigo, Nutresa, Noel, Rica, Cunit, Renault y Argos — lanzamientos fijos y cero downtime bajo picos.",
+          "CRM de bodegas/eventos en Python: inventario de materiales, logística de activaciones y operación de agencia.",
+          "LEED / B2B Bancolombia–Comfama; presupuestos y contratos (Tigo en Python; Comfama en Laravel).",
+          "DUX: premiación nacional con códigos de empaque, validación y ganadores.",
+          "Navidad Noel: PHP + JS con animaciones 3D, minijuegos y venta de merch a escala nacional.",
+          "Test Drive Renault (Laravel): leads + agendamiento. Cunit y Argos: WordPress a medida.",
+          "Stack: Python, Laravel/PHP, WordPress, MySQL, JavaScript, jQuery, Node.js, Linux."
+        ],
+        "en": [
+          "B2B systems and national campaigns for Bancolombia, Comfama, Tigo, Nutresa, Noel, Rica, Cunit, Renault and Argos — fixed launches, zero downtime under peaks.",
+          "Warehouse/events CRM in Python: materials inventory, activation logistics and agency ops.",
+          "LEED / B2B Bancolombia–Comfama; budgets and contracts (Tigo in Python; Comfama in Laravel).",
+          "DUX: nationwide prizes with packaging codes, validation and winners.",
+          "Navidad Noel: PHP + JS with 3D animations, mini-games and merch sales at national scale.",
+          "Renault Test Drive (Laravel): leads + scheduling. Cunit and Argos: custom WordPress.",
+          "Stack: Python, Laravel/PHP, WordPress, MySQL, JavaScript, jQuery, Node.js, Linux."
         ]
       }
     },
@@ -67,162 +124,289 @@
         "es": "Desarrollador Full Stack Senior — Sígueme 4 y Systram",
         "en": "Senior Full Stack Developer — Sígueme 4 & Systram"
       },
-      "ubicacion": { "es": "TODO:Medellín, Colombia", "en": "TODO:Medellín, Colombia" },
-      "periodo": { "es": "TODO:mes año – mes año", "en": "TODO:month year – month year" },
+      "ubicacion": { "es": "Medellín / Itagüí, Colombia", "en": "Medellín / Itagüí, Colombia" },
+      "periodo": { "es": "Mayo 2016 – Marzo 2023", "en": "May 2016 – March 2023" },
       "bullets": {
         "es": [
-          "Único responsable del desarrollo end-to-end de Sígueme 4, plataforma de seguimiento satelital de flotas: arquitectura, backend, frontend, modelo de datos y despliegue.",
-          "Más de 100 licencias contractuales en el lanzamiento. El producto sigue en línea y en uso por empresas de transporte en toda Colombia.",
-          "Arquitectura AWS: cómputo en EC2, bases de datos gestionadas en RDS con réplicas, almacenamiento en S3, y notificaciones y correo transaccional con SNS y SES.",
-          "Unificación de múltiples plataformas GPS de distintos proveedores en un solo sistema de monitoreo de mercancías, rutas y riesgo.",
-          "Monitoreo automatizado basado en geocercas y posicionamiento satelital, con alertas por desvío de ruta y eventos de riesgo.",
-          "Integración con el Ministerio de Transporte vía web services: más de 15 procesos automáticos conectando Systram, Sígueme, Seway y la entidad.",
-          "Para LTSA (Grupo Éxito): integración y consumo de APIs de SAP, y desarrollo de funcionalidad a medida sobre Sígueme 4 y Systram.",
-          "Systram, CRM especializado en transporte en Colombia: desarrollo full stack.",
-          "Stack heterogéneo: .NET/C#, LAMP (PHP), SQL Server y MySQL. Backends de alto volumen con alta disponibilidad y eliminación de puntos únicos de fallo."
+          "Único responsable end-to-end de Sígueme 4 (telemetría satelital de flotas): arquitectura, backend, frontend, datos y despliegue.",
+          "+100 licencias contractuales al lanzamiento; producto aún en uso en transporte en Colombia.",
+          "AWS: EC2, RDS (réplicas), S3, SNS, SES. Unificación de múltiples GPS; geocercas y alertas de desvío/riesgo.",
+          "Ministerio de Transporte vía web services: +15 procesos automáticos (Systram, Sígueme, Seway).",
+          "LTSA (Grupo Éxito): APIs SAP + funcionalidad a medida. Systram CRM de transporte: full stack.",
+          "Stack: .NET/C#, LAMP/PHP, SQL Server, MySQL. HA y eliminación de SPOF."
         ],
         "en": [
-          "Sole owner of the end-to-end development of Sígueme 4, a fleet satellite-tracking platform: architecture, backend, frontend, data model and deployment.",
-          "Over 100 contractual licences at launch. The product is still live and used by transport companies across Colombia.",
-          "AWS architecture: EC2 compute, managed RDS databases with replicas, S3 storage, and notifications and transactional email via SNS and SES.",
-          "Unified multiple third-party GPS platforms into a single system for cargo, route and risk monitoring.",
-          "Automated monitoring based on geofencing and satellite positioning, with route-deviation and risk-event alerting.",
-          "Integrated with Colombia's Ministry of Transport via web services: 15+ automated processes connecting Systram, Sígueme, Seway and the government platform.",
-          "For LTSA (Grupo Éxito): integration and consumption of SAP APIs, plus custom functionality on Sígueme 4 and Systram.",
-          "Systram, a specialised transport CRM in Colombia: full stack development.",
-          "Heterogeneous stack: .NET/C#, LAMP (PHP), SQL Server and MySQL. High-volume backends with high availability and removal of single points of failure."
-        ]
-      }
-    },
-    {
-      "empresa": "Feeling Company S.A.S.",
-      "cargo": {
-        "es": "TODO:cargo exacto (ej. Desarrollador Full Stack)",
-        "en": "TODO:exact title (e.g. Full Stack Developer)"
-      },
-      "ubicacion": { "es": "TODO:Medellín, Colombia", "en": "TODO:Medellín, Colombia" },
-      "periodo": { "es": "TODO:mes año – mes año", "en": "TODO:month year – month year" },
-      "bullets": {
-        "es": [
-          "LEED, software B2B para Bancolombia y Comfama, y sistemas de control de presupuestos y contratos B2B para Tigo y Comfama.",
-          "DUX: sistema nacional de premiación con inscripción de códigos de empaque, con validación de códigos y gestión de ganadores.",
-          "Plataformas de promoción y activación de marca a nivel nacional para Nutresa, Navidad Noel, Rica y Cunit.",
-          "Test Drive Renault: plataforma de captación y agendamiento de pruebas de vehículo. Sitio de marketing para Argos.",
-          "Operación bajo picos de tráfico de campaña con ventanas de lanzamiento fijas y cero tolerancia a caídas."
-        ],
-        "en": [
-          "LEED, B2B software for Bancolombia and Comfama, plus budget and B2B contract control systems for Tigo and Comfama.",
-          "DUX: nationwide prize platform with packaging-code registration, code validation and winner management.",
-          "National brand promotion and activation platforms for Nutresa, Navidad Noel, Rica and Cunit.",
-          "Test Drive Renault: lead capture and test-drive scheduling platform. Marketing site for Argos.",
-          "Operated under campaign traffic peaks with fixed launch windows and zero tolerance for downtime."
+          "Sole end-to-end owner of Sígueme 4 (fleet satellite telematics): architecture, backend, frontend, data and deploy.",
+          "100+ contractual licences at launch; still used by transport companies in Colombia.",
+          "AWS: EC2, RDS (replicas), S3, SNS, SES. Multi-GPS unification; geofencing and deviation/risk alerts.",
+          "Ministry of Transport web services: 15+ automated processes (Systram, Sígueme, Seway).",
+          "LTSA (Grupo Éxito): SAP APIs + custom features. Systram transport CRM: full stack.",
+          "Stack: .NET/C#, LAMP/PHP, SQL Server, MySQL. HA and SPOF removal."
         ]
       }
     }
   ],
+  "laboratorio": {
+    "titulo": {
+      "es": "Laboratorio Nova OS (métricas verificables)",
+      "en": "Nova OS lab (verifiable metrics)"
+    },
+    "bullets": {
+      "es": [
+        "Orquestación: 5 áreas, 29 roles, 35 nodos en grafo; timeline de ejecución en vivo (SSE).",
+        "Arquitectura: 13 topologías documentadas en producto y versionadas en git.",
+        "Costo: ~12,2M tokens y 296 crew calls ≈ USD 29,90 (cascada 14 proveedores + Ollama local).",
+        "Conocimiento: 2.749 chunks (nova_knowledge), 6 packs de dominio, 159 docs propios; validación RAG.",
+        "Salud: HUD de 11 subsistemas (LLM, STT/TTS, visión, YOLO, toolkits, automatizaciones).",
+        "Catálogo: 202 perfiles MIT open source en 17 áreas mapeados a roles Nova."
+      ],
+      "en": [
+        "Orchestration: 5 areas, 29 roles, 35 graph nodes; live execution timeline (SSE).",
+        "Architecture: 13 system topologies documented in-product and versioned in git.",
+        "Cost: ~12.2M tokens and 296 crew calls ≈ USD 29.90 (14-provider cascade + local Ollama).",
+        "Knowledge: 2,749 chunks (nova_knowledge), 6 domain packs, 159 first-party docs; RAG validation.",
+        "Health: 11-subsystem HUD (LLM, STT/TTS, vision, YOLO, toolkits, automations).",
+        "Catalog: 202 MIT open-source profiles across 17 areas mapped to Nova roles."
+      ]
+    }
+  },
   "proyectos": [
     {
-      "nombre": "Nova — Orquestación multiagente (producto propio)",
+      "nombre": "Auge Urbano — PropTech + CRM + 2 agentes IA",
+      "en_cv": true,
+      "periodo": { "es": "Jul 2025 – Actualidad", "en": "Jul 2025 – Present" },
+      "url": "https://augeurbano.com",
+      "asociado_con": "Medellín Web Soluciones",
       "resumen": {
-        "es": "Red de IA propia con CEO, 5 divisiones y 29 especialistas que analiza y ejecuta soluciones end-to-end. API FastAPI, panel de grafo 3D, streaming en vivo por SSE e inferencia local para coste predecible y privacidad.",
-        "en": "In-house AI network with a CEO, 5 divisions and 29 specialists that analyses and executes end-to-end solutions. FastAPI API, 3D graph dashboard, live SSE streaming and local inference for predictable cost and privacy."
+        "es": "Plataforma inmobiliaria en producción: catálogo, CRM comercial, portales colega/captador, finanzas y 2 agentes IA (asesor web + copiloto panel con function calling). 159 rutas Flask, 45 tablas MySQL 8, ~43k LOC, SEO/AEO/GEO, Bold, guards anti prompt-injection. Pipeline WebP −88% peso.",
+        "en": "Production real-estate platform: catalogue, commercial CRM, partner/scout portals, finance and 2 AI agents (web advisor + panel copilot with function calling). 159 Flask routes, 45 MySQL 8 tables, ~43k LOC, SEO/AEO/GEO, Bold, anti prompt-injection guards. WebP pipeline −88% weight."
       },
-      "stack": ["Python", "FastAPI", "CrewAI", "LangChain", "LiteLLM", "Ollama", "Langfuse", "ChromaDB", "Composio", "faster-whisper", "edge-tts", "OpenCV / YOLO", "SSE", "Three.js", "PostgreSQL", "Docker"]
+      "stack": ["Python", "Flask", "MySQL", "SQLite", "OpenAI", "Gemini", "GA4 Data API", "Bold", "Docker", "pytest", "Nginx"]
     },
     {
-      "nombre": "MWS AI — Plugin WordPress tipo SaaS",
+      "nombre": "Nova — Orquestación multiagente (laboratorio)",
+      "en_cv": true,
+      "url": "https://ricardozuluaga.medellinweb.co/es/laboratorio",
+      "asociado_con": "Medellín Web Soluciones",
       "resumen": {
-        "es": "Agente de ventas y soporte que atiende tiendas WooCommerce en automático 24/7, con RAG sobre inventario real (stock, tallas, precios), traspaso a humano y licencia anual para agencias.",
-        "en": "Sales and support agent that runs WooCommerce stores automatically 24/7, with RAG over real inventory (stock, sizes, prices), human handoff and annual licensing for agencies."
+        "es": "Red de IA operativa: CEO + 5 divisiones + 29 especialistas. FastAPI, CrewAI, grafo 3D, SSE, Ollama/LiteLLM, Langfuse, ChromaDB/pgvector, Whisper, edge-tts, OpenCV/YOLO, Composio/MCP. Complemento: agente de leads inmobiliarios con scoring.",
+        "en": "Operational AI network: CEO + 5 divisions + 29 specialists. FastAPI, CrewAI, 3D graph, SSE, Ollama/LiteLLM, Langfuse, ChromaDB/pgvector, Whisper, edge-tts, OpenCV/YOLO, Composio/MCP. Companion: real-estate lead agent with scoring."
       },
-      "stack": ["WordPress", "PHP", "FastAPI", "SQLAlchemy", "Alembic", "asyncpg", "PostgreSQL + pgvector", "OpenAI", "RAG", "JWT", "WebSockets", "WooCommerce REST"]
-    },
-    {
-      "nombre": "Auge Urbano — Solución vertical end-to-end",
-      "resumen": {
-        "es": "Plataforma de gestión con CRM propio y automatización con IA, cubriendo el ciclo completo del negocio: captación, seguimiento comercial, operación y reportes.",
-        "en": "Management platform with its own CRM and AI automation, covering the full business cycle: acquisition, sales follow-up, operations and reporting."
-      },
-      "stack": ["Python", "PostgreSQL", "IA / automatización", "Docker"]
+      "stack": ["Python", "FastAPI", "CrewAI", "LangChain", "Ollama", "LiteLLM", "Langfuse", "ChromaDB", "pgvector", "Composio", "MCP", "Three.js", "Docker"]
     },
     {
       "nombre": "LEXIA — Legal Intelligence OS",
+      "en_cv": true,
+      "url": "https://lexia.medellinweb.co",
+      "asociado_con": "Medellín Web Soluciones",
       "resumen": {
-        "es": "Sistema operativo jurídico multi-rama con IA en tres superficies: API, entorno de trabajo y analítica. Stack Python completo, con datos semilla para demos reproducibles y despliegue documentado en Docker.",
-        "en": "Multi-branch legal operating system with AI across three surfaces: API, workspace and analytics. Full Python stack, seed data for reproducible demos and documented Docker deployment."
+        "es": "SO jurídico multi-rama en producción: API FastAPI + OS Streamlit + analytics Dash. RAG con citación obligatoria de fuente. Marketplace cliente↔abogado, GTM tools, cobro Wompi/trial. Python-only, seed demo, Docker.",
+        "en": "Multi-branch legal OS in production: FastAPI API + Streamlit OS + Dash analytics. RAG with mandatory source citation. Client↔lawyer marketplace, GTM tools, Wompi/trial billing. Python-only, demo seed, Docker."
       },
-      "stack": ["Python", "FastAPI", "Streamlit", "Dash", "Docker"]
+      "stack": ["Python", "FastAPI", "Streamlit", "Dash", "RAG", "Docker", "Wompi"]
     },
     {
-      "nombre": "Cerebro omnicanal + WooCommerce",
+      "nombre": "MWS AI — Agente WooCommerce SaaS",
+      "en_cv": true,
+      "asociado_con": "Medellín Web Soluciones",
       "resumen": {
-        "es": "Motor de comercio híbrido (stock propio y dropshipping) con radar de oportunidades, scoring y aprobación humana antes de publicar. Sincroniza catálogo y pedidos con WooCommerce vía REST y webhooks.",
-        "en": "Hybrid commerce engine (own stock and dropshipping) with an opportunity radar, scoring and human approval before publishing. Syncs catalogue and orders with WooCommerce via REST and webhooks."
+        "es": "Plugin WP + backend SaaS: ventas/soporte 24/7 con RAG sobre stock/tallas/precios reales, widget en tienda, handoff humano, JWT/WebSockets, licencias Growth/Enterprise (agencias USA/España).",
+        "en": "WP plugin + SaaS backend: 24/7 sales/support with RAG over live stock/sizes/prices, storefront widget, human handoff, JWT/WebSockets, Growth/Enterprise licences (US/Spain agencies)."
       },
-      "stack": ["FastAPI", "PostgreSQL", "Redis", "HTMX", "WooCommerce REST", "OpenAI"]
+      "stack": ["WordPress", "PHP", "FastAPI", "SQLAlchemy", "PostgreSQL + pgvector", "OpenAI", "JWT", "WebSockets", "WooCommerce"]
     },
     {
-      "nombre": "Plataforma personal con agente IA",
+      "nombre": "Omnicanal + WooCommerce Colombia",
+      "en_cv": true,
+      "asociado_con": "Medellín Web Soluciones",
       "resumen": {
-        "es": "Landing bilingüe con SEO técnico, agente de IA con RAG y guardrails, agendamiento real contra Google Calendar con generación de enlaces Meet, y panel de administración con métricas de uso y coste de IA.",
-        "en": "Bilingual landing with technical SEO, RAG-based AI agent with guardrails, real scheduling against Google Calendar with Meet link generation, and an admin dashboard tracking usage and AI cost."
+        "es": "Cerebro híbrido stock propio + dropship: worker radar Dropi, scoring, panel HITL Jinja/HTMX, API catálogo FastAPI, publish Woo. Tienda woo-store-co; vertical Tecnopets.",
+        "en": "Hybrid own-stock + dropship brain: Dropi radar worker, scoring, HITL Jinja/HTMX panel, FastAPI catalogue API, Woo publish. woo-store-co store; Tecnopets vertical."
+      },
+      "stack": ["FastAPI", "PostgreSQL", "Redis", "HTMX", "WooCommerce REST", "OpenAI", "Docker"]
+    },
+    {
+      "nombre": "LMS Claude Architect — curso + pagos",
+      "en_cv": true,
+      "asociado_con": "Medellín Web Soluciones",
+      "resumen": {
+        "es": "Django bilingüe ES/EN: checkout invitado Bold+PayPal (webhooks idempotentes), entitlement 12 meses, lecciones HTMX, tutor IA RAG con rate-limit/cache, examen 100 preguntas, planes Fast-Track/Mentoring/B2B, SEO/GEO/AEO.",
+        "en": "Bilingual Django ES/EN: guest checkout Bold+PayPal (idempotent webhooks), 12-month entitlement, HTMX lessons, RAG AI tutor with rate-limit/cache, 100-question exam, Fast-Track/Mentoring/B2B plans, SEO/GEO/AEO."
+      },
+      "stack": ["Django", "HTMX", "PostgreSQL", "Bold", "PayPal", "RAG", "Tailwind", "WhiteNoise"]
+    },
+    {
+      "nombre": "CRM operativo MWS + finanzas",
+      "en_cv": true,
+      "asociado_con": "Medellín Web Soluciones",
+      "resumen": {
+        "es": "Admin Django custom: embudo con KPIs, import SECOP II, prospectos scraper/SERP + IA, temperatura/territorio/probabilidad, cotizaciones, conversión a cliente, finanzas (ingresos/gastos/flujo) en el mismo hub.",
+        "en": "Custom Django admin: funnel with KPIs, SECOP II import, scraper/SERP prospects + AI, temperature/territory/probability, quotes, convert-to-client, finance (income/expense/cashflow) in the same hub."
+      },
+      "stack": ["Django", "Python", "SECOP", "MySQL/PostgreSQL", "IA"]
+    },
+    {
+      "nombre": "pagos_bold — librería Python reutilizable",
+      "en_cv": true,
+      "asociado_con": "Medellín Web Soluciones",
+      "resumen": {
+        "es": "SDK de pagos Bold (terceros, no afiliado a Bold SAS): CheckoutService, IntegrationHealth, bold-console, webhooks/firma, deploy Docker VPS. Plug-in en Auge, LMS y otros productos.",
+        "en": "Bold payments SDK (third-party, not affiliated with Bold SAS): CheckoutService, IntegrationHealth, bold-console, webhooks/signing, Docker VPS deploy. Plugged into Auge, LMS and other products."
+      },
+      "stack": ["Python", "Bold", "Docker", "Webhooks"]
+    },
+    {
+      "nombre": "Sitio MWS + agente de conocimiento",
+      "en_cv": false,
+      "url": "https://www.medellinweb.co",
+      "asociado_con": "Medellín Web Soluciones",
+      "resumen": {
+        "es": "Landing comercial Django en producción: 18 servicios, blog, billing, portal, /agentes-ia/ con Nova, sync agent_knowledge al RAG. Angular legacy separado.",
+        "en": "Production Django commercial landing: 18 services, blog, billing, portal, /agentes-ia/ with Nova, agent_knowledge RAG sync. Legacy Angular separate."
+      },
+      "stack": ["Django", "WhiteNoise", "SMTP", "RAG", "Angular (legacy)"]
+    },
+    {
+      "nombre": "Plataforma personal — agente IA + agenda",
+      "en_cv": false,
+      "url": "https://ricardozuluaga.medellinweb.co",
+      "asociado_con": "Medellín Web Soluciones",
+      "resumen": {
+        "es": "Sitio bilingüe Next.js con SEO técnico, agente RAG + guardrails, booking Google Calendar/Meet, admin de métricas y coste de IA, panel práctica inglés.",
+        "en": "Bilingual Next.js site with technical SEO, RAG agent + guardrails, Google Calendar/Meet booking, AI usage/cost admin, English practice panel."
       },
       "stack": ["Next.js 16", "TypeScript", "React 19", "Prisma", "PostgreSQL + pgvector", "NextAuth", "Tailwind"]
+    },
+    {
+      "nombre": "Embudo de recomendación de cursos",
+      "en_cv": false,
+      "asociado_con": "Medellín Web Soluciones",
+      "resumen": {
+        "es": "Wizard Flask 60–90s (interés → tiempo → modalidad → ≤3 cursos) con reglas determinísticas y CTA a tienda. Estilo Comfama / Chef Virtual.",
+        "en": "Flask 60–90s wizard (interest → time → modality → ≤3 courses) with deterministic rules and store CTA. Comfama / Chef Virtual style."
+      },
+      "stack": ["Flask", "Python", "Sesiones", "Templates"]
+    },
+    {
+      "nombre": "Landings boutique de cliente",
+      "en_cv": false,
+      "asociado_con": "Medellín Web Soluciones",
+      "resumen": {
+        "es": "Landings estáticas a medida (ej. Julio Zapata CV): HTML/CSS/JS, build dist/, deploy scripts, alto acabado y performance.",
+        "en": "Custom static landings (e.g. Julio Zapata CV): HTML/CSS/JS, dist/ build, deploy scripts, high finish and performance."
+      },
+      "stack": ["HTML", "CSS", "JavaScript"]
+    },
+    {
+      "nombre": "Sígueme 4 — telemetría satelital (Carga Control)",
+      "en_cv": true,
+      "asociado_con": "Carga Control",
+      "resumen": {
+        "es": "Plataforma de flotas: +100 licencias, unificación GPS, geocercas, AWS (EC2/RDS/S3/SNS/SES), +15 procesos con Ministerio de Transporte, SAP para LTSA/Grupo Éxito.",
+        "en": "Fleet platform: 100+ licences, GPS unification, geofencing, AWS (EC2/RDS/S3/SNS/SES), 15+ Ministry of Transport processes, SAP for LTSA/Grupo Éxito."
+      },
+      "stack": [".NET/C#", "PHP/LAMP", "SQL Server", "MySQL", "AWS", "SAP", "Web services"]
+    },
+    {
+      "nombre": "Aroka SAS — Transferimos (freelance)",
+      "en_cv": false,
+      "resumen": {
+        "es": "Freelance full stack sobre software Transferimos en ecosistema .NET.",
+        "en": "Freelance full stack on Transferimos software in the .NET ecosystem."
+      },
+      "stack": [".NET", "C#", "SQL Server"]
     }
   ],
   "stack": [
     {
       "grupo": { "es": "Frontend", "en": "Frontend" },
-      "items": ["TypeScript", "React 19", "Next.js (App Router)", "Tailwind CSS", "Framer Motion", "HTMX"]
+      "items": ["TypeScript", "React 19", "Next.js (App Router)", "Tailwind CSS", "Framer Motion", "HTMX", "Alpine", "JavaScript", "jQuery", "Three.js", "Streamlit", "Dash"]
     },
     {
       "grupo": { "es": "Backend", "en": "Backend" },
-      "items": ["Python", "FastAPI", "Django", "Node.js", ".NET / C#", "PHP (LAMP, WordPress)", "APIs REST"]
+      "items": ["Python", "FastAPI", "Flask", "Django", "Laravel", "Node.js", ".NET / C#", "PHP (LAMP, WordPress)", "APIs REST", "Gunicorn"]
     },
     {
       "grupo": { "es": "Datos", "en": "Data" },
-      "items": ["PostgreSQL", "MySQL", "SQL Server", "pgvector", "Prisma", "Redis", "SQLite"]
+      "items": ["PostgreSQL", "MySQL 8", "SQL Server", "pgvector", "ChromaDB", "Prisma", "Redis", "SQLite", "SQLAlchemy"]
     },
     {
       "grupo": { "es": "Cloud e infraestructura", "en": "Cloud & infrastructure" },
-      "items": ["Arquitectura AWS (EC2, RDS, S3, SNS, SES)", "Docker", "Docker Compose", "Nginx", "VPS/Linux", "Git"]
+      "items": ["AWS (EC2, RDS, S3, SNS, SES)", "Docker", "Docker Compose", "Nginx + TLS", "VPS/Linux", "WhiteNoise", "Git"]
     },
     {
       "grupo": { "es": "IA", "en": "AI" },
-      "items": ["OpenAI API", "RAG / embeddings", "CrewAI", "LangChain", "MCP", "Ollama / LiteLLM", "Langfuse", "pgvector / ChromaDB", "Whisper (ASR)", "TTS", "OpenCV / YOLO", "n8n"]
+      "items": ["OpenAI", "Google Gemini", "Anthropic", "RAG / embeddings", "CrewAI", "LangChain", "MCP", "Ollama / LiteLLM", "Langfuse", "Whisper", "edge-tts", "OpenCV / YOLO", "n8n", "Composio"]
     },
     {
-      "grupo": { "es": "Integraciones", "en": "Integrations" },
-      "items": ["APIs SAP", "Plataformas GPS / telemetría", "Web services Ministerio de Transporte", "WooCommerce", "Pasarela de pagos Bold", "Google Workspace"]
+      "grupo": { "es": "Integraciones y pagos", "en": "Integrations & payments" },
+      "items": ["SAP", "GPS / telemetría", "Ministerio de Transporte", "WooCommerce", "Bold", "PayPal", "Wompi", "Google Workspace", "GA4 Data API", "SECOP", "IndexNow"]
     },
     {
       "grupo": { "es": "Prácticas", "en": "Practices" },
-      "items": ["Arquitectura por capas", "Microservicios", "Alta disponibilidad", "Observabilidad", "Geocercas / geolocalización"]
+      "items": ["Arquitectura por capas", "Microservicios / HA", "Observabilidad", "HITL", "Geocercas", "SEO técnico / AEO / GEO", "Guardrails / anti prompt-injection", "pytest"]
+    }
+  ],
+  "certificaciones": [
+    {
+      "nombre": {
+        "es": "Curso de Inteligencia Artificial para el Trabajo",
+        "en": "AI for Work Course"
+      },
+      "emisor": "Platzi",
+      "fecha": { "es": "Sep 2023", "en": "Sep 2023" },
+      "credential_id": "d654d38e-c7ac-4621-b841-bdcd3e9d00c5"
+    },
+    {
+      "nombre": {
+        "es": "Curso Básico de Python",
+        "en": "Basic Python Course"
+      },
+      "emisor": "Platzi",
+      "fecha": { "es": "Mar 2023", "en": "Mar 2023" },
+      "credential_id": "9505b79c-1e0e-4254-bc3e-fdfb6447cfcd"
+    },
+    {
+      "nombre": {
+        "es": "SEO para comercios electrónicos",
+        "en": "SEO for E-commerce"
+      },
+      "emisor": "Platzi",
+      "fecha": { "es": "Mar 2023", "en": "Mar 2023" },
+      "credential_id": "2cd90344-137c-4a6d-b91f-d1a992ba214c"
     }
   ],
   "formacion": [
     {
       "titulo": {
-        "es": "Formación autodidacta — documentación técnica oficial y trabajo en producción",
-        "en": "Self-taught — official technical documentation and production work"
+        "es": "Universidad de Medellín — estudios (sin título) · Autodidacta en producción",
+        "en": "Universidad de Medellín — studies (no degree) · Self-taught in production"
       },
       "detalle": {
-        "es": "Aprendizaje directo sobre documentación oficial de los frameworks y servicios que uso, validado en pruebas técnicas empresariales y en sistemas que llevan años operando.",
-        "en": "Learning directly from the official documentation of the frameworks and services I use, validated through corporate technical assessments and systems that have been running for years."
+        "es": "2011–2017. Dejó la universidad; aprendió desde documentación oficial. Credencial: +10 años en producción y clientes enterprise (banca, telco, retail, logística, PropTech).",
+        "en": "2011–2017. Left university; learned from official docs. Credential: 10+ years in production and enterprise clients (banking, telco, retail, logistics, PropTech)."
       },
-      "periodo": { "es": "TODO:año – Actualidad", "en": "TODO:year – Present" }
-    },
-    {
-      "titulo": {
-        "es": "TODO:Universidad de Medellín — carrera (indica si en curso o sin finalizar)",
-        "en": "TODO:Universidad de Medellín — programme (state if ongoing or unfinished)"
-      },
-      "detalle": { "es": "", "en": "" },
-      "periodo": { "es": "TODO:año – año", "en": "TODO:year – year" }
+      "periodo": { "es": "2011 – 2017", "en": "2011 – 2017" }
     }
   ],
   "idiomas": [
     { "es": "Español — nativo", "en": "Spanish — native" },
-    { "es": "Inglés — lectura y comprensión técnica avanzada; conversacional básico en mejora (autodidacta)", "en": "English — advanced technical reading and comprehension; basic conversational, improving (self-taught)" }
+    { "es": "Inglés — lectura/comprensión técnica avanzada; conversacional básico en mejora", "en": "English — advanced technical reading/comprehension; basic conversational, improving" }
+  ],
+  "marcas_publicas": [
+    "Grupo Éxito / LTSA",
+    "Bancolombia",
+    "Comfama",
+    "Tigo",
+    "Nutresa",
+    "Noel",
+    "Rica",
+    "Cunit",
+    "Renault",
+    "Argos",
+    "472",
+    "Cantagirone",
+    "Ministerio de Transporte",
+    "Auge Urbano"
   ]
 }

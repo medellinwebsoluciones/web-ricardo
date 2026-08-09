@@ -13,6 +13,7 @@ import {
   FolderOpen,
   Target,
   Sparkles,
+  GraduationCap,
   LogOut,
   Menu,
   X,
@@ -48,6 +49,12 @@ const NAV = [
     label: "Oportunidades",
     icon: Target,
     badge: "opportunities",
+  },
+  {
+    href: "/admin/practica",
+    label: "Práctica EN",
+    icon: GraduationCap,
+    badge: null,
   },
   { href: "/admin/generador", label: "Generador IA", icon: Sparkles, badge: null },
 ] as const;

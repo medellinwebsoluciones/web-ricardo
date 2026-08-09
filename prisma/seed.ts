@@ -17,15 +17,16 @@ function resolveAdminPasswordHash(): string {
     .replace(/\\\$/g, "$");
   if (raw.startsWith("$2")) return raw;
 
-  const fallback = "cambia-esto-2026";
-  console.log(
-    `ADMIN_PASSWORD / HASH no válidos. Se creó admin con password: "${fallback}" (cámbialo).`,
+  throw new Error(
+    "Seed abortado: define ADMIN_PASSWORD o ADMIN_PASSWORD_HASH válido ($2…). No se crea admin con password por defecto.",
   );
-  return bcrypt.hashSync(fallback, 10);
 }
 
 async function seedAdmin() {
-  const email = (process.env.ADMIN_EMAIL || "ricki5789@gmail.com").toLowerCase();
+  const email = (process.env.ADMIN_EMAIL || "").trim().toLowerCase();
+  if (!email) {
+    throw new Error("Seed abortado: ADMIN_EMAIL es obligatorio.");
+  }
   const passwordHash = resolveAdminPasswordHash();
 
   await prisma.adminUser.upsert({

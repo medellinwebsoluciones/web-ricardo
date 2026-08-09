@@ -88,6 +88,16 @@ export function CaseStudies({
                           {item.challenges[0]}
                         </dd>
                       </div>
+                      {item.architectureLayers[0] && (
+                        <div>
+                          <dt className="text-xs font-semibold uppercase tracking-wide text-zinc-500">
+                            {c.ui.architectureLabel}
+                          </dt>
+                          <dd className="mt-1 text-sm text-zinc-400">
+                            {item.architectureLayers[0]}
+                          </dd>
+                        </div>
+                      )}
                       <div>
                         <dt className="text-xs font-semibold uppercase tracking-wide text-emerald-400/80">
                           {dict.cases.resultLabel}

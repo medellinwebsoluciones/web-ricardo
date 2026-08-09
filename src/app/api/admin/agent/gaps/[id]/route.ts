@@ -73,6 +73,7 @@ export async function PATCH(
       audience: gap.audience || "desconocido",
       source: "correccion",
       approved: true,
+      tags: ["gap"],
     },
   });
 

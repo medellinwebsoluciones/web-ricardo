@@ -6,10 +6,13 @@ export type CaseStudyLabels = {
   resultLabel: string;
 };
 
+export type StackTier = "core" | "strong" | "infra" | "ai";
+
 export type StackCategory = {
   title: string;
   items: string[];
   blurb?: string;
+  tier: StackTier;
   icon?:
     | "agentic"
     | "ha"
@@ -36,15 +39,33 @@ export type Dictionary = {
     contact: string;
     lab: string;
     services: string;
+    career: string;
+    recruiters: string;
     langLabel: string;
   };
   hero: {
     availability: string;
     title: string;
+    role: string;
+    roleSpec: string;
     subtitle: string;
+    location: string;
     ctaPrimary: string;
     ctaSecondary: string;
+    ctaCv: string;
+    ctaLinkedin: string;
+    rolesLabel: string;
+    roles: string[];
     stats: { value: string; label: string }[];
+  };
+  enterprise: {
+    label: string;
+    note: string;
+  };
+  products: {
+    eyebrow: string;
+    heading: string;
+    body: string;
   };
   about: {
     eyebrow: string;
@@ -70,7 +91,31 @@ export type Dictionary = {
     eyebrow: string;
     heading: string;
     subheading: string;
+    tiers: Record<StackTier, string>;
     categories: StackCategory[];
+  };
+  recruiters: {
+    metaTitle: string;
+    metaDescription: string;
+    eyebrow: string;
+    heading: string;
+    intro: string;
+    quickFactsHeading: string;
+    quickFacts: { label: string; value: string }[];
+    rolesHeading: string;
+    rolesNote: string;
+    workModelHeading: string;
+    workModel: { label: string; value: string }[];
+    stackHeading: string;
+    enterpriseHeading: string;
+    systemsHeading: string;
+    systemsNote: string;
+    ctaHeading: string;
+    ctaBody: string;
+    downloadCv: string;
+    viewLinkedin: string;
+    bookCall: string;
+    emailCta: string;
   };
   booking: {
     eyebrow: string;
@@ -101,6 +146,7 @@ export type Dictionary = {
     subheading: string;
     nameLabel: string;
     emailLabel: string;
+    phoneLabel: string;
     messageLabel: string;
     submit: string;
     submitting: string;
@@ -120,6 +166,7 @@ export type Dictionary = {
   };
   footer: {
     heading: string;
+    paths: string[];
     cta: string;
     linkedin: string;
     email: string;
@@ -130,6 +177,8 @@ export type Dictionary = {
     eyebrow: string;
     heading: string;
     items: { title: string; description: string }[];
+    profileHeading: string;
+    profile: { label: string; value: string }[];
   };
   mwsAgency: {
     eyebrow: string;
@@ -144,11 +193,16 @@ export type Dictionary = {
 const es: Dictionary = {
   meta: {
     title:
-      "Ricardo Zuluaga | Senior Solutions Architect & AI Automation Expert",
+      "Ricardo Zuluaga | Senior Software Architect · AI & Backend",
     description:
-      "Arquitecto de Soluciones Senior disponible remoto desde Medellín (solape España) o con relocation a ES. Agentic AI, RAG, CrewAI, MCP y alta disponibilidad en producción — para reclutadores y empresas EU.",
+      "Senior Software Architect / Solutions Architect (AI · Backend · Sistemas distribuidos). +10 años y 12+ sistemas en producción. Remoto desde Medellín con solape CET o relocation a España/EU.",
     keywords: [
+      "Senior Software Architect",
       "Solutions Architect",
+      "Software Architect España",
+      "Staff Software Engineer",
+      "Principal Software Engineer",
+      "AI Architect",
       "Contratar Solutions Architect",
       "Solutions Architect remoto España",
       "AI Automation",
@@ -176,28 +230,54 @@ const es: Dictionary = {
     contact: "Contacto",
     lab: "Laboratorio",
     services: "Servicios",
+    career: "Trayectoria",
+    recruiters: "Para reclutadores",
     langLabel: "EN",
   },
   hero: {
     availability:
       "Remoto desde Medellín · solape horario España · abierto a relocation ES",
     title:
-      "Ricardo Zuluaga — Senior Solutions Architect & AI Automation Expert",
+      "Ricardo Zuluaga — Senior Software Architect / Solutions Architect",
+    role: "Senior Software Architect / Solutions Architect",
+    roleSpec: "AI · Backend · Sistemas distribuidos",
     subtitle:
-      "Arquitectura y agentes de IA en producción para empresas y reclutadores en España/EU: +10 años, 12 sistemas entregados. Prefiero 100% remoto; disponible para trasladarme si el rol lo exige.",
+      "Diseño, construyo y opero sistemas en producción donde la arquitectura, la fiabilidad y la IA importan de verdad: +10 años y 12+ sistemas entregados para banca, telco, retail y producto propio.",
+    location: "España / EU · Remoto · Relocation",
     ctaPrimary: "Agendar llamada técnica (15 min)",
     ctaSecondary: "Ver sistemas en producción",
+    ctaCv: "Descargar CV",
+    ctaLinkedin: "LinkedIn",
+    rolesLabel: "Abierto a",
+    roles: [
+      "Senior Software Architect",
+      "Solutions Architect",
+      "Staff Software Engineer",
+      "Principal Engineer",
+      "AI Architect",
+      "Technical Lead",
+      "Senior Backend Engineer",
+    ],
     stats: [
       { value: "+10", label: "Años en producción" },
-      { value: "12", label: "Sistemas entregados" },
+      { value: "12+", label: "Sistemas entregados" },
       { value: "24/7", label: "Automatización con IA local" },
     ],
+  },
+  enterprise: {
+    label: "Experiencia enterprise",
+    note: "Experiencia pública seleccionada. Parte del trabajo empresarial está bajo acuerdos de confidencialidad: describo responsabilidad técnica y arquitectura solo donde está permitido.",
+  },
+  products: {
+    eyebrow: "Products & Ventures",
+    heading: "Producto propio, separado de la trayectoria profesional.",
+    body: "Nova, el laboratorio y MWS AI son iniciativas propias con las que pruebo arquitectura agéntica en producción. Van aquí, no mezcladas con la experiencia de empleo, para que quede claro qué es carrera y qué es producto.",
   },
   about: {
     eyebrow: "Executive Summary",
     heading: "El arquitecto al que llaman cuando el sistema no puede fallar.",
     body: [
-      "Arquitecto de Software Full-Stack con más de 10 años diseñando y operando sistemas que no pueden fallar: desde plataformas críticas bajo estándares corporativos hasta la nueva generación de infraestructura agéntica con IA. No entrego demos ni POCs — entrego sistemas en producción, con clientes reales y operación 24/7.",
+      "Arquitecto de software con más de 10 años diseñando y operando sistemas que no pueden fallar: desde plataformas críticas bajo estándares corporativos hasta la nueva generación de infraestructura agéntica con IA. Prototipo cuando el problema lo exige, pero mi trabajo se mide en producción: clientes reales, operación 24/7 y responsabilidad de punta a punta.",
     ],
     systemsHeading: "Productos de punta a punta",
     systemsIntro:
@@ -292,65 +372,101 @@ const es: Dictionary = {
     heading: "Soluciones Implementadas",
     subheading:
       "Sistemas reales en producción — agentes, alta disponibilidad, LegalTech, commerce y pagos — con arquitectura y trade-offs explícitos, no un portafolio de capturas bonitas.",
-    challengeLabel: "Reto",
+    challengeLabel: "Problema",
     solutionLabel: "Solución",
-    resultLabel: "Resultado",
+    resultLabel: "Impacto",
   },
   stack: {
     eyebrow: "Tech Stack",
-    heading: "Herramientas de precisión.",
+    heading: "Un núcleo técnico claro, con amplitud detrás.",
     subheading:
-      "Del LAMP clásico a Full Stack Python, agentes, grafos y bases vectoriales: el stack que uso en sistemas reales, no en tutoriales.",
+      "No es una lista de todo lo que he tocado: es el núcleo con el que diseño y opero sistemas, y las capas de soporte que sé cuándo usar.",
+    tiers: {
+      core: "Núcleo de especialidad",
+      strong: "Experiencia sólida",
+      infra: "Infraestructura",
+      ai: "Infraestructura de IA",
+    },
     categories: [
+      {
+        title: "Arquitectura & Backend",
+        blurb:
+          "El núcleo: APIs, dominios y backends que sostienen el negocio en producción.",
+        icon: "python",
+        tier: "core",
+        items: [
+          "Python",
+          "FastAPI",
+          "Django",
+          "PostgreSQL",
+          "Diseño de APIs",
+          "Arquitectura de software",
+        ],
+      },
       {
         title: "Agentic AI",
         blurb:
           "Orquestación local-first de agentes con RAG y herramientas MCP — no un wrapper de ChatGPT.",
         icon: "agentic",
-        items: ["CrewAI", "Ollama", "RAG", "MCP", "FastAPI agents", "Embeddings"],
-      },
-      {
-        title: "Full Stack LAMP",
-        blurb: "El clásico de producción web: estable, barato y desplegable.",
-        icon: "lamp",
-        items: ["Linux", "Apache", "MySQL / MariaDB", "PHP", "WordPress"],
-      },
-      {
-        title: "Full Stack Python",
-        blurb:
-          "El stack primordial para IA y productos potentes: APIs, backends y apps de punta a punta.",
-        icon: "python",
-        items: ["Python", "FastAPI", "Django", "Flask", "Streamlit", "Celery"],
-      },
-      {
-        title: "Arquitectura HA",
-        blurb: "Sin SPOF, observable y listo para escrutinio corporativo.",
-        icon: "ha",
-        items: ["Microservices", "Docker", "Nginx", "Observability", "Redis", "CI/CD"],
+        tier: "core",
+        items: ["Agentic AI", "RAG", "CrewAI", "Ollama", "MCP", "Embeddings"],
       },
       {
         title: "Commerce & Product",
         blurb: "Checkout real y plataformas full-stack de punta a punta.",
         icon: "commerce",
-        items: ["WooCommerce", "Bold", "Next.js", "Django", "React", "HTMX"],
+        tier: "strong",
+        items: ["WooCommerce", "Bold", "Next.js", "React", "HTMX", "PHP / WordPress"],
       },
       {
-        title: "Bases relacionales",
+        title: "Otros stacks en producción",
+        blurb:
+          "Entornos corporativos donde he entregado sin ser mi núcleo diario.",
+        icon: "lamp",
+        tier: "strong",
+        items: ["Laravel", "Node.js", ".NET", "Java", "Angular", "Flask", "Streamlit"],
+      },
+      {
+        title: "Plataforma & Alta disponibilidad",
+        blurb: "Sin SPOF, observable y listo para escrutinio corporativo.",
+        icon: "ha",
+        tier: "infra",
+        items: [
+          "Docker",
+          "Nginx",
+          "Linux",
+          "Redis",
+          "CI/CD",
+          "Observabilidad",
+          "Microservicios",
+        ],
+      },
+      {
+        title: "Datos operativos",
         blurb: "Consistencia ACID, migraciones y consultas críticas.",
         icon: "relational",
-        items: ["PostgreSQL", "MySQL", "MariaDB", "SQL Server"],
+        tier: "infra",
+        items: ["PostgreSQL", "MySQL / MariaDB", "SQL Server", "MongoDB", "Elasticsearch"],
       },
       {
-        title: "No relacionales",
-        blurb: "Documentos, caché y búsqueda cuando el modelo no es tabular.",
-        icon: "nosql",
-        items: ["MongoDB", "Redis", "Elasticsearch", "DynamoDB"],
-      },
-      {
-        title: "Grafos & Vectoriales",
-        blurb: "Lo nuevo: relaciones y similitud semántica para IA/RAG.",
+        title: "Vectorial & Grafos",
+        blurb: "Recuperación semántica y relaciones para sistemas con IA.",
         icon: "graph",
-        items: ["Neo4j", "pgvector", "Qdrant", "Weaviate", "Chroma"],
+        tier: "ai",
+        items: ["pgvector", "Qdrant", "Weaviate", "Chroma", "Neo4j"],
+      },
+      {
+        title: "Operación de modelos",
+        blurb: "Inferencia local, control de coste y guardrails en producción.",
+        icon: "product",
+        tier: "ai",
+        items: [
+          "Inferencia local",
+          "Control de coste",
+          "Evaluaciones",
+          "Guardrails",
+          "Fine-tuning",
+        ],
       },
     ],
   },
@@ -388,6 +504,7 @@ const es: Dictionary = {
       "Cuéntame tu reto de arquitectura, IA o producto — leo cada mensaje yo mismo, sin bandeja de soporte ni bot intermedio.",
     nameLabel: "Nombre",
     emailLabel: "Email",
+    phoneLabel: "Teléfono",
     messageLabel: "Mensaje",
     submit: "Contactar a Ricardo",
     submitting: "Enviando...",
@@ -400,7 +517,7 @@ const es: Dictionary = {
     subtitle: "Entrenado con el conocimiento de Ricardo Zuluaga",
     placeholder: "Escribe tu pregunta técnica...",
     greeting:
-      "Hola, soy el asistente de IA de Ricardo. Respondo dudas técnicas sobre arquitectura, automatización con IA y los proyectos de Medellín Web Soluciones — y si tu caso amerita una evaluación real, te ayudo a agendar la llamada. ¿En qué te ayudo?",
+      "Hola, soy el asistente de IA de Ricardo. Puedo ayudarte con arquitectura, desarrollo full stack senior, IA en producción o si estás evaluando su perfil para un rol. ¿En qué te puedo ayudar?",
     send: "Enviar",
     disclaimer:
       "Asistente de IA entrenado con el conocimiento de Ricardo. Para temas sensibles, agenda una llamada.",
@@ -408,8 +525,12 @@ const es: Dictionary = {
     bookCta: "Agendar llamada",
   },
   footer: {
-    heading:
-      "¿Tu equipo enfrenta un techo de escalabilidad o necesita automatización con IA que funcione en producción, no en un pitch deck? Hablemos de arquitectura.",
+    heading: "Hablemos de arquitectura.",
+    paths: [
+      "Contratarme para un rol senior",
+      "Consultoría técnica",
+      "Sistemas de IA en producción",
+    ],
     cta: "Contactar a Ricardo",
     linkedin: "LinkedIn",
     email: "Email",
@@ -441,6 +562,65 @@ const es: Dictionary = {
           "Español profesional (neutro ES/LatAm) e inglés técnico para equipos internacionales.",
       },
     ],
+    profileHeading: "Perfil de contratación internacional",
+    profile: [
+      { label: "Base", value: "Medellín, Colombia" },
+      { label: "Mercado objetivo", value: "España / EU / internacional" },
+      { label: "Zona horaria", value: "COT con solape CET" },
+      { label: "Remoto", value: "Preferido" },
+      { label: "Relocation", value: "España / EU" },
+      { label: "Contrato", value: "Indefinido ES o contractor B2B" },
+      { label: "Idiomas", value: "Español · inglés técnico" },
+      { label: "Banda objetivo", value: "Senior / Staff / Principal / Architect" },
+    ],
+  },
+  recruiters: {
+    metaTitle:
+      "Para reclutadores | Ricardo Zuluaga — Senior Software Architect",
+    metaDescription:
+      "Perfil de contratación: roles objetivo, modelo de trabajo, stack núcleo, experiencia enterprise y CV descargable. Senior Software Architect / Solutions Architect para España/EU.",
+    eyebrow: "Perfil de contratación",
+    heading: "Todo lo que necesitas para decidir si encajo, en una página.",
+    intro:
+      "Sin recorrer el portafolio entero: roles a los que aplico, cómo trabajo con España/EU, el stack que domino y los sistemas que puedes revisar en detalle.",
+    quickFactsHeading: "Datos rápidos",
+    quickFacts: [
+      { label: "Ubicación", value: "Medellín, Colombia" },
+      { label: "Zona horaria", value: "COT · solape diario con CET" },
+      { label: "Experiencia", value: "+10 años · 12+ sistemas en producción" },
+      { label: "Especialidad", value: "Arquitectura · IA · Backend" },
+      { label: "Idiomas", value: "Español nativo · inglés técnico" },
+      { label: "Respuesta", value: "Contesto personalmente en 24 h hábiles" },
+    ],
+    rolesHeading: "Roles objetivo",
+    rolesNote:
+      "Banda senior/staff. No aplico a posiciones mid ni a roles donde no haya responsabilidad de arquitectura.",
+    workModelHeading: "Modelo de trabajo",
+    workModel: [
+      { label: "Remoto", value: "Preferido, con solape CET" },
+      { label: "Relocation", value: "España / EU si el rol lo exige" },
+      {
+        label: "Contrato",
+        value: "Indefinido en España o contractor B2B",
+      },
+      {
+        label: "Autorización",
+        value:
+          "Traslado a la ciudad del contrato con visado/autorización gestionada con apoyo de la empresa. Como contractor B2B facturo desde Colombia.",
+      },
+    ],
+    stackHeading: "Stack núcleo",
+    enterpriseHeading: "Experiencia enterprise",
+    systemsHeading: "Sistemas que puedes auditar",
+    systemsNote:
+      "Cada caso incluye problema, arquitectura, decisiones y resultado. Los productos propios son verificables en vivo.",
+    ctaHeading: "Siguiente paso",
+    ctaBody:
+      "Descarga el CV o agenda 15 minutos: hablas directamente conmigo, sin intermediarios.",
+    downloadCv: "Descargar CV (PDF)",
+    viewLinkedin: "Ver LinkedIn",
+    bookCall: "Agendar llamada técnica",
+    emailCta: "Escribir un email",
   },
   mwsAgency: {
     eyebrow: "Para agencias WooCommerce",
@@ -459,12 +639,16 @@ const es: Dictionary = {
 
 const en: Dictionary = {
   meta: {
-    title:
-      "Ricardo Zuluaga | Senior Solutions Architect & AI Automation Expert",
+    title: "Ricardo Zuluaga | Senior Software Architect · AI & Backend",
     description:
-      "Senior Solutions Architect available remote from Medellín (Spain overlap) or open to ES relocation. Agentic AI, RAG, CrewAI, MCP and high availability in production — for EU recruiters and companies.",
+      "Senior Software Architect / Solutions Architect (AI · Backend · Distributed Systems). 10+ years and 12+ production systems. Remote from Medellín with CET overlap or relocation to Spain/EU.",
     keywords: [
+      "Senior Software Architect",
       "Solutions Architect",
+      "Software Architect Spain",
+      "Staff Software Engineer",
+      "Principal Software Engineer",
+      "AI Architect",
       "Hire Solutions Architect",
       "Remote Solutions Architect Spain",
       "AI Automation",
@@ -492,28 +676,53 @@ const en: Dictionary = {
     contact: "Contact",
     lab: "Lab",
     services: "Services",
+    career: "Career",
+    recruiters: "For recruiters",
     langLabel: "ES",
   },
   hero: {
     availability:
       "Remote from Medellín · Spain timezone overlap · open to ES relocation",
-    title:
-      "Ricardo Zuluaga — Senior Solutions Architect & AI Automation Expert",
+    title: "Ricardo Zuluaga — Senior Software Architect / Solutions Architect",
+    role: "Senior Software Architect / Solutions Architect",
+    roleSpec: "AI · Backend · Distributed Systems",
     subtitle:
-      "Production architecture and AI agents for companies and recruiters in Spain/EU: 10+ years, 12 systems shipped. Prefer 100% remote; ready to relocate if the role requires it.",
+      "I design, build and operate production systems where architecture, reliability and AI actually matter: 10+ years and 12+ systems shipped across banking, telco, retail and my own products.",
+    location: "Spain / EU · Remote · Relocation",
     ctaPrimary: "Book a 15-Min Technical Call",
     ctaSecondary: "See Production Systems",
+    ctaCv: "Download CV",
+    ctaLinkedin: "LinkedIn",
+    rolesLabel: "Open to",
+    roles: [
+      "Senior Software Architect",
+      "Solutions Architect",
+      "Staff Software Engineer",
+      "Principal Engineer",
+      "AI Architect",
+      "Technical Lead",
+      "Senior Backend Engineer",
+    ],
     stats: [
       { value: "10+", label: "Years in production" },
-      { value: "12", label: "Systems delivered" },
+      { value: "12+", label: "Systems delivered" },
       { value: "24/7", label: "Local AI automation" },
     ],
+  },
+  enterprise: {
+    label: "Enterprise experience",
+    note: "Selected public experience. Part of the enterprise work sits under confidentiality agreements: I describe technical responsibility and architecture only where permitted.",
+  },
+  products: {
+    eyebrow: "Products & Ventures",
+    heading: "My own products, kept separate from my career track.",
+    body: "Nova, the lab and MWS AI are my own initiatives, where I push agentic architecture into production. They live here rather than mixed into employment history, so it's clear what is career and what is product.",
   },
   about: {
     eyebrow: "Executive Summary",
     heading: "The architect companies call when the system can't fail.",
     body: [
-      "Full-Stack Software Architect with 10+ years designing and operating systems that can't afford to fail — from critical platforms under corporate standards to the new generation of agentic AI infrastructure. I don't ship demos or POCs. I ship production systems, with real clients and 24/7 operation.",
+      "Software architect with 10+ years designing and operating systems that can't afford to fail — from critical platforms under corporate standards to the new generation of agentic AI infrastructure. I prototype when the problem calls for it, but my work is measured in production: real clients, 24/7 operation and end-to-end accountability.",
     ],
     systemsHeading: "End-to-end products",
     systemsIntro:
@@ -608,65 +817,101 @@ const en: Dictionary = {
     heading: "Delivered Solutions",
     subheading:
       "Real production systems — agents, high availability, LegalTech, commerce and payments — with explicit architecture and trade-offs, not a portfolio of pretty screenshots.",
-    challengeLabel: "Challenge",
+    challengeLabel: "Problem",
     solutionLabel: "Solution",
-    resultLabel: "Result",
+    resultLabel: "Impact",
   },
   stack: {
     eyebrow: "Tech Stack",
-    heading: "Precision tooling.",
+    heading: "A clear technical core, with breadth behind it.",
     subheading:
-      "From classic LAMP to Full Stack Python, agents, graphs and vector stores: the stack I use in real systems, not tutorials.",
+      "Not a list of everything I've touched: the core I design and operate systems with, plus the supporting layers I know when to reach for.",
+    tiers: {
+      core: "Core expertise",
+      strong: "Strong experience",
+      infra: "Infrastructure",
+      ai: "AI infrastructure",
+    },
     categories: [
+      {
+        title: "Architecture & Backend",
+        blurb:
+          "The core: APIs, domains and backends that keep the business running in production.",
+        icon: "python",
+        tier: "core",
+        items: [
+          "Python",
+          "FastAPI",
+          "Django",
+          "PostgreSQL",
+          "API design",
+          "Software architecture",
+        ],
+      },
       {
         title: "Agentic AI",
         blurb:
           "Local-first agent orchestration with RAG and MCP tools — not a ChatGPT wrapper.",
         icon: "agentic",
-        items: ["CrewAI", "Ollama", "RAG", "MCP", "FastAPI agents", "Embeddings"],
-      },
-      {
-        title: "Full Stack LAMP",
-        blurb: "The production web classic: stable, lean and deployable.",
-        icon: "lamp",
-        items: ["Linux", "Apache", "MySQL / MariaDB", "PHP", "WordPress"],
-      },
-      {
-        title: "Full Stack Python",
-        blurb:
-          "The core stack for AI and powerful products: APIs, backends and end-to-end apps.",
-        icon: "python",
-        items: ["Python", "FastAPI", "Django", "Flask", "Streamlit", "Celery"],
-      },
-      {
-        title: "HA architecture",
-        blurb: "No SPOF, observable and ready for corporate scrutiny.",
-        icon: "ha",
-        items: ["Microservices", "Docker", "Nginx", "Observability", "Redis", "CI/CD"],
+        tier: "core",
+        items: ["Agentic AI", "RAG", "CrewAI", "Ollama", "MCP", "Embeddings"],
       },
       {
         title: "Commerce & Product",
         blurb: "Real checkout and end-to-end full-stack product surfaces.",
         icon: "commerce",
-        items: ["WooCommerce", "Bold", "Next.js", "Django", "React", "HTMX"],
+        tier: "strong",
+        items: ["WooCommerce", "Bold", "Next.js", "React", "HTMX", "PHP / WordPress"],
       },
       {
-        title: "Relational databases",
+        title: "Other production stacks",
+        blurb:
+          "Corporate environments where I've delivered outside my daily core.",
+        icon: "lamp",
+        tier: "strong",
+        items: ["Laravel", "Node.js", ".NET", "Java", "Angular", "Flask", "Streamlit"],
+      },
+      {
+        title: "Platform & High availability",
+        blurb: "No SPOF, observable and ready for corporate scrutiny.",
+        icon: "ha",
+        tier: "infra",
+        items: [
+          "Docker",
+          "Nginx",
+          "Linux",
+          "Redis",
+          "CI/CD",
+          "Observability",
+          "Microservices",
+        ],
+      },
+      {
+        title: "Operational data",
         blurb: "ACID consistency, migrations and mission-critical queries.",
         icon: "relational",
-        items: ["PostgreSQL", "MySQL", "MariaDB", "SQL Server"],
+        tier: "infra",
+        items: ["PostgreSQL", "MySQL / MariaDB", "SQL Server", "MongoDB", "Elasticsearch"],
       },
       {
-        title: "Non-relational",
-        blurb: "Documents, cache and search when the model is not tabular.",
-        icon: "nosql",
-        items: ["MongoDB", "Redis", "Elasticsearch", "DynamoDB"],
-      },
-      {
-        title: "Graph & Vector",
-        blurb: "What's new: relationships and semantic similarity for AI/RAG.",
+        title: "Vector & Graph",
+        blurb: "Semantic retrieval and relationships for AI systems.",
         icon: "graph",
-        items: ["Neo4j", "pgvector", "Qdrant", "Weaviate", "Chroma"],
+        tier: "ai",
+        items: ["pgvector", "Qdrant", "Weaviate", "Chroma", "Neo4j"],
+      },
+      {
+        title: "Model operations",
+        blurb: "Local inference, cost control and guardrails in production.",
+        icon: "product",
+        tier: "ai",
+        items: [
+          "Local inference",
+          "Cost control",
+          "Evaluations",
+          "Guardrails",
+          "Fine-tuning",
+        ],
       },
     ],
   },
@@ -704,6 +949,7 @@ const en: Dictionary = {
       "Tell me about your architecture, AI or product challenge — I read every message myself, no support queue, no bot in between.",
     nameLabel: "Name",
     emailLabel: "Email",
+    phoneLabel: "Phone",
     messageLabel: "Message",
     submit: "Contact Ricardo",
     submitting: "Sending...",
@@ -716,7 +962,7 @@ const en: Dictionary = {
     subtitle: "Trained on Ricardo Zuluaga's knowledge",
     placeholder: "Type your technical question...",
     greeting:
-      "Hi, I'm Ricardo's AI assistant. I answer technical questions about architecture, AI automation and Medellín Web Soluciones' projects — and if your case needs a real assessment, I'll help you book the call. How can I help?",
+      "Hi — I'm Ricardo's AI assistant. I can help with architecture, senior full-stack work, production AI, or if you're evaluating his profile for a role. How can I help?",
     send: "Send",
     disclaimer:
       "AI assistant trained on Ricardo's knowledge. For sensitive matters, book a call.",
@@ -724,8 +970,12 @@ const en: Dictionary = {
     bookCta: "Book a call",
   },
   footer: {
-    heading:
-      "Is your team hitting a scalability ceiling, or do you need AI automation that works in production — not just in a pitch deck? Let's talk architecture.",
+    heading: "Let's talk architecture.",
+    paths: [
+      "Hiring me for a senior role",
+      "Technical consulting",
+      "AI systems in production",
+    ],
     cta: "Contact Ricardo",
     linkedin: "LinkedIn",
     email: "Email",
@@ -757,6 +1007,61 @@ const en: Dictionary = {
           "Professional Spanish (neutral ES/LatAm) and technical English for international teams.",
       },
     ],
+    profileHeading: "International hiring profile",
+    profile: [
+      { label: "Based in", value: "Medellín, Colombia" },
+      { label: "Target market", value: "Spain / EU / international" },
+      { label: "Timezone", value: "COT with CET overlap" },
+      { label: "Remote", value: "Preferred" },
+      { label: "Relocation", value: "Spain / EU" },
+      { label: "Contract", value: "Spanish permanent or B2B contractor" },
+      { label: "Languages", value: "Spanish · technical English" },
+      { label: "Target band", value: "Senior / Staff / Principal / Architect" },
+    ],
+  },
+  recruiters: {
+    metaTitle: "For recruiters | Ricardo Zuluaga — Senior Software Architect",
+    metaDescription:
+      "Hiring profile: target roles, work model, core stack, enterprise experience and downloadable CV. Senior Software Architect / Solutions Architect for Spain/EU.",
+    eyebrow: "Hiring profile",
+    heading: "Everything you need to decide if I fit, on one page.",
+    intro:
+      "No need to walk the whole portfolio: the roles I apply for, how I work with Spain/EU, the stack I own and the systems you can review in depth.",
+    quickFactsHeading: "Quick facts",
+    quickFacts: [
+      { label: "Location", value: "Medellín, Colombia" },
+      { label: "Timezone", value: "COT · daily CET overlap" },
+      { label: "Experience", value: "10+ years · 12+ production systems" },
+      { label: "Focus", value: "Architecture · AI · Backend" },
+      { label: "Languages", value: "Native Spanish · technical English" },
+      { label: "Response", value: "I reply personally within 24 business hours" },
+    ],
+    rolesHeading: "Target roles",
+    rolesNote:
+      "Senior/staff band. I don't apply to mid-level positions or roles without architecture ownership.",
+    workModelHeading: "Work model",
+    workModel: [
+      { label: "Remote", value: "Preferred, with CET overlap" },
+      { label: "Relocation", value: "Spain / EU if the role requires it" },
+      { label: "Contract", value: "Spanish permanent contract or B2B contractor" },
+      {
+        label: "Authorization",
+        value:
+          "Relocation to the contract city with work authorization sponsored by the company. As a B2B contractor I invoice from Colombia.",
+      },
+    ],
+    stackHeading: "Core stack",
+    enterpriseHeading: "Enterprise experience",
+    systemsHeading: "Systems you can audit",
+    systemsNote:
+      "Each case covers problem, architecture, decisions and outcome. My own products are verifiable live.",
+    ctaHeading: "Next step",
+    ctaBody:
+      "Download the CV or book 15 minutes: you talk directly to me, no middle layer.",
+    downloadCv: "Download CV (PDF)",
+    viewLinkedin: "View LinkedIn",
+    bookCall: "Book a technical call",
+    emailCta: "Send an email",
   },
   mwsAgency: {
     eyebrow: "For WooCommerce agencies",

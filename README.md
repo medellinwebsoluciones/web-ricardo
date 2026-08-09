@@ -171,13 +171,15 @@ Abre http://localhost:3000 (redirige a `/es`). Admin en `/admin`.
 
 1. En Google Cloud Console crea credenciales OAuth (tipo Web), con `GOOGLE_REDIRECT_URI` = `https://TU_DOMINIO/api/google/callback`.
 2. Habilita la Google Calendar API.
-3. Autoriza tu cuenta visitando (usando tu `NEXTAUTH_SECRET`):
+3. Define `GOOGLE_SETUP_TOKEN` (largo y aleatorio) en `.env`, o inicia sesión en `/admin`.
+4. Autoriza tu cuenta:
 
 ```
-https://TU_DOMINIO/api/google/auth?key=NEXTAUTH_SECRET
+https://TU_DOMINIO/api/google/auth?key=GOOGLE_SETUP_TOKEN
 ```
 
-4. Copia el `GOOGLE_REFRESH_TOKEN` que devuelve el callback a tu `.env` y reinicia.
+   (Si ya tienes sesión admin, puedes omitir `?key=`.)
+5. El callback **no** muestra el refresh token en el navegador: cópialo desde los logs del contenedor (`docker compose logs app`) y pégalo como `GOOGLE_REFRESH_TOKEN` en `.env`, luego reinicia.
 
 Sin estas credenciales, el panel de citas muestra "no disponible" (el resto del sitio funciona).
 
@@ -215,6 +217,8 @@ docker/
 ## Notas de seguridad
 
 - El agente se presenta como "asistente de IA entrenado con el conocimiento de Ricardo" y responde solo con el contexto RAG; ante dudas deriva a agendar/contactar.
-- Rate-limit en memoria por IP en chat, booking y contacto. Para multi-instancia, migrar a Redis.
+- Rate-limit en memoria por IP en chat, booking, contacto, login admin e ingest. Para multi-instancia, migrar a Redis.
+- En producción el login no acepta `ADMIN_PASSWORD` en claro: usa `AdminUser` en BD (seed) o `ADMIN_PASSWORD_HASH`.
 - Todas las rutas `/api/admin/*` comparten el guard de `src/lib/admin-auth.ts` y devuelven 401 sin sesión.
 - Las descargas de documentos validan la ruta en disco para bloquear path traversal.
+- Setup de Google Calendar usa `GOOGLE_SETUP_TOKEN` o sesión admin; el refresh token no se pinta en el HTML del callback.

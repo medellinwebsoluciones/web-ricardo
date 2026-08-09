@@ -65,7 +65,7 @@ export async function deleteUpload(storedName: string): Promise<void> {
 /**
  * Extrae texto para poder enviar el documento al RAG.
  * PDF via pdf-parse, DOCX via mammoth, texto plano directo.
- * Devuelve null si el formato no es extraíble (ej. imágenes).
+ * PNG/JPEG via visión LLM (OCR / descripción de diagrama).
  */
 export async function extractText(
   buffer: Buffer,
@@ -80,7 +80,11 @@ export async function extractText(
       const parser = new PDFParse({ data: new Uint8Array(buffer) });
       try {
         const result = await parser.getText();
-        return result.text?.trim() || null;
+        const text = result.text?.trim() || null;
+        // Muchos certificados/cédulas vienen como PDF escaneado sin capa de
+        // texto. Si no hay texto, intentamos OCR vía LLM cuando esté disponible.
+        if (text) return text;
+        return await extractTextFromPdfWithLlm(buffer, filename);
       } finally {
         await parser.destroy();
       }
@@ -103,10 +107,133 @@ export async function extractText(
     ) {
       return buffer.toString("utf8").trim() || null;
     }
+
+    if (
+      mimeType === "image/png" ||
+      mimeType === "image/jpeg" ||
+      [".png", ".jpg", ".jpeg", ".webp"].includes(ext)
+    ) {
+      return extractTextFromImage(buffer, mimeType || "image/png");
+    }
   } catch (err) {
     console.error("extractText error:", err);
     return null;
   }
 
   return null;
+}
+
+async function extractTextFromImage(
+  buffer: Buffer,
+  mimeType: string,
+): Promise<string | null> {
+  try {
+    const { clientFor, isLlmConfigured } = await import("./llm/client");
+    if (!isLlmConfigured("chat")) {
+      console.warn("extractText image: LLM chat no configurado");
+      return null;
+    }
+    const { client, model, provider, tier } = clientFor("chat");
+    const b64 = buffer.toString("base64");
+    const dataUrl = `data:${mimeType};base64,${b64}`;
+    const res = await client.chat.completions.create({
+      model,
+      temperature: 0,
+      max_tokens: 2000,
+      messages: [
+        {
+          role: "user",
+          content: [
+            {
+              type: "text",
+              text: `Extrae TODO el texto visible de esta imagen (OCR). Si es un diagrama o captura de UI, describe la estructura y labels legibles. No inventes datos que no se vean. Responde en el idioma del texto de la imagen; si solo hay diagrama, en español técnico. Solo el contenido útil para una base de conocimiento RAG.`,
+            },
+            {
+              type: "image_url",
+              image_url: { url: dataUrl },
+            },
+          ],
+        },
+      ],
+    });
+
+    try {
+      const { logUsage } = await import("./usage");
+      await logUsage({
+        channel: "chat",
+        model,
+        provider,
+        tier,
+        promptTokens: res.usage?.prompt_tokens,
+        completionTokens: res.usage?.completion_tokens,
+      });
+    } catch {
+      // ignore usage log failures
+    }
+
+    const text = res.choices[0]?.message?.content?.trim();
+    return text || null;
+  } catch (err) {
+    console.error("extractTextFromImage:", err);
+    return null;
+  }
+}
+
+async function extractTextFromPdfWithLlm(
+  buffer: Buffer,
+  filename: string,
+): Promise<string | null> {
+  try {
+    const { clientFor, isLlmConfigured } = await import("./llm/client");
+    if (!isLlmConfigured("chat")) {
+      return null;
+    }
+
+    const { client, model, provider, tier } = clientFor("chat");
+    const b64 = buffer.toString("base64");
+    const dataUrl = `data:application/pdf;base64,${b64}`;
+
+    const res = await (client.responses as any).create({
+      model,
+      temperature: 0,
+      max_output_tokens: 3000,
+      input: [
+        {
+          role: "user",
+          content: [
+            {
+              type: "input_text",
+              text: `Extrae TODO el texto legible de este PDF sin inventar datos. Respeta saltos de línea cuando aporten contexto (nombres, cargos, fechas, entidades, certificados). Si está vacío o ilegible, responde exactamente: SIN_TEXTO.`,
+            },
+            {
+              type: "input_file",
+              filename: filename || "documento.pdf",
+              file_data: dataUrl,
+            },
+          ],
+        },
+      ],
+    });
+
+    try {
+      const { logUsage } = await import("./usage");
+      await logUsage({
+        channel: "chat",
+        model,
+        provider,
+        tier,
+        promptTokens: res.usage?.input_tokens,
+        completionTokens: res.usage?.output_tokens,
+      });
+    } catch {
+      // ignore usage log failures
+    }
+
+    const text = String(res.output_text || "").trim();
+    if (!text || text === "SIN_TEXTO") return null;
+    return text;
+  } catch (err) {
+    console.error("extractTextFromPdfWithLlm:", err);
+    return null;
+  }
 }

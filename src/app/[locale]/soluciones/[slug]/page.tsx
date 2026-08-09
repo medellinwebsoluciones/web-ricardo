@@ -16,6 +16,8 @@ import { PageHero } from "@/components/PageHero";
 import { Reveal } from "@/components/Reveal";
 import { VideoPlayer } from "@/components/VideoPlayer";
 import { ArchMap } from "@/components/ArchMap";
+import { DecisionsOrchestrationVisual } from "@/components/DecisionsOrchestrationVisual";
+import { LearningFlowArchitecture } from "@/components/LearningFlowArchitecture";
 
 export function generateStaticParams() {
   return locales.flatMap((locale) =>
@@ -301,25 +303,71 @@ export default async function SolutionDetailPage({
         </div>
       </section>
 
-      {/* Decisions */}
-      <section className="section-pad container-tight border-b border-zinc-900">
-        <Reveal>
-          <h2 className="text-2xl font-semibold tracking-tight text-white">
-            {c.ui.decisionsLabel}
-          </h2>
-        </Reveal>
-        <ul className="mt-8 space-y-6">
-          {s.decisions.map((d, i) => (
-            <Reveal as="li" key={d.title} delay={0.05 * i}>
-              <div className="border-l border-emerald-500/40 pl-5">
-                <h3 className="text-base font-medium text-white">{d.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-zinc-400">
-                  {d.why}
-                </p>
-              </div>
+      {/* Flujo de aprendizaje + funcionalidades (solo LMS) */}
+      {s.slug === "plataforma-aprendizaje" && (
+        <section className="section-pad border-b border-zinc-900 bg-zinc-950/40">
+          <div className="container-wide">
+            <Reveal>
+              <LearningFlowArchitecture locale={l} />
             </Reveal>
-          ))}
-        </ul>
+          </div>
+        </section>
+      )}
+
+      {/* Decisions */}
+      <section
+        className={`section-pad border-b border-zinc-900 ${
+          s.slug === "orquestacion-agentes" ? "container-wide" : "container-tight"
+        }`}
+      >
+        {s.slug === "orquestacion-agentes" ? (
+          <div className="grid items-start gap-10 lg:grid-cols-2 lg:gap-12">
+            <div>
+              <Reveal>
+                <h2 className="text-2xl font-semibold tracking-tight text-white">
+                  {c.ui.decisionsLabel}
+                </h2>
+              </Reveal>
+              <ul className="mt-8 space-y-6">
+                {s.decisions.map((d, i) => (
+                  <Reveal as="li" key={d.title} delay={0.05 * i}>
+                    <div className="border-l border-emerald-500/40 pl-5">
+                      <h3 className="text-base font-medium text-white">
+                        {d.title}
+                      </h3>
+                      <p className="mt-2 text-sm leading-relaxed text-zinc-400">
+                        {d.why}
+                      </p>
+                    </div>
+                  </Reveal>
+                ))}
+              </ul>
+            </div>
+            <Reveal delay={0.12} className="lg:sticky lg:top-28">
+              <DecisionsOrchestrationVisual locale={l} />
+            </Reveal>
+          </div>
+        ) : (
+          <>
+            <Reveal>
+              <h2 className="text-2xl font-semibold tracking-tight text-white">
+                {c.ui.decisionsLabel}
+              </h2>
+            </Reveal>
+            <ul className="mt-8 space-y-6">
+              {s.decisions.map((d, i) => (
+                <Reveal as="li" key={d.title} delay={0.05 * i}>
+                  <div className="border-l border-emerald-500/40 pl-5">
+                    <h3 className="text-base font-medium text-white">{d.title}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-zinc-400">
+                      {d.why}
+                    </p>
+                  </div>
+                </Reveal>
+              ))}
+            </ul>
+          </>
+        )}
       </section>
 
       <section className="section-pad container-tight">

@@ -1,3 +1,4 @@
+import { timingSafeEqual } from "crypto";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./auth";
 
@@ -13,6 +14,13 @@ export async function denyIfNotAdmin(): Promise<Response | null> {
   return null;
 }
 
+function tokensMatch(a: string, b: string): boolean {
+  const ba = Buffer.from(a);
+  const bb = Buffer.from(b);
+  if (ba.length !== bb.length) return false;
+  return timingSafeEqual(ba, bb);
+}
+
 /**
  * Sesión de admin O token de ingestión (`JOB_INGEST_TOKEN` / header
  * `x-ingest-token`). Sirve para la extensión Chrome y el bookmarklet
@@ -23,6 +31,6 @@ export async function denyIfNotAdminOrIngestToken(
 ): Promise<Response | null> {
   const token = (process.env.JOB_INGEST_TOKEN || "").trim();
   const header = (req.headers.get("x-ingest-token") || "").trim();
-  if (token && header && header === token) return null;
+  if (token && header && tokensMatch(header, token)) return null;
   return denyIfNotAdmin();
 }

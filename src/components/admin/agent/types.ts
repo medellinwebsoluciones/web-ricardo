@@ -93,12 +93,12 @@ export type PersonaVersion = {
   notes: string | null;
   psychologyLayer: string;
   audienceLayers: Record<string, string>;
-  stageLayers: Record<string, string>;
   model: string;
   temperature: number;
   maxTokens: number;
   isActive: boolean;
   updatedAt: string;
+  stageLayers: Record<string, string>;
 };
 
 export type Gap = {
@@ -117,8 +117,15 @@ export type TrainingExample = {
   id: string;
   question: string;
   answer: string;
+  rejectedAnswer: string | null;
   audience: string;
+  locale: string;
   source: string;
+  tags: string[];
+  notes: string | null;
+  quality: number | null;
+  simulationRunId: string | null;
+  evalResultId: string | null;
   approved: boolean;
   createdAt: string;
 };
@@ -130,6 +137,22 @@ export type TrainingStats = {
   ready: boolean;
   bySource: Record<string, number>;
   lastExportAt: string | null;
+  withPreference?: number;
+};
+
+export type FineTuneJob = {
+  id: string;
+  openaiJobId: string;
+  status: string;
+  baseModel: string;
+  fineTunedModel: string | null;
+  fileId: string | null;
+  exampleCount: number;
+  error: string | null;
+  promptVersionId: string | null;
+  createdAt: string;
+  updatedAt: string;
+  finishedAt: string | null;
 };
 
 /**

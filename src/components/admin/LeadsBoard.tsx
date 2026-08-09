@@ -23,6 +23,21 @@ import {
 
 export type LeadNote = { id: string; body: string; createdAt: string };
 
+const SOURCE_LABEL: Record<string, string> = {
+  chat: "Chat",
+  contact: "Formulario",
+  booking: "Agenda",
+};
+
+function sourceLabel(source: string): string {
+  return SOURCE_LABEL[source] || source;
+}
+
+function intentFromTags(tags: string[]): string | null {
+  const t = tags.find((x) => x.startsWith("intent:"));
+  return t ? t.slice("intent:".length) : null;
+}
+
 export type LeadRow = {
   id: string;
   name: string;
@@ -260,7 +275,7 @@ export function LeadsBoard({ initialLeads }: { initialLeads: LeadRow[] }) {
             <option value="">Todas las fuentes</option>
             {sources.map((s) => (
               <option key={s} value={s}>
-                {s}
+                {sourceLabel(s)}
               </option>
             ))}
           </select>
@@ -318,7 +333,13 @@ export function LeadsBoard({ initialLeads }: { initialLeads: LeadRow[] }) {
                           <p className="text-xs text-zinc-500">
                             {l.company ? `${l.company} · ` : ""}
                             {l.email}
+                            {l.phone ? ` · ${l.phone}` : ""}
                           </p>
+                          {intentFromTags(l.tags) && (
+                            <p className="mt-0.5 text-[10px] uppercase tracking-wide text-emerald-500/80">
+                              intent:{intentFromTags(l.tags)}
+                            </p>
+                          )}
                         </td>
                         <td className="px-4 py-2.5">
                           <Tag tone={LEAD_STATUS_TONE[l.status] || "neutral"}>
@@ -331,7 +352,7 @@ export function LeadsBoard({ initialLeads }: { initialLeads: LeadRow[] }) {
                           </Tag>
                         </td>
                         <td className="px-4 py-2.5 text-xs text-zinc-400">
-                          {l.source}
+                          {sourceLabel(l.source)}
                         </td>
                         <td className="px-4 py-2.5 text-xs text-zinc-500">
                           {fmtDay(l.createdAt)}
@@ -380,8 +401,11 @@ export function LeadsBoard({ initialLeads }: { initialLeads: LeadRow[] }) {
                     {selected.role && <p>{selected.role}</p>}
                     {selected.phone && <p>{selected.phone}</p>}
                     <p className="text-zinc-500">
-                      {selected.source} · {selected.locale} ·{" "}
+                      {sourceLabel(selected.source)} · {selected.locale} ·{" "}
                       {fmtDay(selected.createdAt)}
+                      {intentFromTags(selected.tags)
+                        ? ` · intent:${intentFromTags(selected.tags)}`
+                        : ""}
                     </p>
                   </div>
 

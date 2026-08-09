@@ -36,6 +36,7 @@ export function PlaygroundTab({
   const [panelId, setPanelId] = useState(AUDITOR_PANELS[0].id);
   const [result, setResult] = useState<TestResult | null>(null);
   const [correction, setCorrection] = useState("");
+  const [alsoSft, setAlsoSft] = useState(true);
   const [busy, setBusy] = useState(false);
 
   const questions = INTERVIEW_QUESTIONS.filter((q) => q.panel === panelId);
@@ -86,10 +87,34 @@ export function PlaygroundTab({
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "error");
+
+      let sftNote = "";
+      if (alsoSft) {
+        const sftRes = await fetch("/api/admin/agent/finetune", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({
+            action: "create",
+            question: prompt.trim(),
+            answer: correction.trim(),
+            rejectedAnswer: result?.answer || null,
+            audience: audience || result?.audience || "desconocido",
+            source: "playground",
+            approved: true,
+            tags: ["playground"],
+          }),
+        });
+        if (sftRes.ok) {
+          sftNote = " También al dataset SFT.";
+        } else {
+          sftNote = " (corpus OK; no se pudo añadir al dataset SFT).";
+        }
+      }
+
       notify(
         data.warning === "openai_not_configured"
-          ? "Guardado, pero falta OPENAI_API_KEY para indexar."
-          : `Entrenado: ${data.chunks} chunks añadidos al corpus.`,
+          ? `Guardado, pero falta OPENAI_API_KEY para indexar.${sftNote}`
+          : `Entrenado: ${data.chunks} chunks al corpus.${sftNote}`,
       );
       setCorrection("");
     } catch (e) {
@@ -237,6 +262,14 @@ export function PlaygroundTab({
                   rows={5}
                   className="input-field mt-2 resize-y py-2 text-xs"
                 />
+                <label className="mt-2 flex items-center gap-2 text-[11px] text-zinc-400">
+                  <input
+                    type="checkbox"
+                    checked={alsoSft}
+                    onChange={(e) => setAlsoSft(e.target.checked)}
+                  />
+                  También al dataset SFT (estilo)
+                </label>
                 <button
                   onClick={saveCorrection}
                   disabled={busy || !correction.trim()}

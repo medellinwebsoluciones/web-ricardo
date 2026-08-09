@@ -2,6 +2,7 @@ import { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { denyIfNotAdmin } from "@/lib/admin-auth";
 import { ensureCollection, reindexEntry } from "@/lib/corpus";
+import { extractText, readUpload } from "@/lib/storage";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -26,7 +27,25 @@ export async function POST(
   const { id } = await params;
   const doc = await prisma.document.findUnique({ where: { id } });
   if (!doc) return Response.json({ error: "not_found" }, { status: 404 });
-  if (!doc.extractedText) {
+  let text = doc.extractedText?.trim() || "";
+
+  // Reintento tardío: útil para documentos subidos antes de habilitar OCR/PDF
+  // fallback o cuando la primera extracción falló temporalmente.
+  if (!text) {
+    const fileBuffer = await readUpload(doc.storedName).catch(() => null);
+    if (fileBuffer) {
+      const recovered = await extractText(fileBuffer, doc.mimeType, doc.filename);
+      if (recovered?.trim()) {
+        text = recovered.trim();
+        await prisma.document.update({
+          where: { id: doc.id },
+          data: { extractedText: text },
+        });
+      }
+    }
+  }
+
+  if (!text) {
     return Response.json({ error: "no_text_to_ingest" }, { status: 400 });
   }
 
@@ -44,13 +63,13 @@ export async function POST(
   const entry = existing
     ? await prisma.knowledgeEntry.update({
         where: { id: existing.id },
-        data: { title: doc.title, content: doc.extractedText, lang: doc.lang },
+        data: { title: doc.title, content: text, lang: doc.lang },
       })
     : await prisma.knowledgeEntry.create({
         data: {
           collectionId,
           title: doc.title,
-          content: doc.extractedText,
+          content: text,
           lang: doc.lang,
           sourceType: "doc",
           sourceRef: doc.filename,

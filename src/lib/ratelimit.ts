@@ -28,10 +28,34 @@ export function rateLimit(
   return { ok: true, remaining: limit - bucket.count, resetAt: bucket.resetAt };
 }
 
-export function getClientIp(req: Request): string {
-  const fwd = req.headers.get("x-forwarded-for");
-  if (fwd) return fwd.split(",")[0].trim();
-  return req.headers.get("x-real-ip") || "unknown";
+/**
+ * IP del cliente detrás de Nginx (X-Real-IP) o el último hop de X-Forwarded-For.
+ * Preferimos X-Real-IP porque el ejemplo de nginx lo fija a $remote_addr y no
+ * se puede spoofear desde el cliente si el proxy limpia headers entrantes.
+ */
+export function getClientIp(req: Request | { headers: Headers | Record<string, string | string[] | undefined> }): string {
+  const headers = req.headers;
+  const get = (name: string): string | null => {
+    if (typeof (headers as Headers).get === "function") {
+      return (headers as Headers).get(name);
+    }
+    const raw = (headers as Record<string, string | string[] | undefined>)[name]
+      ?? (headers as Record<string, string | string[] | undefined>)[name.toLowerCase()];
+    if (Array.isArray(raw)) return raw[0] ?? null;
+    return raw ?? null;
+  };
+
+  const realIp = get("x-real-ip")?.trim();
+  if (realIp) return realIp;
+
+  const fwd = get("x-forwarded-for");
+  if (fwd) {
+    const parts = fwd.split(",").map((p) => p.trim()).filter(Boolean);
+    // Último hop = proxy más cercano (el que Nginx añadió).
+    if (parts.length > 0) return parts[parts.length - 1]!;
+  }
+
+  return "unknown";
 }
 
 // Limpieza periódica para evitar fugas de memoria.

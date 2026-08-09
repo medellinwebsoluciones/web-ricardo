@@ -55,6 +55,26 @@ export type LabCapture = {
   tags: string[];
 };
 
+export type LabNarrativeBlock = {
+  title: string;
+  body: string;
+};
+
+export type LabCapability = {
+  title: string;
+  description: string;
+};
+
+export type LabNarrative = {
+  eyebrow: string;
+  title: string;
+  intro: string;
+  blocks: LabNarrativeBlock[];
+  capabilitiesEyebrow: string;
+  capabilitiesTitle: string;
+  capabilities: LabCapability[];
+};
+
 export type ProcessStep = {
   phase: string;
   title: string;
@@ -106,6 +126,11 @@ export type InternalContent = {
     capturesZoom: string;
     galleryLabel: string;
     galleryIntro: string;
+    labPrev: string;
+    labNext: string;
+    labVideosEyebrow: string;
+    labVideosTitle: string;
+    labVideosIntro: string;
     profileTitle: string;
     profileEyebrow: string;
     viewSolution: string;
@@ -134,6 +159,7 @@ export type InternalContent = {
   services: ServiceDetail[];
   lab: LabItem[];
   captures: LabCapture[];
+  labNarrative: LabNarrative;
   process: ProcessStep[];
   profile: ProfileContent;
 };
@@ -150,19 +176,25 @@ const es: InternalContent = {
     servicesEyebrow: "Que hago",
     servicesIntro:
       "Consultoria tecnica senior bajo un modelo boutique: pocos clientes, ownership total y engagements que puedes escalar de proyecto puntual a retainer.",
-    labTitle: "Laboratorio de IA",
-    labEyebrow: "En vivo",
+    labTitle: "Laboratorio de agentes",
+    labEyebrow: "Orquestacion en vivo",
     labIntro:
-      "Sin marketing: un vistazo real a lo que construyo — redes neuronales, ecosistemas de agentes autonomos y el entorno donde nace la arquitectura.",
+      "Nova: un ejercito de agentes autonomos con CEO, divisiones y especialistas. Aqui ves como se orquesta trabajo real 24/7 — no un chatbot, sino un sistema operable con trazas, costo y roles.",
     labDisclaimer:
-      "Grabaciones de sistemas reales en ejecucion. El audio no es necesario para entender el contenido.",
-    capturesEyebrow: "Sistemas en operacion",
-    capturesTitle: "Capturas de producto y laboratorio",
+      "Capturas y videos de Nova en ejecucion real. El audio no es necesario para entender el contenido.",
+    capturesEyebrow: "Superficies de orquestacion",
+    capturesTitle: "Galeria operativa de Nova",
     capturesIntro:
-      "Pantallas reales: Nova OS (orquestacion, RAG, costo, salud), CRM operativo MWS (embudo SECOP/scraper, detalle de lead, finanzas) y MWS AI (agente de ventas WordPress/WooCommerce).",
+      "Recorre el grafo de roles, el catalogo MIT, la configuracion por agente, el HUD de salud, el RAG y el FinOps. Cada slide es una capa del mismo sistema de orquestacion.",
     capturesZoom: "Abrir a tamano completo",
     galleryLabel: "Galeria de producto",
     galleryIntro: "Capturas reales del sistema en operacion.",
+    labPrev: "Anterior",
+    labNext: "Siguiente",
+    labVideosEyebrow: "Ejecucion en vivo",
+    labVideosTitle: "Como se mueve la red de agentes",
+    labVideosIntro:
+      "Clips cortos de orquestacion, colaboracion multi-agente y paneles Nova. Sirven para validar que el sistema no es un diagrama: corre, rutea y deja evidencia.",
     profileTitle: "Perfil de Ricardo Zuluaga",
     profileEyebrow: "Sobre mi",
     viewSolution: "Ver caso completo",
@@ -170,12 +202,12 @@ const es: InternalContent = {
     exploreLab: "Explorar el laboratorio",
     bookCta: "Agendar llamada tecnica",
     contextLabel: "Contexto",
-    challengeLabel: "El reto",
+    challengeLabel: "Problema",
     approachLabel: "El enfoque",
     stackLabel: "Stack aplicado",
     stackIntro:
       "Del LAMP clasico a agentes, grafos y bases vectoriales: el stack que uso en sistemas reales, no en tutoriales.",
-    outcomesLabel: "Resultados",
+    outcomesLabel: "Impacto",
     architectureLabel: "Arquitectura",
     architectureLayersLabel: "Capas del sistema",
     decisionsLabel: "Decisiones de diseno",
@@ -257,28 +289,15 @@ const es: InternalContent = {
   ],
   lab: [
     {
-      slug: "redes-neuronales",
-      title: "Redes neuronales en accion",
-      description:
-        "Visualizacion del comportamiento de una red neuronal: nodos, conexiones y propagacion que sustentan los modelos en produccion.",
-      video: "/media/redes-neuronales-short.mp4",
-      poster: "/images/poster-redes.png",
-      tags: ["Redes neuronales", "Deep Learning", "Visualizacion"],
-      details: [
-        "Representacion del flujo de informacion entre capas.",
-        "Base conceptual de los modelos orquestados en produccion.",
-      ],
-    },
-    {
       slug: "ejecucion-agentes",
       title: "Ejecucion de agentes de IA",
       description:
-        "Ecosistema de agentes autonomos ejecutando tareas en tiempo real: cada uno asume un rol y colabora en el flujo.",
+        "Ecosistema de agentes autonomos ejecutando tareas en tiempo real: cada uno asume un rol y colabora en el flujo orquestado por Nova.",
       video: "/media/ejecucion-agentes-ia.mp4",
       poster: "/images/poster-agentes.png",
       tags: ["Agentes IA", "CrewAI", "Nova"],
       details: [
-        "Coordinacion multi-agente en vivo (Nova).",
+        "Coordinacion multi-agente en vivo.",
         "Ejecucion continua con trazabilidad.",
       ],
     },
@@ -286,9 +305,9 @@ const es: InternalContent = {
       slug: "red-agentes",
       title: "Red de agentes colaborando",
       description:
-        "Topologia de una red de agentes: comunicacion, reparto de trabajo y convergencia a un resultado util.",
+        "Topologia de una red de agentes: comunicacion, reparto de trabajo y convergencia a un resultado util bajo un CEO y hubs de division.",
       video: "/media/agentes-ia-red.mp4",
-      poster: "/images/og-laboratorio.png",
+      poster: "/images/captures/nova/nova-engine-agentes.png",
       tags: ["Orquestacion", "Multi-agente", "MCP"],
       details: [
         "Grafo tipo /visual de Nova.",
@@ -321,125 +340,13 @@ const es: InternalContent = {
         "Mapeo directo al modelo de divisiones Nova.",
       ],
     },
-    {
-      slug: "lexia-os",
-      title: "LEXIA — OS juridico",
-      description:
-        "Superficie operativa de LEXIA: API + OS + analytics para trabajo legal asistido por IA.",
-      video: "/media/area-desarrollo.mp4",
-      poster: "/images/captures/lexia-legal-os-ui.png",
-      tags: ["LegalTech", "FastAPI", "Streamlit"],
-      details: [
-        "Tres superficies: API, OS Streamlit, Dash.",
-        "Producto vertical Python end-to-end.",
-      ],
-    },
-    {
-      slug: "omnicanal-panel",
-      title: "Omnicanal — panel HITL",
-      description:
-        "Panel operador para radar de oportunidades, scoring y aprobacion antes de publicar a Woo.",
-      video: "/media/area-desarrollo.mp4",
-      poster: "/images/captures/omnicanal-comercio-ui.png",
-      tags: ["Commerce", "HITL", "WooCommerce"],
-      details: [
-        "Control humano donde importa el margen.",
-        "Checkout en Woo Colombia, cerebro aparte.",
-      ],
-    },
-    {
-      slug: "area-desarrollo",
-      title: "Area de desarrollo",
-      description:
-        "El entorno real donde se disena, construye y prueba: el taller detras de cada solucion.",
-      video: "/media/area-desarrollo.mp4",
-      poster: "/images/poster-area.png",
-      tags: ["Entorno", "Ingenieria", "Backstage"],
-      details: [
-        "Espacio de trabajo donde nace la arquitectura.",
-        "Flujo de desarrollo diario.",
-      ],
-    },
-    {
-      slug: "timelapse-desarrollo",
-      title: "Timelapse de desarrollo",
-      description:
-        "El proceso de construccion condensado: de la primera linea a un sistema funcionando.",
-      video: "/media/timelapse-desarrollo.mp4",
-      poster: "/images/poster-area.png",
-      tags: ["Proceso", "Timelapse", "Build"],
-      details: [
-        "Ritmo real de construccion de una solucion.",
-        "Disciplina de ingenieria de principio a fin.",
-      ],
-    },
   ],
   captures: [
-    {
-      slug: "crm-embudo",
-      title: "CRM MWS — embudo de leads",
-      caption:
-        "Vista Embudo con KPIs (activos, presupuesto estimado, SECOP, scraper/IA), filtros por estado/temperatura/fuente/territorio y tabla operativa de leads.",
-      image: "/images/captures/crm/crm-embudo.png",
-      width: 1024,
-      height: 523,
-      tags: ["Embudo", "SECOP", "Scraper/IA"],
-    },
-    {
-      slug: "crm-lead",
-      title: "CRM MWS — detalle de lead",
-      caption:
-        "Ficha de lead con temperatura, probabilidad, fuente, territorio y servicio solicitado; acciones para volver al embudo o convertir a cliente.",
-      image: "/images/captures/crm/crm-lead.png",
-      width: 1024,
-      height: 533,
-      tags: ["Lead", "Conversion", "Ops"],
-    },
-    {
-      slug: "crm-finanzas",
-      title: "CRM MWS — finanzas operativas",
-      caption:
-        "Dashboard de ingresos, gastos, balance y margen en COP con comparativa al periodo anterior y flujo diario. Desde el mismo admin se abre el embudo CRM.",
-      image: "/images/captures/crm/crm-finanzas.png",
-      width: 1024,
-      height: 486,
-      tags: ["Finanzas", "Django Admin", "COP"],
-    },
-    {
-      slug: "mws-ai-hero",
-      title: "MWS AI — agente de ventas en WooCommerce",
-      caption:
-        "Landing del producto: widget AI Sales Assistant con RAG sobre inventario real. Responde stock/tallas, muestra tarjeta de producto y opera 24/7 con objetivo de respuesta <2s.",
-      image: "/images/captures/mws-ai/mws-ai-hero-chat.png",
-      width: 1024,
-      height: 433,
-      tags: ["MWS AI", "WooCommerce", "RAG"],
-    },
-    {
-      slug: "mws-ai-agencia",
-      title: "MWS AI — agencias y agentes a medida",
-      caption:
-        "Canal para agencias/distribuidores (licencias en volumen) y puente a agentes IA custom de Medellin Web Soluciones cuando el alcance supera el plugin WordPress.",
-      image: "/images/captures/mws-ai/mws-ai-landing-agencia.png",
-      width: 844,
-      height: 601,
-      tags: ["Agencias", "Distribuidores", "Producto"],
-    },
-    {
-      slug: "mws-ai-widget",
-      title: "MWS AI — shell del widget de chat",
-      caption:
-        "Estructura del chat embebible del plugin: cabecera de marca, hilo de mensajes y burbujas del agente listas para conectar al SaaS MWS AI.",
-      image: "/images/captures/mws-ai/mws-ai-chat-shell.png",
-      width: 634,
-      height: 373,
-      tags: ["Plugin WP", "Widget", "UX"],
-    },
     {
       slug: "engine",
       title: "Engine — orquestacion en vivo",
       caption:
-        "Grafo de la agencia Nova: 5 areas, 29 roles y 35 nodos. A la izquierda el timeline de ejecucion en tiempo real; a la derecha el directorio de crews, donde cada nodo es un especialista con su propia configuracion.",
+        "Grafo de la agencia Nova: 5 areas, 29 roles y 35 nodos. Timeline de ejecucion a la izquierda; directorio de crews a la derecha. Cada nodo es un especialista con configuracion propia — la orquestacion se ve y se opera, no se imagina.",
       image: "/images/captures/nova/nova-engine-agentes.png",
       width: 1600,
       height: 1000,
@@ -449,61 +356,61 @@ const es: InternalContent = {
       slug: "catalogo",
       title: "Catalogo MIT de perfiles",
       caption:
-        "202 perfiles de agentes de catalogos open source con licencia MIT, agrupados en 17 areas y mapeados al modelo de roles de Nova. Navegable como grafo para decidir que especialista atiende cada tarea.",
+        "202 perfiles de agentes open source (licencia MIT) agrupados en 17 areas y mapeados al modelo de roles Nova. Sirve para decidir que especialista atiende cada tarea sin inventar un organigrama desde cero.",
       image: "/images/captures/nova/nova-catalogo-perfiles.png",
       width: 1600,
       height: 1000,
-      tags: ["Catalogo MIT", "Mapeo de roles", "Grafo"],
+      tags: ["Catalogo MIT", "Roles", "Grafo"],
     },
     {
       slug: "configuracion",
       title: "Configuracion por agente",
       caption:
-        "Centro de integracion Nova: prompts, modelos, tools y estado de modulos por especialista sin redeploy. Aqui se opera la red de roles, no solo se observa.",
+        "Centro de integracion: prompts, modelos, tools y estado de modulos por especialista sin redeploy. Aqui se opera la red de roles cuando el negocio cambia el tono, el proveedor o la herramienta.",
       image: "/images/captures/nova/nova-configuracion.png",
       width: 1600,
       height: 1000,
       tags: ["Roles", "Config", "Ops"],
     },
     {
-      slug: "arquitecturas",
-      title: "Arquitecturas versionadas",
-      caption:
-        "13 topologias del sistema documentadas dentro del propio producto y versionadas en git: runtime, integraciones, datos y UI. La arquitectura se consulta donde se opera, no en un PDF aparte.",
-      image: "/images/captures/nova/nova-arquitecturas.png",
-      width: 1600,
-      height: 1000,
-      tags: ["Documentacion", "Versionado", "Topologias"],
-    },
-    {
-      slug: "tokens",
-      title: "Costo y consumo por proveedor",
-      caption:
-        "12,2 M de tokens y 296 llamadas de crew con USD 29,90 de costo estimado. Cascada de 14 proveedores combinando free tiers y Ollama local, con share y tendencia por modelo para decidir donde corre cada tarea.",
-      image: "/images/captures/nova/nova-tokens.png",
-      width: 1600,
-      height: 1000,
-      tags: ["FinOps", "Multi-proveedor", "Observabilidad"],
-    },
-    {
-      slug: "aprendizaje",
-      title: "Consola de RAG y aprendizaje",
-      caption:
-        "2.749 chunks indexados en la coleccion nova_knowledge, 6 packs de dominio y 159 documentos propios. Validacion del RAG, desglose por categoria y mapa de conocimiento antes de pasar a fine-tune.",
-      image: "/images/captures/nova/nova-rag-aprendizaje.png",
-      width: 1600,
-      height: 1000,
-      tags: ["RAG", "Embeddings", "Fine-tune"],
-    },
-    {
       slug: "hud",
       title: "HUD de subsistemas",
       caption:
-        "Once subsistemas monitoreados con estado y modelo activo: LLM, STT/TTS, vision, YOLO, toolkits y automatizaciones. La captura muestra 10/11 en linea y uno caido — el panel existe para verlo, no para esconderlo.",
+        "Once subsistemas monitoreados (LLM, STT/TTS, vision, toolkits, automatizaciones) con estado y modelo activo. Si uno cae, el panel lo muestra: la orquestacion incluye salud del sistema, no solo prompts bonitos.",
       image: "/images/captures/nova/nova-hud-sistemas.png",
       width: 1600,
       height: 1000,
-      tags: ["Observabilidad", "Voz", "Salud del sistema"],
+      tags: ["Observabilidad", "Salud", "Ops"],
+    },
+    {
+      slug: "aprendizaje",
+      title: "Consola RAG y aprendizaje",
+      caption:
+        "Miles de chunks indexados, packs de dominio y validacion del RAG antes de fine-tune. El ejercito de agentes responde con conocimiento curado del negocio, no con alucinaciones genericas.",
+      image: "/images/captures/nova/nova-rag-aprendizaje.png",
+      width: 1600,
+      height: 1000,
+      tags: ["RAG", "Embeddings", "Conocimiento"],
+    },
+    {
+      slug: "tokens",
+      title: "FinOps de la orquestacion",
+      caption:
+        "Tokens, llamadas de crew y cascada de proveedores (free tiers + Ollama local). La orquestacion se decide tambien por costo: donde corre cada tarea y cuanto consume.",
+      image: "/images/captures/nova/nova-tokens.png",
+      width: 1600,
+      height: 1000,
+      tags: ["FinOps", "Multi-proveedor", "Costo"],
+    },
+    {
+      slug: "arquitecturas",
+      title: "Arquitecturas versionadas",
+      caption:
+        "Topologias documentadas dentro del producto y versionadas en git. La arquitectura se consulta donde se opera — util para validar decisiones de diseno multi-agente con evidencia.",
+      image: "/images/captures/nova/nova-arquitecturas.png",
+      width: 1600,
+      height: 1000,
+      tags: ["Arquitectura", "Versionado", "Topologias"],
     },
     {
       slug: "engine-mobile",
@@ -516,6 +423,60 @@ const es: InternalContent = {
       tags: ["Mobile", "Nova", "Demo"],
     },
   ],
+  labNarrative: {
+    eyebrow: "Que resuelve",
+    title: "De la carga operativa manual a una red de agentes gobernada",
+    intro:
+      "El laboratorio se centra en un solo sistema: Nova, la orquestacion de agentes autonomos. Aqui no mezclamos CRM, landings ni paneles de commerce — solo la capa agentica que coordina trabajo real.",
+    blocks: [
+      {
+        title: "El problema",
+        body: "Equipos senior pierden horas en research, contenido, seguimiento y ops repetitivas. Un chatbot suelto no reparte ownership ni deja trazas auditables. Hace falta una red con roles claros, routing explicito y un operador humano que vea el estado sin abrir diez herramientas.",
+      },
+      {
+        title: "Como se aplica",
+        body: "Nova organiza un CEO, hubs de division y especialistas (CrewAI + FastAPI). El operador lanza trabajo desde paneles /visual y /vivo, ajusta prompts/modelos/tools por agente sin redeploy, y conecta tools MCP/Composio/MWS cuando la tarea exige accion real — no solo texto. La inferencia puede quedarse en Ollama (local-first) o escalar a proveedores cloud segun costo y riesgo.",
+      },
+      {
+        title: "Que valida esta seccion",
+        body: "Que sabes disenar orquestacion multi-agente como producto operable: grafo de roles, catalogo de perfiles, observabilidad, RAG de dominio y FinOps. Sirve para entrevistas y buyers tecnicos que quieren evidencia de arquitectura agentica, no slides genericos de 'IA'.",
+      },
+    ],
+    capabilitiesEyebrow: "Capacidades top",
+    capabilitiesTitle: "Lo que hace diferente a esta orquestacion",
+    capabilities: [
+      {
+        title: "Routing por especialidad",
+        description:
+          "29+ especialistas bajo un CEO y hubs: research, contenido, ops. Cada rol tiene ownership; el sistema no diluye todo en un unico asistente.",
+      },
+      {
+        title: "Observabilidad y trazas",
+        description:
+          "Timeline en vivo, SSE (/vivo) y HUD de subsistemas. Si un modulo cae o una corrida falla, se ve — no se esconde detras de un chat.",
+      },
+      {
+        title: "Config sin redeploy",
+        description:
+          "Prompts, modelos y tools por agente desde panel. Operas la red como producto, no como repo que hay que redeployar por cada ajuste.",
+      },
+      {
+        title: "Catalogo MIT de roles",
+        description:
+          "Perfiles open source mapeados al organigrama Nova: acelera el diseno de capacidades sin inventar taxonomias opacas.",
+      },
+      {
+        title: "RAG de dominio + FinOps",
+        description:
+          "Conocimiento indexado del negocio y cascada de proveedores con costo visible. La orquestacion decide donde corre cada tarea.",
+      },
+      {
+        title: "Local-first con escapes controlados",
+        description:
+          "Ollama en el perimetro cuando importa privacidad; tools externas solo cuando el trabajo lo exige. Trade-off explicito, no magia.",
+      },
+    ],
+  },
   process: [
     {
       phase: "01",
@@ -679,19 +640,25 @@ const en: InternalContent = {
     servicesEyebrow: "What I do",
     servicesIntro:
       "Senior technical consulting, boutique model: few clients, full ownership, and engagements you can scale from a one-off project to an ongoing retainer.",
-    labTitle: "AI Lab",
-    labEyebrow: "Live",
+    labTitle: "Agents laboratory",
+    labEyebrow: "Live orchestration",
     labIntro:
-      "No marketing spin: a real look at what I build — neural networks, autonomous agent ecosystems, and the environment where architecture is born.",
+      "Nova: an army of autonomous agents with a CEO, divisions and specialists. See how real work is orchestrated 24/7 — not a chatbot, but an operable system with traces, cost and roles.",
     labDisclaimer:
-      "Recordings of real systems running. Audio is not required to understand the content.",
-    capturesEyebrow: "Systems in operation",
-    capturesTitle: "Product and lab screenshots",
+      "Screenshots and videos of Nova running for real. Audio is not required to understand the content.",
+    capturesEyebrow: "Orchestration surfaces",
+    capturesTitle: "Nova operational gallery",
     capturesIntro:
-      "Real screens: Nova OS (orchestration, RAG, cost, health), MWS operational CRM (SECOP/scraper funnel, lead detail, finance) and MWS AI (WordPress/WooCommerce sales agent).",
+      "Walk the role graph, MIT catalog, per-agent config, health HUD, RAG and FinOps. Each slide is a layer of the same orchestration system.",
     capturesZoom: "Open full size",
     galleryLabel: "Product gallery",
     galleryIntro: "Real screenshots of the system in operation.",
+    labPrev: "Previous",
+    labNext: "Next",
+    labVideosEyebrow: "Live execution",
+    labVideosTitle: "How the agent network moves",
+    labVideosIntro:
+      "Short clips of orchestration, multi-agent collaboration and Nova panels. Proof the system is not a diagram: it runs, routes and leaves evidence.",
     profileTitle: "Ricardo Zuluaga's profile",
     profileEyebrow: "About me",
     viewSolution: "View full case",
@@ -699,12 +666,12 @@ const en: InternalContent = {
     exploreLab: "Explore the lab",
     bookCta: "Book a technical call",
     contextLabel: "Context",
-    challengeLabel: "The challenge",
+    challengeLabel: "Problem",
     approachLabel: "The approach",
     stackLabel: "Applied stack",
     stackIntro:
       "From classic LAMP to agents, graphs and vector stores: the stack I ship in real systems, not tutorials.",
-    outcomesLabel: "Outcomes",
+    outcomesLabel: "Impact",
     architectureLabel: "Architecture",
     architectureLayersLabel: "System layers",
     decisionsLabel: "Design decisions",
@@ -784,28 +751,15 @@ const en: InternalContent = {
   ],
   lab: [
     {
-      slug: "redes-neuronales",
-      title: "Neural networks in action",
-      description:
-        "Visualization of neural network behavior: nodes, connections and propagation that power production models.",
-      video: "/media/redes-neuronales-short.mp4",
-      poster: "/images/poster-redes.png",
-      tags: ["Neural nets", "Deep Learning", "Visualization"],
-      details: [
-        "Information flow across layers.",
-        "Conceptual base of models orchestrated in production.",
-      ],
-    },
-    {
       slug: "ejecucion-agentes",
       title: "AI agents executing",
       description:
-        "Autonomous agents running tasks in real time: each takes a role and collaborates on the flow.",
+        "Ecosystem of autonomous agents running tasks in real time: each takes a role and collaborates in the flow orchestrated by Nova.",
       video: "/media/ejecucion-agentes-ia.mp4",
       poster: "/images/poster-agentes.png",
       tags: ["AI agents", "CrewAI", "Nova"],
       details: [
-        "Live multi-agent coordination (Nova).",
+        "Live multi-agent coordination.",
         "Continuous execution with traceability.",
       ],
     },
@@ -813,9 +767,9 @@ const en: InternalContent = {
       slug: "red-agentes",
       title: "A network of agents collaborating",
       description:
-        "Topology of an agent network: communication, work split and convergence to a useful result.",
+        "Topology of an agent network: communication, work split and convergence to a useful result under a CEO and division hubs.",
       video: "/media/agentes-ia-red.mp4",
-      poster: "/images/og-laboratorio.png",
+      poster: "/images/captures/nova/nova-engine-agentes.png",
       tags: ["Orchestration", "Multi-agent", "MCP"],
       details: [
         "Nova-style /visual graph.",
@@ -848,125 +802,13 @@ const en: InternalContent = {
         "Direct mapping to Nova's division model.",
       ],
     },
-    {
-      slug: "lexia-os",
-      title: "LEXIA — legal OS",
-      description:
-        "LEXIA operational surface: API + OS + analytics for AI-assisted legal work.",
-      video: "/media/area-desarrollo.mp4",
-      poster: "/images/captures/lexia-legal-os-ui.png",
-      tags: ["LegalTech", "FastAPI", "Streamlit"],
-      details: [
-        "Three surfaces: API, Streamlit OS, Dash.",
-        "Python vertical product end-to-end.",
-      ],
-    },
-    {
-      slug: "omnicanal-panel",
-      title: "Omnichannel — HITL panel",
-      description:
-        "Operator panel for opportunity radar, scoring and approval before Woo publish.",
-      video: "/media/area-desarrollo.mp4",
-      poster: "/images/captures/omnicanal-comercio-ui.png",
-      tags: ["Commerce", "HITL", "WooCommerce"],
-      details: [
-        "Human control where margin matters.",
-        "Checkout on Woo Colombia; brain separate.",
-      ],
-    },
-    {
-      slug: "area-desarrollo",
-      title: "Development environment",
-      description:
-        "The real environment where we design, build and test: the workshop behind every solution.",
-      video: "/media/area-desarrollo.mp4",
-      poster: "/images/poster-area.png",
-      tags: ["Environment", "Engineering", "Backstage"],
-      details: [
-        "Workspace where architecture is born.",
-        "Day-to-day development flow.",
-      ],
-    },
-    {
-      slug: "timelapse-desarrollo",
-      title: "Development timelapse",
-      description:
-        "The build process condensed: from the first line to a running system.",
-      video: "/media/timelapse-desarrollo.mp4",
-      poster: "/images/poster-area.png",
-      tags: ["Process", "Timelapse", "Build"],
-      details: [
-        "Real rhythm of building a solution.",
-        "Engineering discipline end to end.",
-      ],
-    },
   ],
   captures: [
-    {
-      slug: "crm-embudo",
-      title: "MWS CRM — lead funnel",
-      caption:
-        "Funnel view with KPIs (active, estimated budget, SECOP, scraper/AI), filters by status/temperature/source/territory and an operational leads table.",
-      image: "/images/captures/crm/crm-embudo.png",
-      width: 1024,
-      height: 523,
-      tags: ["Funnel", "SECOP", "Scraper/AI"],
-    },
-    {
-      slug: "crm-lead",
-      title: "MWS CRM — lead detail",
-      caption:
-        "Lead record with temperature, probability, source, territory and requested service; actions to return to the funnel or convert to client.",
-      image: "/images/captures/crm/crm-lead.png",
-      width: 1024,
-      height: 533,
-      tags: ["Lead", "Conversion", "Ops"],
-    },
-    {
-      slug: "crm-finanzas",
-      title: "MWS CRM — operational finance",
-      caption:
-        "Income, expense, balance and margin dashboard in COP with prior-period comparison and daily cash flow. The same admin opens the CRM funnel.",
-      image: "/images/captures/crm/crm-finanzas.png",
-      width: 1024,
-      height: 486,
-      tags: ["Finance", "Django Admin", "COP"],
-    },
-    {
-      slug: "mws-ai-hero",
-      title: "MWS AI — WooCommerce sales agent",
-      caption:
-        "Product landing: AI Sales Assistant widget with RAG over live inventory. Answers stock/sizes, shows a product card, and runs 24/7 with a <2s response target.",
-      image: "/images/captures/mws-ai/mws-ai-hero-chat.png",
-      width: 1024,
-      height: 433,
-      tags: ["MWS AI", "WooCommerce", "RAG"],
-    },
-    {
-      slug: "mws-ai-agencia",
-      title: "MWS AI — agencies and custom agents",
-      caption:
-        "Channel for agencies/distributors (volume licenses) and a bridge to custom AI agents from Medellín Web Soluciones when scope goes beyond the WordPress plugin.",
-      image: "/images/captures/mws-ai/mws-ai-landing-agencia.png",
-      width: 844,
-      height: 601,
-      tags: ["Agencies", "Distributors", "Product"],
-    },
-    {
-      slug: "mws-ai-widget",
-      title: "MWS AI — chat widget shell",
-      caption:
-        "Embeddable chat shell from the plugin: brand header, message thread and agent bubbles ready to connect to the MWS AI SaaS.",
-      image: "/images/captures/mws-ai/mws-ai-chat-shell.png",
-      width: 634,
-      height: 373,
-      tags: ["WP plugin", "Widget", "UX"],
-    },
     {
       slug: "engine",
       title: "Engine — live orchestration",
       caption:
-        "Nova agency graph: 5 areas, 29 roles and 35 nodes. Real-time execution timeline on the left, crew directory on the right, where every node is a specialist with its own configuration.",
+        "Nova agency graph: 5 areas, 29 roles and 35 nodes. Execution timeline on the left; crew directory on the right. Every node is a specialist with its own config — orchestration is visible and operable, not imagined.",
       image: "/images/captures/nova/nova-engine-agentes.png",
       width: 1600,
       height: 1000,
@@ -976,61 +818,61 @@ const en: InternalContent = {
       slug: "catalogo",
       title: "MIT profile catalog",
       caption:
-        "202 agent profiles from MIT-licensed open source catalogs, grouped into 17 areas and mapped onto Nova's role model. Browsable as a graph to decide which specialist handles each task.",
+        "202 open-source agent profiles (MIT license) grouped into 17 areas and mapped to Nova's role model. Decide which specialist handles each task without inventing an org chart from scratch.",
       image: "/images/captures/nova/nova-catalogo-perfiles.png",
       width: 1600,
       height: 1000,
-      tags: ["MIT catalog", "Role mapping", "Graph"],
+      tags: ["MIT catalog", "Roles", "Graph"],
     },
     {
       slug: "configuracion",
       title: "Per-agent configuration",
       caption:
-        "Nova integration hub: prompts, models, tools and module status per specialist without redeploy. This is where the role network is operated, not only observed.",
+        "Integration hub: prompts, models, tools and module status per specialist without redeploy. Operate the role network when the business changes tone, provider or tooling.",
       image: "/images/captures/nova/nova-configuracion.png",
       width: 1600,
       height: 1000,
       tags: ["Roles", "Config", "Ops"],
     },
     {
-      slug: "arquitecturas",
-      title: "Versioned architectures",
+      slug: "hud",
+      title: "Subsystem HUD",
       caption:
-        "13 system topologies documented inside the product itself and versioned in git: runtime, integrations, data and UI. Architecture is read where the system is operated, not in a separate PDF.",
-      image: "/images/captures/nova/nova-arquitecturas.png",
+        "Eleven monitored subsystems (LLM, STT/TTS, vision, toolkits, automations) with status and active model. If one drops, the panel shows it: orchestration includes system health, not just pretty prompts.",
+      image: "/images/captures/nova/nova-hud-sistemas.png",
       width: 1600,
       height: 1000,
-      tags: ["Documentation", "Versioning", "Topologies"],
-    },
-    {
-      slug: "tokens",
-      title: "Per-provider cost and usage",
-      caption:
-        "12.2M tokens and 296 crew calls at an estimated USD 29.90. A 14-provider cascade mixing free tiers and local Ollama, with share and trend per model to decide where each task runs.",
-      image: "/images/captures/nova/nova-tokens.png",
-      width: 1600,
-      height: 1000,
-      tags: ["FinOps", "Multi-provider", "Observability"],
+      tags: ["Observability", "Health", "Ops"],
     },
     {
       slug: "aprendizaje",
       title: "RAG and learning console",
       caption:
-        "2,749 chunks indexed in the nova_knowledge collection, 6 domain packs and 159 first-party documents. RAG validation, per-category breakdown and knowledge map before moving to fine-tuning.",
+        "Thousands of indexed chunks, domain packs and RAG validation before fine-tune. The agent army answers with curated business knowledge — not generic hallucinations.",
       image: "/images/captures/nova/nova-rag-aprendizaje.png",
       width: 1600,
       height: 1000,
-      tags: ["RAG", "Embeddings", "Fine-tune"],
+      tags: ["RAG", "Embeddings", "Knowledge"],
     },
     {
-      slug: "hud",
-      title: "Subsystem HUD",
+      slug: "tokens",
+      title: "Orchestration FinOps",
       caption:
-        "Eleven monitored subsystems with status and active model: LLM, STT/TTS, vision, YOLO, toolkits and automations. The capture shows 10/11 online and one down — the panel exists to surface that, not to hide it.",
-      image: "/images/captures/nova/nova-hud-sistemas.png",
+        "Tokens, crew calls and a provider cascade (free tiers + local Ollama). Orchestration is also a cost decision: where each task runs and how much it consumes.",
+      image: "/images/captures/nova/nova-tokens.png",
       width: 1600,
       height: 1000,
-      tags: ["Observability", "Voice", "System health"],
+      tags: ["FinOps", "Multi-provider", "Cost"],
+    },
+    {
+      slug: "arquitecturas",
+      title: "Versioned architectures",
+      caption:
+        "Topologies documented inside the product and versioned in git. Architecture is read where the system is operated — useful to validate multi-agent design decisions with evidence.",
+      image: "/images/captures/nova/nova-arquitecturas.png",
+      width: 1600,
+      height: 1000,
+      tags: ["Architecture", "Versioning", "Topologies"],
     },
     {
       slug: "engine-mobile",
@@ -1043,6 +885,60 @@ const en: InternalContent = {
       tags: ["Mobile", "Nova", "Demo"],
     },
   ],
+  labNarrative: {
+    eyebrow: "What it solves",
+    title: "From manual ops load to a governed agent network",
+    intro:
+      "The lab focuses on one system: Nova, autonomous agent orchestration. No CRM, landings or commerce panels mixed in — only the agentic layer that coordinates real work.",
+    blocks: [
+      {
+        title: "The problem",
+        body: "Senior teams burn hours on research, content, follow-up and repetitive ops. A lone chatbot does not assign ownership or leave auditable traces. You need a network with clear roles, explicit routing and a human operator who can see state without opening ten tools.",
+      },
+      {
+        title: "How it applies",
+        body: "Nova organizes a CEO, division hubs and specialists (CrewAI + FastAPI). The operator launches work from /visual and /vivo panels, tunes prompts/models/tools per agent without redeploy, and connects MCP/Composio/MWS tools when the task needs real action — not just text. Inference can stay on Ollama (local-first) or scale to cloud providers by cost and risk.",
+      },
+      {
+        title: "What this section validates",
+        body: "That you can design multi-agent orchestration as an operable product: role graph, profile catalog, observability, domain RAG and FinOps. It serves interviews and technical buyers who want agentic architecture evidence — not generic 'AI' slides.",
+      },
+    ],
+    capabilitiesEyebrow: "Top capabilities",
+    capabilitiesTitle: "What makes this orchestration different",
+    capabilities: [
+      {
+        title: "Routing by specialty",
+        description:
+          "29+ specialists under a CEO and hubs: research, content, ops. Each role has ownership; the system does not dilute everything into a single assistant.",
+      },
+      {
+        title: "Observability and traces",
+        description:
+          "Live timeline, SSE (/vivo) and subsystem HUD. If a module drops or a run fails, you see it — it is not hidden behind a chat.",
+      },
+      {
+        title: "Config without redeploy",
+        description:
+          "Prompts, models and tools per agent from a panel. Operate the network as a product, not as a repo you redeploy for every tweak.",
+      },
+      {
+        title: "MIT role catalog",
+        description:
+          "Open-source profiles mapped to the Nova org chart: speed up capability design without inventing opaque taxonomies.",
+      },
+      {
+        title: "Domain RAG + FinOps",
+        description:
+          "Indexed business knowledge and a provider cascade with visible cost. Orchestration decides where each task runs.",
+      },
+      {
+        title: "Local-first with controlled escapes",
+        description:
+          "Ollama inside the perimeter when privacy matters; external tools only when the work requires it. Explicit trade-off, not magic.",
+      },
+    ],
+  },
   process: [
     {
       phase: "01",

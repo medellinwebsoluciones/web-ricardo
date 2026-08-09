@@ -13,6 +13,7 @@ import {
   X,
   Radar,
   Wand2,
+  GraduationCap,
 } from "lucide-react";
 import {
   PageHeader,
@@ -1111,6 +1112,13 @@ export function OpportunitiesBoard({
                     </button>
                   </div>
                 </div>
+
+                <Link
+                  href={`/admin/practica?mode=interview&opportunityId=${selected.id}`}
+                  className="btn-secondary w-full py-2 text-xs"
+                >
+                  <GraduationCap className="h-3.5 w-3.5" /> Practicar entrevista
+                </Link>
 
                 <Link
                   href={`/admin/generador?opportunityId=${selected.id}`}

@@ -9,9 +9,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Ricardo Zuluaga | Senior Solutions Architect & AI Automation Expert",
+  title: "Ricardo Zuluaga | Senior Software Architect · AI & Backend",
   description:
-    "Senior Solutions Architect with 10+ years building scalable infrastructure, AI agent orchestration and high-availability systems.",
+    "Senior Software Architect / Solutions Architect with 10+ years building scalable infrastructure, AI agent orchestration and high-availability systems.",
 };
 
 export default function RootLayout({

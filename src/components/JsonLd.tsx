@@ -11,7 +11,7 @@ export function JsonLd({ locale }: { locale: Locale }) {
     "@context": "https://schema.org",
     "@type": "Person",
     name: site.name,
-    jobTitle: "Senior Solutions Architect & AI Automation Expert",
+    jobTitle: "Senior Software Architect / Solutions Architect",
     url: `${site.url}/${locale}`,
     image: `${site.url}/images/ricardo-zuluaga.png`,
     email: `mailto:${site.email}`,

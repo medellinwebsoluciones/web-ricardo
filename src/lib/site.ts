@@ -1,7 +1,7 @@
 export const site = {
   name: "Ricardo Zuluaga",
   firm: "Medellín Web Soluciones",
-  role: "Senior Solutions Architect & AI Automation Expert",
+  role: "Senior Software Architect / Solutions Architect",
   /** Prefer domain email via CONTACT_EMAIL / NEXT_PUBLIC_CONTACT_EMAIL for recruiter trust. */
   email:
     process.env.NEXT_PUBLIC_CONTACT_EMAIL ||
@@ -15,6 +15,11 @@ export const site = {
     process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
     "http://localhost:3000",
 } as const;
+
+/** CV público generado con `npm run cv:pdf` y sincronizado a public/cv. */
+export function cvPath(locale: string): string {
+  return `/cv/CV-Ricardo-Zuluaga-arquitecto-${locale === "en" ? "en" : "es"}.pdf`;
+}
 
 export function mailtoContact(locale: string): string {
   const subject =

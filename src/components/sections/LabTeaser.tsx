@@ -39,7 +39,7 @@ export function LabTeaser({ locale }: { locale: Locale }) {
             </Reveal>
             <Reveal delay={0.15}>
               <div className="mt-8 flex flex-wrap gap-2">
-                {c.lab.map((item) => (
+                {c.lab.slice(0, 4).map((item) => (
                   <span
                     key={item.slug}
                     className="rounded-full border border-zinc-800 bg-zinc-900/60 px-3 py-1 text-xs text-zinc-400"

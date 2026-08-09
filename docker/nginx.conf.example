@@ -24,10 +24,16 @@ server {
     # Necesario para el streaming del chat del agente (SSE-like).
     proxy_buffering off;
 
+    # Headers de seguridad básicos (Certbot añadirá HSTS con TLS).
+    add_header X-Content-Type-Options nosniff always;
+    add_header X-Frame-Options DENY always;
+    add_header Referrer-Policy strict-origin-when-cross-origin always;
+
     location / {
         proxy_pass http://web_ricardo;
         proxy_http_version 1.1;
         proxy_set_header Host $host;
+        # X-Real-IP = cliente real; la app lo usa para rate limits.
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;

@@ -98,6 +98,7 @@ export function bookingRequestHtml(params: {
 export function contactNotificationHtml(params: {
   name: string;
   email: string;
+  phone?: string;
   message: string;
 }): string {
   return `
@@ -105,6 +106,7 @@ export function contactNotificationHtml(params: {
     <h3>Nuevo mensaje de contacto — responde directo a este correo</h3>
     <p><strong>Nombre:</strong> ${params.name}</p>
     <p><strong>Email:</strong> ${params.email}</p>
+    ${params.phone ? `<p><strong>Teléfono:</strong> ${params.phone}</p>` : ""}
     <p><strong>Mensaje:</strong></p>
     <p style="white-space:pre-wrap">${params.message}</p>
   </div>`;

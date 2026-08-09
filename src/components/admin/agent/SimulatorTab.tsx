@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Loader2, Play, CheckCircle2, XCircle } from "lucide-react";
+import { Loader2, Play, CheckCircle2, XCircle, Database } from "lucide-react";
 import { Panel, Empty, Tag, fmtDateTime } from "../ui";
 import { readNdjson } from "./types";
 
@@ -46,6 +46,7 @@ export function SimulatorTab({ notify }: { notify: (msg: string) => void }) {
   const [running, setRunning] = useState(false);
   const [turns, setTurns] = useState<Turn[]>([]);
   const [verdict, setVerdict] = useState<Verdict | null>(null);
+  const [sendingId, setSendingId] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   async function load() {
@@ -109,6 +110,31 @@ export function SimulatorTab({ notify }: { notify: (msg: string) => void }) {
       notify(e instanceof Error ? e.message : "Error en la simulación");
     } finally {
       setRunning(false);
+    }
+  }
+
+  async function sendToDataset(runId: string) {
+    setSendingId(runId);
+    try {
+      const res = await fetch("/api/admin/agent/finetune", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          action: "harvest_simulation",
+          runId,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "error");
+      notify(
+        data.added
+          ? `${data.added} turnos enviados al dataset (por revisar en Entrenamiento).`
+          : "No había turnos nuevos que añadir (quizá ya estaban).",
+      );
+    } catch (e) {
+      notify(e instanceof Error ? e.message : "No se pudo enviar al dataset");
+    } finally {
+      setSendingId(null);
     }
   }
 
@@ -274,6 +300,21 @@ export function SimulatorTab({ notify }: { notify: (msg: string) => void }) {
                   <p className="mt-1.5 line-clamp-3 text-[11px] text-zinc-400">
                     {r.verdict}
                   </p>
+                )}
+                {r.status === "done" && (
+                  <button
+                    type="button"
+                    onClick={() => sendToDataset(r.id)}
+                    disabled={sendingId === r.id}
+                    className="mt-2 flex items-center gap-1 text-[11px] text-emerald-400 hover:underline disabled:opacity-50"
+                  >
+                    {sendingId === r.id ? (
+                      <Loader2 className="h-3 w-3 animate-spin" />
+                    ) : (
+                      <Database className="h-3 w-3" />
+                    )}
+                    Enviar turnos al dataset
+                  </button>
                 )}
               </div>
             ))}

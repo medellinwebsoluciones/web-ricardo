@@ -211,6 +211,9 @@ export const solutionsEs: SolutionDetail[] = [
     ],
     outcomes: [
       { value: "29+1", label: "Especialistas + CEO orquestados" },
+      { value: "12,2M", label: "Tokens y 296 llamadas de crew por ~USD 29,90 (cascada de 14 proveedores)" },
+      { value: "2.749", label: "Chunks RAG indexados sobre 159 documentos propios" },
+      { value: "11", label: "Subsistemas monitoreados en el HUD de salud" },
       { value: "24/7", label: "Operacion continua con trazas" },
       { value: "Local", label: "Inferencia privada con Ollama" },
     ],
@@ -1586,6 +1589,9 @@ export const solutionsEn: SolutionDetail[] = [
     ],
     outcomes: [
       { value: "29+1", label: "Specialists + CEO orchestrated" },
+      { value: "12.2M", label: "Tokens and 296 crew calls for ~USD 29.90 (14-provider cascade)" },
+      { value: "2,749", label: "RAG chunks indexed over 159 first-party documents" },
+      { value: "11", label: "Subsystems monitored in the health HUD" },
       { value: "24/7", label: "Continuous ops with traces" },
       { value: "Local", label: "Private inference via Ollama" },
     ],

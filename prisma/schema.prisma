@@ -262,20 +262,48 @@ model KnowledgeGap {
   @@index([hits])
 }
 
-/// Ejemplo aprobado para el dataset de fine-tuning (estilo, no hechos).
+/// Ejemplo para el dataset de fine-tuning (estilo/tono, no hechos).
+/// source: correccion | eval | simulacion | playground | import | preferencia | manual
 model TrainingExample {
-  id         String    @id @default(cuid())
-  question   String
-  answer     String
-  audience   String    @default("reclutador")
-  locale     String    @default("es")
-  source     String    @default("correccion") // correccion | eval | simulacion
-  approved   Boolean   @default(true)
-  exportedAt DateTime?
-  createdAt  DateTime  @default(now())
+  id              String    @id @default(cuid())
+  question        String
+  answer          String
+  rejectedAnswer  String? // par preferencia: la mala (SFT usa solo answer)
+  audience        String    @default("reclutador")
+  locale          String    @default("es")
+  source          String    @default("correccion")
+  tags            String[]  @default([])
+  notes           String?
+  quality         Int? // 1–5
+  simulationRunId String?
+  evalResultId    String?
+  approved        Boolean   @default(true)
+  exportedAt      DateTime?
+  createdAt       DateTime  @default(now())
 
   @@index([approved])
   @@index([source])
+  @@index([simulationRunId])
+  @@index([evalResultId])
+}
+
+/// Job de fine-tuning en OpenAI, rastreado desde el panel.
+model FineTuneJob {
+  id              String    @id @default(cuid())
+  openaiJobId     String    @unique
+  status          String    @default("pending") // pending | validating_files | queued | running | succeeded | failed | cancelled
+  baseModel       String
+  fineTunedModel  String?
+  fileId          String?
+  exampleCount    Int       @default(0)
+  error           String?
+  promptVersionId String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  finishedAt      DateTime?
+
+  @@index([status])
+  @@index([createdAt])
 }
 
 // ---------------------------------------------------------------------------
@@ -480,6 +508,104 @@ model GeneratedAsset {
 
   @@index([opportunityId])
   @@index([kind])
+}
+
+// ---------------------------------------------------------------------------
+// Practice coach (entrevistas + inglés) — solo admin
+// ---------------------------------------------------------------------------
+model PracticeProfile {
+  id              String   @id @default(cuid())
+  cefrEstimate    String? // A2 | B1 | B2 | C1 | C2
+  weeklyGoal      Int      @default(3)
+  streakDays      Int      @default(0)
+  lastPracticeAt  DateTime?
+  dimensionTotals Json? // { fluency, grammar, vocabulary, professionalism, content }
+  updatedAt       DateTime @updatedAt
+  createdAt       DateTime @default(now())
+}
+
+model PracticeSession {
+  id            String   @id @default(cuid())
+  mode          String // interview | meeting | drill | coach | glossary
+  locale        String   @default("en") // en | es
+  scenarioSlug  String?
+  difficulty    String? // baja | media | alta
+  status        String   @default("active") // active | done | abandoned
+  opportunityId String?
+  scoreAvg      Float?
+  verdict       String?
+  diagnosis     String?
+  createdAt     DateTime @default(now())
+  finishedAt    DateTime?
+
+  turns   PracticeTurn[]
+  drills  PracticeDrillResult[]
+  scores  PracticeScore[]
+
+  @@index([mode])
+  @@index([status])
+  @@index([createdAt])
+  @@index([opportunityId])
+}
+
+model PracticeTurn {
+  id        String          @id @default(cuid())
+  sessionId String
+  session   PracticeSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  idx       Int             @default(0)
+  role      String // user | assistant | system
+  content   String
+  feedback  Json? // scores, diagnosis, nativeRewrite, tips, connectors
+  createdAt DateTime        @default(now())
+
+  @@index([sessionId])
+}
+
+model PracticeDrillResult {
+  id             String           @id @default(cuid())
+  sessionId      String?
+  session        PracticeSession? @relation(fields: [sessionId], references: [id], onDelete: SetNull)
+  questionId     String
+  question       String
+  chosenOption   String
+  correctOption  String
+  correct        Boolean
+  explanation    String?
+  tags           String[]         @default([])
+  createdAt      DateTime         @default(now())
+
+  @@index([sessionId])
+  @@index([correct])
+  @@index([createdAt])
+}
+
+model PracticeScore {
+  id        String          @id @default(cuid())
+  sessionId String
+  session   PracticeSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  scores    Json // { fluency, grammar, vocabulary, professionalism, content }
+  score     Float
+  createdAt DateTime        @default(now())
+
+  @@index([sessionId])
+  @@index([createdAt])
+}
+
+/// Mastery de ítems de estudio: term | acronym | phrase | script
+model PracticeTermMastery {
+  id           String    @id @default(cuid())
+  kind         String // term | acronym | phrase | script
+  itemId       String
+  seenCount    Int       @default(0)
+  correctCount Int       @default(0)
+  lastScore    Float?
+  masteredAt   DateTime?
+  lastSeenAt   DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@unique([kind, itemId])
+  @@index([kind])
+  @@index([masteredAt])
 }
 
 // ---------------------------------------------------------------------------

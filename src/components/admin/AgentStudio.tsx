@@ -38,7 +38,7 @@ const TABS: { id: Tab; label: string; icon: React.ElementType }[] = [
   { id: "simulador", label: "Simulador", icon: GraduationCap },
   { id: "evaluaciones", label: "Evaluaciones", icon: BarChart3 },
   { id: "huecos", label: "Huecos", icon: HelpCircle },
-  { id: "finetuning", label: "Fine-tuning", icon: Sparkles },
+  { id: "finetuning", label: "Entrenamiento", icon: Sparkles },
 ];
 
 export function AgentStudio({
@@ -181,6 +181,41 @@ export function AgentStudio({
     }
   }
 
+  /** Par preferencia: preferred=improved, rejected=respuesta original. */
+  async function savePreferencePair(
+    question: string,
+    preferred: string,
+    rejected: string,
+    audience: string,
+  ) {
+    setBusy(true);
+    try {
+      const res = await fetch("/api/admin/agent/finetune", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          action: "create",
+          question,
+          answer: preferred,
+          rejectedAnswer: rejected,
+          audience,
+          source: "preferencia",
+          approved: false,
+          tags: ["from_eval"],
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "error");
+      setMessage(
+        "Par preferencia añadido al dataset (por revisar en Entrenamiento).",
+      );
+    } catch {
+      setMessage("No se pudo guardar el par preferencia.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
   return (
     <>
       <PageHeader
@@ -246,10 +281,16 @@ export function AgentStudio({
         )}
         {tab === "simulador" && <SimulatorTab notify={setMessage} />}
         {tab === "evaluaciones" && (
-          <EvalsTab notify={setMessage} onSaveExample={saveImproved} />
+          <EvalsTab
+            notify={setMessage}
+            onSaveExample={saveImproved}
+            onSavePreference={savePreferencePair}
+          />
         )}
         {tab === "huecos" && <GapsTab notify={setMessage} />}
-        {tab === "finetuning" && <FinetuneTab notify={setMessage} />}
+        {tab === "finetuning" && (
+          <FinetuneTab notify={setMessage} onNavigate={(t) => setTab(t as Tab)} />
+        )}
       </div>
     </>
   );

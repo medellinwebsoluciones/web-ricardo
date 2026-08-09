@@ -139,7 +139,7 @@ export function DocumentsLibrary({
           data.error === "openai_not_configured"
             ? "Falta OPENAI_API_KEY"
             : data.error === "no_text_to_ingest"
-              ? "Este archivo no tiene texto extraíble"
+              ? "No se pudo extraer texto (el PDF puede estar ilegible o sin OCR)"
               : data.error || "error";
         throw new Error(msg);
       }
@@ -293,10 +293,11 @@ export function DocumentsLibrary({
                       ) : (
                         <button
                           onClick={() => sendToRag(d.id)}
-                          disabled={busy || !d.hasText || !openaiConfigured}
+                          disabled={busy || !openaiConfigured}
                           className="ml-auto flex items-center gap-1 text-[11px] text-emerald-400 hover:underline disabled:text-zinc-600 disabled:no-underline"
                         >
-                          <Brain className="h-3 w-3" /> Enviar al RAG
+                          <Brain className="h-3 w-3" />{" "}
+                          {d.hasText ? "Enviar al RAG" : "Procesar y enviar al RAG"}
                         </button>
                       )}
                     </div>
@@ -314,6 +315,10 @@ export function DocumentsLibrary({
                 accept=".pdf,.docx,.doc,.txt,.md,.json,.png,.jpg,.jpeg"
                 className="w-full rounded-lg border border-zinc-800 bg-zinc-900/60 px-3 py-2 text-xs text-zinc-300 file:mr-3 file:rounded file:border-0 file:bg-zinc-800 file:px-2 file:py-1 file:text-xs file:text-zinc-200"
               />
+              <p className="text-[11px] text-zinc-500">
+                PNG/JPEG: se extrae texto con visión/OCR al subir; luego puedes
+                enviar al RAG si hay texto.
+              </p>
               <input
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}

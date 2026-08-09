@@ -1,7 +1,7 @@
-import { Mail, ArrowRight } from "lucide-react";
+import { Mail, ArrowRight, Download } from "lucide-react";
 import { LinkedInIcon } from "@/components/icons";
 import { Reveal } from "@/components/Reveal";
-import { site, mailtoContact } from "@/lib/site";
+import { cvPath, site, mailtoContact } from "@/lib/site";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 
@@ -20,13 +20,23 @@ export function Footer({
             <h2 className="mx-auto max-w-3xl text-2xl font-semibold leading-snug tracking-tight text-white sm:text-3xl">
               {dict.footer.heading}
             </h2>
+            <ul className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-zinc-500">
+              {dict.footer.paths.map((path) => (
+                <li key={path}>{path}</li>
+              ))}
+            </ul>
             <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <a href={mailtoContact(locale)} className="btn-primary group">
-                {dict.footer.cta}
+              <a href={`/${locale}#agenda`} className="btn-primary group">
+                {dict.nav.booking}
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
               </a>
-              <a href={`/${locale}#agenda`} className="btn-secondary">
-                {dict.nav.booking}
+              <a href={cvPath(locale)} download className="btn-secondary">
+                <Download className="h-4 w-4" />
+                {dict.hero.ctaCv}
+              </a>
+              <a href={mailtoContact(locale)} className="btn-secondary">
+                <Mail className="h-4 w-4" />
+                {dict.footer.cta}
               </a>
             </div>
           </div>

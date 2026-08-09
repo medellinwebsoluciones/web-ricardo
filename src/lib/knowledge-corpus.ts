@@ -3,6 +3,8 @@
  * Contenido curado (bilingue) — alineado con portfolio-briefs y soluciones públicas.
  */
 
+import { GAP_CANONICAL_ANSWERS } from "./gap-canonical-answers";
+
 export type CorpusCollection = {
   slug: string;
   name: string;
@@ -16,6 +18,15 @@ export type CorpusEntry = {
   sourceType: "manual" | "site" | "doc" | "faq";
   content: string;
 };
+
+/** Entradas FAQ derivadas de huecos reales de eval (entrevista / objeciones / CEO). */
+const gapFaqEntries: CorpusEntry[] = GAP_CANONICAL_ANSWERS.map((g) => ({
+  collectionSlug: "faq" as const,
+  title: g.title,
+  lang: "es" as const,
+  sourceType: "faq" as const,
+  content: `Pregunta: ${g.question}\n\nRespuesta: ${g.answer}`,
+}));
 
 export const collections: CorpusCollection[] = [
   { slug: "perfil-ricardo", name: "Perfil de Ricardo", isPublic: true },
@@ -70,6 +81,52 @@ Domains: solutions architecture, HA/microservices, local-first agentic AI (CrewA
 2. High availability: no SPOFs, ready for corporate scrutiny.
 3. Observability: metrics and traces at every layer.
 4. 24/7 automation: agents and pipelines that continuously remove operational load.`,
+  },
+  {
+    collectionSlug: "perfil-ricardo",
+    title: "Formación autodidacta y trayectoria laboral",
+    lang: "es",
+    sourceType: "manual",
+    content: `Ricardo es autodidacta: dejó la universidad y aprendió lenguajes y tecnologías desde su documentación oficial. Más de 10 años en producción respaldan ese camino; no inventa títulos universitarios.
+
+Nacido en 1993 (edad solo si preguntan; no inventar mes/día de cumpleaños).
+
+Perfiles de alto valor que encajan: Solutions Architect, Full Stack Senior, desarrollador/arquitecto de IA y automatización.
+
+Preferencias laborales: remoto primero; híbrido solo en Colombia si el rol y la banda salarial lo justifican; abierto a relocación en Colombia, USA, España u otros países europeos. Contratos: por horas, fijo, indefinido, asesoría o proyectos de alcance rápido.
+
+Freelance: Aroka SAS, software Transferimos en .NET.
+
+Clientes/empresas atendidas a lo largo de la trayectoria (nombres públicos, sin detalle confidencial): Grupo Éxito, Nutresa, Renault, Tigo, Comfama, Bancolombia, Argos, 472, Noel, Rica, Cantagirone.
+
+Fortalezas: construir solo aplicaciones end-to-end listas en producción; arquitectura escalable; ROI, conversiones y contactos de venta; liderazgo de proyectos; capacitar juniors (buenas prácticas, retos, conocimiento indexado, mentoría con IA); alta presión y plazos cortos; automatizar procesos reales.
+
+Gustos: deportes a motor, música, investigación y creación de tecnologías nuevas, laboratorios experimentales de IA/algoritmos e infraestructura.
+
+Medellín Web Soluciones: partner tecnológico para picos de demanda (no es el pitch principal ante reclutadores). Equipo bajo demanda: otro full stack senior, un full stack mid (también Meta Ads y Google Ads), diseñador UX y creador de contenido audiovisual.`,
+  },
+  {
+    collectionSlug: "perfil-ricardo",
+    title: "Self-taught path and work preferences",
+    lang: "en",
+    sourceType: "manual",
+    content: `Ricardo is self-taught: he left university and learned languages and technologies from official documentation. 10+ years in production back that path; he does not invent degrees.
+
+Born in 1993 (share age only if asked; do not invent birthday month/day).
+
+High-value fits: Solutions Architect, Senior Full Stack, AI/automation developer-architect.
+
+Work preferences: remote-first; hybrid only in Colombia when role and salary band justify it; open to relocation in Colombia, USA, Spain or other European countries. Contracts: hourly, fixed-term, permanent, advisory or fast-scoped projects.
+
+Freelance: Aroka SAS, Transferimos software on .NET.
+
+Public company names across his career (no confidential internals): Grupo Éxito, Nutresa, Renault, Tigo, Comfama, Bancolombia, Argos, 472, Noel, Rica, Cantagirone.
+
+Strengths: solo end-to-end production apps; scalable architecture; ROI/conversions; project leadership; training juniors (practices, challenges, indexed knowledge, AI mentoring); high pressure and short deadlines; automating real processes.
+
+Interests: motorsports, music, applied R&D, experimental AI/algorithm labs and infrastructure.
+
+Medellín Web Soluciones: technology partner for demand spikes (not the default pitch to recruiters). On-demand team: another senior full stack, a mid full stack (also Meta Ads & Google Ads), UX designer and audiovisual content creator.`,
   },
   {
     collectionSlug: "servicios-mws",
@@ -196,14 +253,14 @@ Model: few clients, high seniority, ownership. Typical engagement: 15-min discov
     title: "Caso: Plataforma curso + pagos",
     lang: "es",
     sourceType: "manual",
-    content: `LMS Django bilingüe para certificación Claude Architect: checkout invitado, Bold + PayPal idempotentes, acceso 12 meses, examen 100 preguntas, tutor RAG con rate-limit, lead magnet y tracks mentoring/B2B.`,
+    content: `LMS Django bilingüe (ES/EN) para certificación Claude Architect. Flujo de aprendizaje: descubrimiento (landing SEO) → lead magnet → elección de plan (Fast-Track / Mentoring / B2B) → checkout invitado (Bold HMAC LatAm + PayPal global, webhooks idempotentes) → provision de cuenta y entitlement 12 meses → lecciones Django+HTMX → tutor IA RAG con cache/rate-limit → examen de 100 preguntas. Funcionalidades clave: doble PSP, control de costo del tutor, WhiteNoise/Render, upsell mentoring/B2B. Caso público: /soluciones/plataforma-aprendizaje.`,
   },
   {
     collectionSlug: "proyectos",
     title: "Case: Course platform + payments",
     lang: "en",
     sourceType: "manual",
-    content: `Bilingual Django LMS for Claude Architect certification: guest checkout, idempotent Bold + PayPal, 12-month access, 100-question exam, rate-limited RAG tutor, lead magnet and mentoring/B2B tracks.`,
+    content: `Bilingual Django LMS (ES/EN) for Claude Architect certification. Learning flow: discovery (SEO landing) → lead magnet → plan choice (Fast-Track / Mentoring / B2B) → guest checkout (Bold HMAC LatAm + PayPal global, idempotent webhooks) → account + 12-month entitlement → Django+HTMX lessons → RAG AI tutor with cache/rate-limit → 100-question exam. Key capabilities: dual PSP, tutor cost control, WhiteNoise/Render, mentoring/B2B upsell. Public case: /soluciones/plataforma-aprendizaje.`,
   },
   {
     collectionSlug: "proyectos",
@@ -472,4 +529,6 @@ Separate production products: www.medellinweb.co (landing+agents), lexia.medelli
     sourceType: "manual",
     content: `To book a 15-minute technical call use the site booking panel. Creates a Google Meet event and confirmation email. Base timezone America/Bogota; each slot also shows Europe/Madrid (Spain) time. Also site contact email or LinkedIn.`,
   },
+
+  ...gapFaqEntries,
 ];

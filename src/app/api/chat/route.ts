@@ -96,7 +96,7 @@ export async function POST(req: NextRequest) {
   const previous = sessionId ? await lastAnalysisFor(sessionId) : null;
   const [analysis, chunks] = await Promise.all([
     analyzeTurn({ message, history, previous }),
-    searchChunks(message, { k: 5, publicOnly: true, lang: locale }).catch(
+    searchChunks(message, { k: 8, publicOnly: true, lang: locale }).catch(
       (err) => {
         console.error("RAG error:", err);
         return [] as RetrievedChunk[];

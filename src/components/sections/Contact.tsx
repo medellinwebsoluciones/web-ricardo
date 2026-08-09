@@ -18,6 +18,7 @@ export function Contact({
   const t = dict.contact;
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
   const [website, setWebsite] = useState("");
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
@@ -32,13 +33,14 @@ export function Contact({
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ name, email, message, locale, website }),
+        body: JSON.stringify({ name, email, phone, message, locale, website }),
       });
       const data = await res.json();
       if (res.ok && data.ok) {
         setStatus("sent");
         setName("");
         setEmail("");
+        setPhone("");
         setMessage("");
       } else {
         setStatus("error");
@@ -127,6 +129,19 @@ export function Contact({
                       onChange={(e) => setEmail(e.target.value)}
                       className="input-field mt-2"
                       autoComplete="email"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-zinc-300">
+                      {t.phoneLabel}
+                    </label>
+                    <input
+                      required
+                      type="tel"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      className="input-field mt-2"
+                      autoComplete="tel"
                     />
                   </div>
                   <div>

@@ -1,13 +1,18 @@
 import { NextRequest } from "next/server";
 import { getOAuthClient } from "@/lib/google-calendar";
+import { consumeOAuthState } from "@/lib/google-setup";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function GET(req: NextRequest) {
   const code = req.nextUrl.searchParams.get("code");
+  const state = req.nextUrl.searchParams.get("state");
   if (!code) {
     return new Response("Missing code", { status: 400 });
+  }
+  if (!consumeOAuthState(state)) {
+    return new Response("Invalid or expired state", { status: 401 });
   }
 
   try {
@@ -15,13 +20,25 @@ export async function GET(req: NextRequest) {
     const { tokens } = await client.getToken(code);
     const refresh = tokens.refresh_token;
 
+    // Nunca reflejar el refresh token en HTML (historial, capturas, Referer).
+    if (refresh) {
+      console.info(
+        "[google-oauth] GOOGLE_REFRESH_TOKEN recibido. Cópialo al .env del servidor y reinicia. Valor (una sola vez en logs):",
+        refresh,
+      );
+    } else {
+      console.warn(
+        "[google-oauth] Sin refresh_token. Revoca el acceso en Google y reautoriza con prompt=consent.",
+      );
+    }
+
     const html = `<!doctype html><html><head><meta charset="utf-8"><title>Google conectado</title>
-    <style>body{font-family:Inter,Arial,sans-serif;background:#09090b;color:#e4e4e7;padding:40px;max-width:640px;margin:auto}code{background:#18181b;padding:12px;display:block;border-radius:8px;word-break:break-all;color:#34d399;margin-top:8px}</style>
+    <style>body{font-family:Inter,Arial,sans-serif;background:#09090b;color:#e4e4e7;padding:40px;max-width:640px;margin:auto}</style>
     </head><body>
     <h2>Google Calendar conectado</h2>
     ${
       refresh
-        ? `<p>Copia este <strong>GOOGLE_REFRESH_TOKEN</strong> en tu archivo <code style="display:inline">.env</code> y reinicia la app:</p><code>${refresh}</code>`
+        ? `<p>Autorización correcta. El <strong>GOOGLE_REFRESH_TOKEN</strong> se escribió solo en los logs del servidor (no se muestra aquí). Cópialo al <code>.env</code> y reinicia la app.</p>`
         : `<p style="color:#f87171">No se recibió refresh_token. Revoca el acceso en tu cuenta de Google y vuelve a autorizar (asegúrate de usar prompt=consent).</p>`
     }
     </body></html>`;

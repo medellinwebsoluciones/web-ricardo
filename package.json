@@ -13,7 +13,9 @@
     "db:seed": "tsx prisma/seed.ts",
     "admin:password": "tsx scripts/set-admin-password.ts",
     "rag:ingest": "tsx scripts/ingest.ts",
+    "rag:resolve-gaps": "tsx scripts/resolve-open-gaps.ts",
     "agent:finetune": "tsx scripts/finetune.ts",
+    "agent:finetune:tables": "tsx scripts/create-finetune-tables.ts",
     "cv:pdf": "node scripts/generate-cv.mjs",
     "portfolio:diagrams": "node scripts/generate-arch-diagrams.mjs",
     "portfolio:capture": "node scripts/capture-portfolio.mjs",
@@ -36,7 +38,7 @@
     "mammoth": "^1.12.0",
     "next": "^16.2.10",
     "next-auth": "^4.24.14",
-    "nodemailer": "^7.0.13",
+    "nodemailer": "^9.0.5",
     "openai": "^6.48.0",
     "pdf-parse": "^2.4.5",
     "prisma": "^6.19.3",
@@ -45,6 +47,9 @@
     "recharts": "^3.9.2",
     "tsx": "^4.23.1",
     "zod": "^4.4.3"
+  },
+  "overrides": {
+    "nodemailer": "^9.0.5"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",

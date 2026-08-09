@@ -38,6 +38,8 @@ export type ExtractedFacts = {
   need?: string;
   budgetSignal?: string;
   timeline?: string;
+  phone?: string;
+  intent?: string;
 };
 
 export type TurnAnalysis = {
@@ -65,7 +67,7 @@ export const NEUTRAL_ANALYSIS: TurnAnalysis = {
 const SENTIMENTS = ["positivo", "neutral", "escéptico", "frustrado"] as const;
 const URGENCIES = ["alta", "media", "baja"] as const;
 
-const SYSTEM = `Analizas conversaciones del chat de un consultor de software y automatización con IA (Ricardo Zuluaga, Medellín Web Soluciones). Los visitantes son reclutadores, hiring managers técnicos, CTOs, CEOs de pyme o agencias de WordPress.
+const SYSTEM = `Analizas conversaciones del chat público de Ricardo Zuluaga (Solutions Architect / Full Stack senior / IA). Visitantes: reclutadores, hiring managers, CTOs, CEOs o agencias. NO asumas que todo es venta de agencia.
 
 Devuelve SOLO un JSON con esta forma exacta:
 {
@@ -75,15 +77,17 @@ Devuelve SOLO un JSON con esta forma exacta:
   "sentiment": "positivo" | "neutral" | "escéptico" | "frustrado",
   "urgency": "alta" | "media" | "baja",
   "objections": ["objeción detectada en las palabras del visitante"],
-  "extracted": { "name": "", "company": "", "role": "", "need": "", "budgetSignal": "", "timeline": "" },
+  "extracted": { "name": "", "company": "", "role": "", "need": "", "budgetSignal": "", "timeline": "", "phone": "", "intent": "empleo|proyecto|consulta|otro" },
   "tactic": "en una frase, qué debería hacer el asistente en este turno"
 }
 
 Reglas:
 - "audience" es "desconocido" mientras no haya señal clara. No adivines por el tema.
-- "stage" refleja dónde está la conversación completa, no solo el último mensaje: apertura (aún no sabes qué necesita), descubrimiento (estás entendiendo el problema), diagnostico (ya lo entiendes), propuesta (se habla de cómo trabajar juntos), cierre (se concreta el siguiente paso).
-- En "extracted" solo pon lo que el visitante haya dicho literalmente. Omite las claves de las que no tengas dato: no inventes nombres ni empresas.
-- "objections" va vacío si no hay ninguna.`;
+- "intent" evaluar_perfil ≈ empleo; problema_tecnico/precio_alcance ≈ proyecto o consulta; agendar ≈ quiere cita.
+- "stage" refleja la conversación completa.
+- En "extracted" solo lo dicho literalmente. Incluye phone e intent (empleo/proyecto/consulta/otro) si se deducen con claridad. Omite claves sin dato.
+- Si hay interés en seguir y faltan nombre, email o teléfono, la tactic debe pedirlos juntos de forma natural.
+- "objections" vacío si no hay ninguna.`;
 
 function pick<T extends readonly string[]>(
   value: unknown,
@@ -106,6 +110,8 @@ function cleanFacts(raw: unknown): ExtractedFacts {
     "need",
     "budgetSignal",
     "timeline",
+    "phone",
+    "intent",
   ] as const) {
     const v = src[key];
     if (typeof v === "string" && v.trim()) out[key] = v.trim().slice(0, 200);

@@ -35,8 +35,24 @@ if (!variant) {
 
 const t = (value) => (typeof value === "string" ? value : (value?.[lang] ?? ""));
 const L = {
-  es: { experiencia: "Experiencia", proyectos: "Proyectos destacados", stack: "Stack técnico", formacion: "Formación", idiomas: "Idiomas" },
-  en: { experiencia: "Experience", proyectos: "Selected projects", stack: "Tech stack", formacion: "Education", idiomas: "Languages" },
+  es: {
+    experiencia: "Experiencia",
+    proyectos: "Proyectos destacados",
+    laboratorio: "Laboratorio Nova OS",
+    stack: "Stack técnico",
+    certificaciones: "Certificaciones",
+    formacion: "Formación",
+    idiomas: "Idiomas",
+  },
+  en: {
+    experiencia: "Experience",
+    proyectos: "Selected projects",
+    laboratorio: "Nova OS lab",
+    stack: "Tech stack",
+    certificaciones: "Certifications",
+    formacion: "Education",
+    idiomas: "Languages",
+  },
 }[lang];
 
 const esc = (s) =>
@@ -81,20 +97,53 @@ const sections = {
       .join("")}
   </section>`,
 
-  proyectos: () => `
+  proyectos: () => {
+    const list = data.proyectos.filter((p) => p.en_cv !== false);
+    return `
   <section>
     <h2>${L.proyectos}</h2>
-    ${data.proyectos
+    ${list
       .map(
         (p) => `
     <article class="project">
-      <h3>${esc(p.nombre)}</h3>
+      <h3>${esc(p.nombre)}${p.url ? ` <span class="meta">${esc(p.url.replace(/^https?:\/\//, ""))}</span>` : ""}</h3>
       <p>${esc(t(p.resumen))}</p>
-      <div class="chips">${p.stack.map((s) => `<span>${esc(s)}</span>`).join("")}</div>
+      <div class="chips">${(p.stack || []).map((s) => `<span>${esc(s)}</span>`).join("")}</div>
     </article>`
       )
       .join("")}
-  </section>`,
+  </section>`;
+  },
+
+  laboratorio: () => {
+    const lab = data.laboratorio;
+    if (!lab) return "";
+    return `
+  <section>
+    <h2>${L.laboratorio}</h2>
+    <ul>${(lab.bullets?.[lang] || []).map((b) => `<li>${esc(b)}</li>`).join("")}</ul>
+  </section>`;
+  },
+
+  certificaciones: () => {
+    const certs = data.certificaciones || [];
+    if (!certs.length) return "";
+    return `
+  <section>
+    <h2>${L.certificaciones}</h2>
+    ${certs
+      .map(
+        (c) => `
+    <article class="edu">
+      <div class="job-head">
+        <h3>${esc(t(c.nombre))} — <span class="org">${esc(c.emisor)}</span></h3>
+        <span class="meta">${esc(t(c.fecha))}</span>
+      </div>
+    </article>`
+      )
+      .join("")}
+  </section>`;
+  },
 
   stack: () => `
   <section>
@@ -164,7 +213,7 @@ const html = `<!doctype html>
     <div class="contact">${contactLine}</div>
   </header>
   <p class="summary">${esc(check(t(variant.resumen), "resumen").replace(/^TODO:/, ""))}</p>
-  ${variant.orden.map((key) => sections[key]()).join("")}
+  ${variant.orden.map((key) => (sections[key] ? sections[key]() : "")).join("")}
 </body></html>`;
 
 await mkdir(cvDir, { recursive: true });

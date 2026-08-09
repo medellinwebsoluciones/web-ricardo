@@ -6,6 +6,7 @@ import {
   type JobSource,
 } from "@/lib/job-ingest";
 import { mergeParsedJob, parseJobPaste } from "@/lib/parse-job-paste";
+import { getClientIp, rateLimit } from "@/lib/ratelimit";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -19,15 +20,33 @@ const SOURCES: JobSource[] = [
   "email",
 ];
 
-const CORS = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
-  "Access-Control-Allow-Headers": "content-type, x-ingest-token",
-};
+const INGEST_LIMIT = 30;
+const INGEST_WINDOW_MS = 5 * 60 * 1000;
+
+function ingestCorsHeaders(req: Request): Record<string, string> {
+  const allowlist = (process.env.JOB_INGEST_ORIGINS || "")
+    .split(",")
+    .map((o) => o.trim())
+    .filter(Boolean);
+  const origin = req.headers.get("origin") || "";
+  const allowOrigin =
+    allowlist.length === 0
+      ? "*"
+      : allowlist.includes(origin)
+        ? origin
+        : allowlist[0]!;
+
+  return {
+    "Access-Control-Allow-Origin": allowOrigin,
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Allow-Headers": "content-type, x-ingest-token",
+    Vary: "Origin",
+  };
+}
 
 /** Preflight para la extensión Chrome. */
-export async function OPTIONS() {
-  return new Response(null, { status: 204, headers: CORS });
+export async function OPTIONS(req: NextRequest) {
+  return new Response(null, { status: 204, headers: ingestCorsHeaders(req) });
 }
 
 /**
@@ -35,18 +54,30 @@ export async function OPTIONS() {
  * Auth: sesión admin o header `x-ingest-token` = JOB_INGEST_TOKEN.
  */
 export async function POST(req: NextRequest) {
+  const cors = ingestCorsHeaders(req);
+
   const denied = await denyIfNotAdminOrIngestToken(req);
   if (denied) {
     const body = await denied.text();
     return new Response(body, {
       status: denied.status,
-      headers: { "content-type": "application/json", ...CORS },
+      headers: { "content-type": "application/json", ...cors },
     });
+  }
+
+  const ip = getClientIp(req);
+  const tokenHint = (req.headers.get("x-ingest-token") || "session").slice(0, 8);
+  const rl = rateLimit(`ingest:${ip}:${tokenHint}`, INGEST_LIMIT, INGEST_WINDOW_MS);
+  if (!rl.ok) {
+    return Response.json(
+      { error: "rate_limited" },
+      { status: 429, headers: cors },
+    );
   }
 
   const body = await req.json().catch(() => null);
   if (!body) {
-    return Response.json({ error: "bad_request" }, { status: 400, headers: CORS });
+    return Response.json({ error: "bad_request" }, { status: 400, headers: cors });
   }
 
   let company = String(body.company || "").trim();
@@ -87,7 +118,7 @@ export async function POST(req: NextRequest) {
   if (jobDescription.length < 40) {
     return Response.json(
       { error: "job_description_too_short" },
-      { status: 400, headers: CORS },
+      { status: 400, headers: cors },
     );
   }
 
@@ -106,9 +137,9 @@ export async function POST(req: NextRequest) {
       minScore: typeof body.minScore === "number" ? body.minScore : 0,
       useLlm: Boolean(body.useLlm),
     });
-    return Response.json(result, { headers: CORS });
+    return Response.json(result, { headers: cors });
   } catch (e) {
     const msg = e instanceof Error ? e.message : "ingest_failed";
-    return Response.json({ error: msg }, { status: 400, headers: CORS });
+    return Response.json({ error: msg }, { status: 400, headers: cors });
   }
 }

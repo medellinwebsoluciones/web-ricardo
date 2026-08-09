@@ -37,6 +37,27 @@ export function EngagementTrust({ dict }: { dict: Dictionary }) {
             );
           })}
         </div>
+
+        <Reveal delay={0.1}>
+          <div className="mt-14 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-6 sm:p-8">
+            <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-400/80">
+              {t.profileHeading}
+            </h3>
+            <dl className="mt-6 grid gap-x-10 gap-y-4 sm:grid-cols-2">
+              {t.profile.map((row) => (
+                <div
+                  key={row.label}
+                  className="flex justify-between gap-6 border-b border-zinc-800/70 pb-3 text-sm"
+                >
+                  <dt className="text-zinc-500">{row.label}</dt>
+                  <dd className="text-right font-medium text-zinc-200">
+                    {row.value}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </Reveal>
       </div>
     </section>
   );

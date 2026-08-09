@@ -1,8 +1,16 @@
 import { Reveal } from "@/components/Reveal";
 import { StackExpertise } from "@/components/sections/StackExpertise";
-import type { Dictionary } from "@/i18n/dictionaries";
+import type { Dictionary, StackTier } from "@/i18n/dictionaries";
+
+const TIER_ORDER: StackTier[] = ["core", "strong", "infra", "ai"];
 
 export function Stack({ dict }: { dict: Dictionary }) {
+  const tiers = TIER_ORDER.map((tier) => ({
+    tier,
+    label: dict.stack.tiers[tier],
+    categories: dict.stack.categories.filter((cat) => cat.tier === tier),
+  })).filter((group) => group.categories.length > 0);
+
   return (
     <section
       id="stack"
@@ -27,14 +35,23 @@ export function Stack({ dict }: { dict: Dictionary }) {
           </p>
         </Reveal>
 
-        <StackExpertise
-          items={dict.stack.categories.map((cat) => ({
-            area: cat.title,
-            items: cat.items,
-            blurb: cat.blurb,
-            icon: cat.icon,
-          }))}
-        />
+        {tiers.map((group) => (
+          <div key={group.tier} className="mt-14 first:mt-12">
+            <Reveal>
+              <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-400/80">
+                {group.label}
+              </h3>
+            </Reveal>
+            <StackExpertise
+              items={group.categories.map((cat) => ({
+                area: cat.title,
+                items: cat.items,
+                blurb: cat.blurb,
+                icon: cat.icon,
+              }))}
+            />
+          </div>
+        ))}
       </div>
     </section>
   );

@@ -31,11 +31,12 @@ export function Header({
   }, [pathname]);
 
   const nav = [
+    { href: `/${locale}/para-recruiters`, label: dict.nav.recruiters },
     { href: `/${locale}/perfil`, label: dict.nav.about },
     { href: `/${locale}/soluciones`, label: dict.nav.cases },
+    { href: `/${locale}/trayectoria`, label: dict.nav.career },
     { href: `/${locale}/laboratorio`, label: dict.nav.lab },
     { href: `/${locale}/servicios`, label: dict.nav.services },
-    { href: `/${locale}#stack`, label: dict.nav.stack },
   ];
 
   const isActive = (href: string) =>
