@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowRight, Calendar, Download, Mail } from "lucide-react";
-import { LinkedInIcon } from "@/components/icons";
+import { LinkedInIcon, WhatsAppIcon } from "@/components/icons";
 import { isLocale, locales, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
-import { cvPath, mailtoContact, site } from "@/lib/site";
+import { cvPath, mailtoContact, site, whatsappContact } from "@/lib/site";
 import { CAREER_ITEMS } from "@/lib/career-gallery";
 import { getInternalContent, featuredSlugs } from "@/lib/internal-content";
 import { SiteShell } from "@/components/SiteShell";
@@ -66,8 +66,17 @@ export default async function RecruitersPage({
   return (
     <SiteShell locale={l} dict={dict}>
       <PageHero eyebrow={t.eyebrow} title={t.heading} subtitle={t.intro}>
-        <div className="flex flex-col gap-3 sm:flex-row">
-          <a href={cvPath(l)} download className="btn-primary">
+        <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+          <a
+            href={whatsappContact(l)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-primary"
+          >
+            <WhatsAppIcon className="h-4 w-4" />
+            {t.whatsappCta}
+          </a>
+          <a href={cvPath(l)} download className="btn-secondary">
             <Download className="h-4 w-4" />
             {t.downloadCv}
           </a>
@@ -258,7 +267,16 @@ export default async function RecruitersPage({
           </Reveal>
           <Reveal delay={0.1}>
             <div className="mt-8 flex flex-wrap gap-3">
-              <a href={cvPath(l)} download className="btn-primary">
+              <a
+                href={whatsappContact(l)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-primary"
+              >
+                <WhatsAppIcon className="h-4 w-4" />
+                {t.whatsappCta}
+              </a>
+              <a href={cvPath(l)} download className="btn-secondary">
                 <Download className="h-4 w-4" />
                 {t.downloadCv}
               </a>

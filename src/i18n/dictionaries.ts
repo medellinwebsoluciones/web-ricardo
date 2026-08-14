@@ -54,6 +54,7 @@ export type Dictionary = {
     ctaSecondary: string;
     ctaCv: string;
     ctaLinkedin: string;
+    ctaWhatsapp: string;
     rolesLabel: string;
     roles: string[];
     stats: { value: string; label: string }[];
@@ -114,6 +115,7 @@ export type Dictionary = {
     ctaBody: string;
     downloadCv: string;
     viewLinkedin: string;
+    whatsappCta: string;
     bookCall: string;
     emailCta: string;
   };
@@ -248,6 +250,7 @@ const es: Dictionary = {
     ctaSecondary: "Ver sistemas en producción",
     ctaCv: "Descargar CV",
     ctaLinkedin: "LinkedIn",
+    ctaWhatsapp: "WhatsApp",
     rolesLabel: "Abierto a",
     roles: [
       "Senior Software Architect",
@@ -586,11 +589,11 @@ const es: Dictionary = {
     quickFactsHeading: "Datos rápidos",
     quickFacts: [
       { label: "Ubicación", value: "Medellín, Colombia" },
+      { label: "WhatsApp", value: "+57 305 355 4636" },
       { label: "Zona horaria", value: "COT · solape diario con CET" },
       { label: "Experiencia", value: "+10 años · 12+ sistemas en producción" },
       { label: "Especialidad", value: "Arquitectura · IA · Backend" },
       { label: "Idiomas", value: "Español nativo · inglés técnico" },
-      { label: "Respuesta", value: "Contesto personalmente en 24 h hábiles" },
     ],
     rolesHeading: "Roles objetivo",
     rolesNote:
@@ -619,6 +622,7 @@ const es: Dictionary = {
       "Descarga el CV o agenda 15 minutos: hablas directamente conmigo, sin intermediarios.",
     downloadCv: "Descargar CV (PDF)",
     viewLinkedin: "Ver LinkedIn",
+    whatsappCta: "Escribir por WhatsApp",
     bookCall: "Agendar llamada técnica",
     emailCta: "Escribir un email",
   },
@@ -693,6 +697,7 @@ const en: Dictionary = {
     ctaSecondary: "See Production Systems",
     ctaCv: "Download CV",
     ctaLinkedin: "LinkedIn",
+    ctaWhatsapp: "WhatsApp",
     rolesLabel: "Open to",
     roles: [
       "Senior Software Architect",
@@ -1030,11 +1035,11 @@ const en: Dictionary = {
     quickFactsHeading: "Quick facts",
     quickFacts: [
       { label: "Location", value: "Medellín, Colombia" },
+      { label: "WhatsApp", value: "+57 305 355 4636" },
       { label: "Timezone", value: "COT · daily CET overlap" },
       { label: "Experience", value: "10+ years · 12+ production systems" },
       { label: "Focus", value: "Architecture · AI · Backend" },
       { label: "Languages", value: "Native Spanish · technical English" },
-      { label: "Response", value: "I reply personally within 24 business hours" },
     ],
     rolesHeading: "Target roles",
     rolesNote:
@@ -1060,6 +1065,7 @@ const en: Dictionary = {
       "Download the CV or book 15 minutes: you talk directly to me, no middle layer.",
     downloadCv: "Download CV (PDF)",
     viewLinkedin: "View LinkedIn",
+    whatsappCta: "Message on WhatsApp",
     bookCall: "Book a technical call",
     emailCta: "Send an email",
   },

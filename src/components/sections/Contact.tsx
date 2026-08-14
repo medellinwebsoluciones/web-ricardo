@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { Send, Loader2, CheckCircle2, Mail } from "lucide-react";
-import { LinkedInIcon } from "@/components/icons";
+import { LinkedInIcon, WhatsAppIcon } from "@/components/icons";
 import { Reveal } from "@/components/Reveal";
-import { site, mailtoContact } from "@/lib/site";
+import { site, mailtoContact, whatsappContact } from "@/lib/site";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 
@@ -68,6 +68,22 @@ export function Contact({
             </Reveal>
             <Reveal delay={0.15}>
               <div className="mt-8 space-y-3">
+                <a
+                  href={whatsappContact(locale)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 text-sm text-zinc-300 transition-colors hover:text-white"
+                >
+                  <span className="flex h-9 w-9 items-center justify-center rounded-lg border border-emerald-500/30 bg-emerald-500/10 text-emerald-400">
+                    <WhatsAppIcon className="h-4 w-4" />
+                  </span>
+                  <span>
+                    <span className="block font-medium text-white">
+                      {dict.hero.ctaWhatsapp}
+                    </span>
+                    <span className="text-zinc-500">{site.phoneDisplay}</span>
+                  </span>
+                </a>
                 <a
                   href={mailtoContact(locale)}
                   className="flex items-center gap-3 text-sm text-zinc-300 transition-colors hover:text-white"

@@ -15,6 +15,7 @@ export function JsonLd({ locale }: { locale: Locale }) {
     url: `${site.url}/${locale}`,
     image: `${site.url}/images/ricardo-zuluaga.png`,
     email: `mailto:${site.email}`,
+    telephone: `+${site.phoneE164}`,
     sameAs: [site.linkedin],
     worksFor: {
       "@type": "Organization",
