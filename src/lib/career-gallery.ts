@@ -11,6 +11,10 @@ export type CareerItem = {
   stack: string[];
   /** Link interno a caso público si existe */
   solutionSlug?: string;
+  /** Captura real anonimizada (webp/png bajo /public). Si existe, se muestra en la card. */
+  image?: string;
+  /** Etiqueta corta bajo la imagen (p.ej. "Datos anonimizados"). */
+  imageNote?: { es: string; en: string };
   placeholderHue: number;
 };
 
@@ -47,18 +51,43 @@ export const CAREER_ITEMS: CareerItem[] = [
   },
   {
     id: "renault",
-    companyPublic: "Renault",
-    sector: { es: "Automotriz", en: "Automotive" },
+    companyPublic: "Renault · E-Tech electric days",
+    sector: { es: "Automotriz · Campaña", en: "Automotive · Campaign" },
     role: {
-      es: "Desarrollo en ecosistema industrial / corporativo",
-      en: "Development in industrial / corporate ecosystem",
+      es: "Full-stack (PHP / CakePHP + MySQL)",
+      en: "Full-stack (PHP / CakePHP + MySQL)",
     },
     summary: {
-      es: "Experiencia en contexto automotriz empresarial. Sin revelar procesos internos.",
-      en: "Experience in an automotive enterprise context. No internal processes disclosed.",
+      es: "Plataforma de agendamiento de test-drive para la campaña Renault E-Tech: registro de asistentes, catálogo de vehículos, gestión de citas y panel con KPIs (test drives, usuarios, asistencia) y roles Admin/Asesor. Datos anonimizados.",
+      en: "Test-drive scheduling platform for the Renault E-Tech campaign: attendee registration, vehicle catalog, appointment management and a KPI dashboard (test drives, users, attendance) with Admin/Advisor roles. Anonymized data.",
     },
-    stack: ["Sistemas de negocio"],
+    stack: ["PHP", "CakePHP", "MySQL", "jQuery"],
+    image: "/images/captures/renault/renault-agendamientos-card.webp",
+    imageNote: {
+      es: "Captura real · datos anonimizados",
+      en: "Real capture · anonymized data",
+    },
     placeholderHue: 210,
+  },
+  {
+    id: "dux",
+    companyPublic: "Dux · Promo (Noel)",
+    sector: { es: "Consumo masivo · Campaña", en: "CPG · Campaign" },
+    role: {
+      es: "Full-stack (PHP / CakePHP + MySQL)",
+      en: "Full-stack (PHP / CakePHP + MySQL)",
+    },
+    summary: {
+      es: "Microsite promocional gamificado \"Muévete con Promo Dux\": registro de códigos premiados, mecánica de sorteo, catálogo de premios y panel de ganadores. Actividad avalada por Coljuegos, con alto tráfico de campaña.",
+      en: "Gamified promotional microsite \"Muévete con Promo Dux\": winning-code registration, prize-draw mechanics, prize catalog and winners panel. Coljuegos-approved activity with high campaign traffic.",
+    },
+    stack: ["PHP", "CakePHP", "MySQL", "JavaScript"],
+    image: "/images/captures/dux/dux-promo-card.webp",
+    imageNote: {
+      es: "Landing público de campaña",
+      en: "Public campaign landing",
+    },
+    placeholderHue: 42,
   },
   {
     id: "tigo",
@@ -242,5 +271,53 @@ export const CAREER_ITEMS: CareerItem[] = [
     stack: ["AWS", "Full stack"],
     solutionSlug: "sistemas-criticos",
     placeholderHue: 175,
+  },
+  {
+    id: "feeling-core",
+    companyPublic: "Feeling Core (propio)",
+    sector: { es: "ERP / Operaciones", en: "ERP / Operations" },
+    role: {
+      es: "Producto full-stack end-to-end",
+      en: "End-to-end full-stack product",
+    },
+    summary: {
+      es: "ERP que unifica bodega, eventos, logística, proyectos y área comercial: stock por estado, cotizaciones, KPIs en vivo y roles. Flask + MySQL.",
+      en: "ERP unifying warehouse, events, logistics, projects and sales: state-based stock, quotes, live KPIs and roles. Flask + MySQL.",
+    },
+    stack: ["Python", "Flask", "SQLAlchemy", "MySQL"],
+    solutionSlug: "feeling-core-erp",
+    placeholderHue: 168,
+  },
+  {
+    id: "accoop",
+    companyPublic: "ACCOOP · Préstamos",
+    sector: { es: "Fintech / crédito", en: "Fintech / credit" },
+    role: {
+      es: "Backend / full-stack",
+      en: "Backend / full-stack",
+    },
+    summary: {
+      es: "Plataforma de crédito cooperativo: solicitudes, scoring, préstamos con amortización y pagos, con API REST documentada (JWT + Swagger). Django + DRF.",
+      en: "Credit-union lending platform: applications, scoring, amortized loans and payments, with a documented REST API (JWT + Swagger). Django + DRF.",
+    },
+    stack: ["Python", "Django", "DRF", "SimpleJWT"],
+    solutionSlug: "prestamos-fintech",
+    placeholderHue: 275,
+  },
+  {
+    id: "microtools",
+    companyPublic: "Google Places Scraper (propio)",
+    sector: { es: "Automatización / datos", en: "Automation / data" },
+    role: {
+      es: "Data / tooling",
+      en: "Data / tooling",
+    },
+    summary: {
+      es: "Herramienta Python/Streamlit en uso real: scraper de Google Places para prospección comercial geolocalizada con export a CSV/JSON.",
+      en: "Python/Streamlit tool in real use: a Google Places scraper for geolocated commercial prospecting with CSV/JSON export.",
+    },
+    stack: ["Python", "Streamlit", "Google Places API", "pandas"],
+    solutionSlug: "automatizacion-datos",
+    placeholderHue: 100,
   },
 ];

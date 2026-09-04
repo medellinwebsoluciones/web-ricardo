@@ -1,7 +1,7 @@
 import { Mail, ArrowRight, Download } from "lucide-react";
-import { LinkedInIcon, WhatsAppIcon } from "@/components/icons";
+import { LinkedInIcon } from "@/components/icons";
 import { Reveal } from "@/components/Reveal";
-import { cvPath, site, mailtoContact, whatsappContact } from "@/lib/site";
+import { cvPath, site, mailtoContact } from "@/lib/site";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 
@@ -25,19 +25,10 @@ export function Footer({
                 <li key={path}>{path}</li>
               ))}
             </ul>
-            <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row sm:flex-wrap">
-              <a
-                href={whatsappContact(locale)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-primary group"
-              >
-                <WhatsAppIcon className="h-4 w-4" />
-                {dict.hero.ctaWhatsapp}
-              </a>
-              <a href={`/${locale}#agenda`} className="btn-secondary">
+            <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+              <a href={`/${locale}#agenda`} className="btn-primary group">
                 {dict.nav.booking}
-                <ArrowRight className="h-4 w-4" />
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
               </a>
               <a href={cvPath(locale)} download className="btn-secondary">
                 <Download className="h-4 w-4" />
@@ -62,15 +53,6 @@ export function Footer({
           </div>
 
           <div className="flex items-center gap-3">
-            <a
-              href={whatsappContact(locale)}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={dict.hero.ctaWhatsapp}
-              className="flex h-10 w-10 items-center justify-center rounded-lg border border-zinc-800 text-zinc-400 transition-colors hover:border-emerald-500/40 hover:text-white"
-            >
-              <WhatsAppIcon className="h-4 w-4" />
-            </a>
             <a
               href={site.linkedin}
               target="_blank"

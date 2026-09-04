@@ -1,0 +1,6 @@
+flowchart TB
+  Geo[Geo / radio] --> API[Google Places API]
+  Tipo[Tipo de negocio] --> API
+  API --> Norm[Normalización]
+  Norm --> CSV[CSV / JSON]
+  Norm --> Hist[Historial]

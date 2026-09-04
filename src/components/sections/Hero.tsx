@@ -3,8 +3,8 @@
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, Calendar, Download } from "lucide-react";
-import { LinkedInIcon, WhatsAppIcon } from "@/components/icons";
-import { cvPath, site, whatsappContact } from "@/lib/site";
+import { LinkedInIcon } from "@/components/icons";
+import { cvPath, site } from "@/lib/site";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 
@@ -84,24 +84,16 @@ export function Hero({ dict, locale }: { dict: Dictionary; locale: Locale }) {
             </ul>
           </motion.div>
 
-          <motion.div
-            variants={item}
-            className="mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap"
-          >
-            <a
-              href={whatsappContact(locale)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-primary"
-            >
-              <WhatsAppIcon className="h-4 w-4" />
-              {dict.hero.ctaWhatsapp}
-            </a>
-            <a href="#agenda" className="btn-secondary">
+          <motion.div variants={item} className="mt-10 flex flex-col gap-3 sm:flex-row">
+            <a href="#agenda" className="btn-primary">
               <Calendar className="h-4 w-4" />
               {dict.hero.ctaPrimary}
             </a>
-            <a href={cvPath(locale)} download className="btn-secondary">
+            <a
+              href={cvPath(locale)}
+              download
+              className="btn-secondary group"
+            >
               <Download className="h-4 w-4" />
               {dict.hero.ctaCv}
             </a>
@@ -119,12 +111,6 @@ export function Hero({ dict, locale }: { dict: Dictionary; locale: Locale }) {
             >
               <LinkedInIcon className="h-4 w-4" />
               {dict.hero.ctaLinkedin}
-            </a>
-            <a
-              href={`tel:+${site.phoneE164}`}
-              className="text-zinc-400 transition-colors hover:text-white"
-            >
-              {site.phoneDisplay}
             </a>
             <a
               href="#casos"

@@ -15,6 +15,61 @@ export const mediaRoot = join(root, "public", "media");
 export const DESKTOP = { width: 1440, height: 900, deviceScaleFactor: 2 };
 export const MOBILE = { width: 390, height: 844, deviceScaleFactor: 2 };
 
+/**
+ * Anonimiza PII antes del screenshot (sistemas de cliente).
+ * opts: true | { blur?: string[], hide?: string[], redact?: boolean }
+ *  - blur:   selectores CSS cuyo contenido se difumina (columnas de datos, celdas, avatares).
+ *  - hide:   selectores CSS que se ocultan por completo.
+ *  - redact: si true, reemplaza emails y números largos (cédulas, teléfonos, montos) por placeholders.
+ */
+export async function anonymizePage(page, opts = {}) {
+  const cfg = opts === true ? {} : opts || {};
+  const { blur = [], hide = [], redact = false } = cfg;
+  await page
+    .addStyleTag({
+      content: `.pf-blur{filter:blur(7px)!important} .pf-hide{visibility:hidden!important}`,
+    })
+    .catch(() => {});
+  await page
+    .evaluate(
+      ({ blur, hide, redact }) => {
+        for (const sel of blur) {
+          try {
+            document.querySelectorAll(sel).forEach((el) => el.classList.add("pf-blur"));
+          } catch {
+            /* selector inválido */
+          }
+        }
+        for (const sel of hide) {
+          try {
+            document.querySelectorAll(sel).forEach((el) => el.classList.add("pf-hide"));
+          } catch {
+            /* selector inválido */
+          }
+        }
+        if (redact) {
+          const emailRe = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/g;
+          const longNum = /\d[\d.\s-]{5,}\d/g;
+          const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+          const nodes = [];
+          while (walker.nextNode()) nodes.push(walker.currentNode);
+          for (const n of nodes) {
+            const p = n.parentElement;
+            if (!p) continue;
+            const tag = p.tagName;
+            if (tag === "SCRIPT" || tag === "STYLE") continue;
+            let t = n.nodeValue || "";
+            t = t.replace(emailRe, "demo@correo.co");
+            t = t.replace(longNum, (m) => m.replace(/\d/g, "\u2022"));
+            if (t !== n.nodeValue) n.nodeValue = t;
+          }
+        }
+      },
+      { blur, hide, redact }
+    )
+    .catch(() => {});
+}
+
 export async function reachable(url, timeoutMs = 5000) {
   try {
     const ctrl = new AbortController();
@@ -130,6 +185,7 @@ export async function captureGroup(opts) {
         page.goto(shot.url, { waitUntil: "domcontentloaded", timeout: 60000 })
       );
       await page.waitForTimeout(waitMs);
+      if (shot.anonymize) await anonymizePage(page, shot.anonymize);
       const tmp = join(outDir, `${shot.name}.tmp.png`);
       await page.screenshot({
         path: tmp,
@@ -167,6 +223,7 @@ export async function captureGroup(opts) {
           mpage.goto(shot.url, { waitUntil: "domcontentloaded", timeout: 60000 })
         );
         await mpage.waitForTimeout(waitMs);
+        if (shot.anonymize) await anonymizePage(mpage, shot.anonymize);
         await mpage.screenshot({
           path: join(outDir, `${shot.name}-mobile.png`),
           type: "png",

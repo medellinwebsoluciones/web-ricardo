@@ -13,10 +13,10 @@
     "nombre": "Ricardo Luis Zuluaga Salazar",
     "ubicacion": { "es": "Medellín, Colombia · Remoto (solape CET)", "en": "Medellín, Colombia · Remote (CET overlap)" },
     "email": "ricki5789@gmail.com",
-    "telefono": "+57 305 355 4636",
+    "telefono": "TODO:+57 300 000 0000",
     "web": "https://ricardozuluaga.medellinweb.co",
-    "linkedin": "https://www.linkedin.com/in/ricardo-luis-zuluaga-salazar-974276103",
-    "github": "",
+    "linkedin": "linkedin.com/in/ricardo-luis-zuluaga-salazar-974276103",
+    "github": "TODO:github.com/tu-usuario",
     "sitios": [
       "https://ricardozuluaga.medellinweb.co",
       "https://www.medellinweb.co",
@@ -27,23 +27,23 @@
   "variantes": {
     "arquitecto": {
       "titulo": {
-        "es": "Senior Software Architect / Solutions Architect · AI, Backend y Sistemas Distribuidos",
+        "es": "Senior Software Architect / Solutions Architect · IA, Backend y Sistemas Distribuidos",
         "en": "Senior Software Architect / Solutions Architect · AI, Backend & Distributed Systems"
       },
       "resumen": {
-        "es": "Senior Software Architect / Solutions Architect con +10 años y 12+ sistemas en producción (banca, telco, retail, logística, PropTech). Ownership end-to-end: arquitectura → implementación → despliegue → operación. Especialidad: Python/FastAPI, IA agentic (RAG, CrewAI, MCP), alta disponibilidad y backend distribuido. Owner de Sígueme 4 (+100 licencias, aún operando), Auge Urbano, LEXIA y Nova. Abierto a remoto España/EU o relocation.",
-        "en": "Senior Software Architect / Solutions Architect with 10+ years and 12+ production systems (banking, telco, retail, logistics, PropTech). End-to-end ownership: architecture → build → deploy → operate. Focus: Python/FastAPI, agentic AI (RAG, CrewAI, MCP), high availability and distributed backend. Owner of Sígueme 4 (100+ licences, still live), Auge Urbano, LEXIA and Nova. Open to Spain/EU remote or relocation."
+        "es": "Arquitecto de soluciones con +10 años y 12+ sistemas en producción. Owner end-to-end de Sígueme 4 (telemetría satelital, +100 licencias, aún operando). AWS, integraciones gubernamentales y B2B banca/telco/retail. Hoy: arquitecturas agentic (Nova: 29 agentes, RAG, observabilidad), PropTech (Auge Urbano), LegalTech (LEXIA) y commerce/Woo. Ownership: arquitectura → implementación → despliegue → métricas.",
+        "en": "Solutions architect with 10+ years and 12+ production systems. End-to-end owner of Sígueme 4 (satellite telematics, 100+ licences, still live). AWS, government integrations and B2B banking/telco/retail. Today: agentic architectures (Nova: 29 agents, RAG, observability), PropTech (Auge Urbano), LegalTech (LEXIA) and Woo commerce. Ownership: architecture → build → deploy → metrics."
       },
       "orden": ["experiencia", "proyectos", "laboratorio", "stack", "certificaciones", "formacion", "idiomas"]
     },
     "fullstack": {
       "titulo": {
-        "es": "Senior Full Stack Developer / Solutions Architect · TypeScript · Python · AWS",
-        "en": "Senior Full Stack Developer / Solutions Architect · TypeScript · Python · AWS"
+        "es": "Desarrollador Full Stack Senior · TypeScript / Next.js / Python / AWS",
+        "en": "Senior Full Stack Developer · TypeScript / Next.js / Python / AWS"
       },
       "resumen": {
-        "es": "Senior Full Stack Developer y Solutions Architect con +10 años en producción (logística, banca, telco, retail, PropTech). Sígueme 4 end-to-end (+100 licencias). Stack: TypeScript/Next.js, Python (FastAPI/Flask/Django), Laravel/PHP, PostgreSQL/MySQL, AWS, Docker. Campañas nacionales (Feeling) bajo picos de tráfico. Entrega sistemas que quedan operando.",
-        "en": "Senior Full Stack Developer and Solutions Architect with 10+ years in production (logistics, banking, telco, retail, PropTech). End-to-end Sígueme 4 (100+ licences). Stack: TypeScript/Next.js, Python (FastAPI/Flask/Django), Laravel/PHP, PostgreSQL/MySQL, AWS, Docker. National campaigns (Feeling) under traffic peaks. Ships systems that stay live."
+        "es": "Full stack senior con +10 años en producción (logística, banca, telco, retail, PropTech). Sígueme 4 end-to-end (+100 licencias). Stack: TypeScript/Next.js, Python (FastAPI/Flask/Django), Laravel/PHP, PostgreSQL/MySQL, AWS, Docker. Campañas nacionales (Feeling) bajo picos de tráfico. Entrego sistemas que quedan operando — no demos.",
+        "en": "Senior full stack with 10+ years in production (logistics, banking, telco, retail, PropTech). End-to-end Sígueme 4 (100+ licences). Stack: TypeScript/Next.js, Python (FastAPI/Flask/Django), Laravel/PHP, PostgreSQL/MySQL, AWS, Docker. National campaigns (Feeling) under traffic peaks. Ships systems that stay live — not demos."
       },
       "orden": ["stack", "experiencia", "proyectos", "laboratorio", "certificaciones", "formacion", "idiomas"]
     }
@@ -56,11 +56,11 @@
         "en": "Independent / Freelance"
       },
       "cargo": {
-        "es": "Senior Software Architect / Solutions Architect",
-        "en": "Senior Software Architect / Solutions Architect"
+        "es": "Senior Full Stack Developer y Solutions Architect",
+        "en": "Senior Full Stack Developer & Solutions Architect"
       },
       "ubicacion": { "es": "Remoto — Medellín, Colombia", "en": "Remote — Medellín, Colombia" },
-      "periodo": { "es": "Ene 2026 – Presente", "en": "Jan 2026 – Present" },
+      "periodo": { "es": "Enero 2026 – Actualidad", "en": "January 2026 – Present" },
       "bullets": {
         "es": [
           "Diseño y entrega de plataformas de IA aplicada y sistemas de negocio para Colombia y España: arquitectura, implementación, despliegue y operación.",
@@ -85,13 +85,13 @@
     {
       "empresa": "Feeling Company S.A.S.",
       "cargo": {
-        "es": "Senior Full Stack Developer",
+        "es": "Desarrollador Full Stack Senior",
         "en": "Senior Full Stack Developer"
       },
-      "ubicacion": { "es": "Colombia (remoto)", "en": "Colombia (remote)" },
+      "ubicacion": { "es": "Colombia (remoto / híbrido)", "en": "Colombia (remote / hybrid)" },
       "periodo": {
-        "es": "Jun 2022 – Jun 2026",
-        "en": "Jun 2022 – Jun 2026"
+        "es": "Nov 2021 – 22 jun 2026 (FS nov 2021–jun 2022; Senior jun 2022–jun 2026)",
+        "en": "Nov 2021 – 22 Jun 2026 (FS Nov 2021–Jun 2022; Senior Jun 2022–Jun 2026)"
       },
       "_linkedin_roles": [
         { "title": "Desarrollador full stack", "from": "2021-11", "to": "2022-06", "modalidad": "Híbrido" },
@@ -99,7 +99,6 @@
       ],
       "bullets": {
         "es": [
-          "Promovido de Full Stack (Nov 2021–Jun 2022) a Senior Full Stack (Jun 2022–Jun 2026).",
           "Sistemas B2B y campañas nacionales para Bancolombia, Comfama, Tigo, Nutresa, Noel, Rica, Cunit, Renault y Argos — lanzamientos fijos y cero downtime bajo picos.",
           "CRM de bodegas/eventos en Python: inventario de materiales, logística de activaciones y operación de agencia.",
           "LEED / B2B Bancolombia–Comfama; presupuestos y contratos (Tigo en Python; Comfama en Laravel).",
@@ -109,7 +108,6 @@
           "Stack: Python, Laravel/PHP, WordPress, MySQL, JavaScript, jQuery, Node.js, Linux."
         ],
         "en": [
-          "Promoted from Full Stack (Nov 2021–Jun 2022) to Senior Full Stack (Jun 2022–Jun 2026).",
           "B2B systems and national campaigns for Bancolombia, Comfama, Tigo, Nutresa, Noel, Rica, Cunit, Renault and Argos — fixed launches, zero downtime under peaks.",
           "Warehouse/events CRM in Python: materials inventory, activation logistics and agency ops.",
           "LEED / B2B Bancolombia–Comfama; budgets and contracts (Tigo in Python; Comfama in Laravel).",
@@ -123,11 +121,11 @@
     {
       "empresa": "Carga Control",
       "cargo": {
-        "es": "Senior Full Stack Developer — Sígueme 4 y Systram",
+        "es": "Desarrollador Full Stack Senior — Sígueme 4 y Systram",
         "en": "Senior Full Stack Developer — Sígueme 4 & Systram"
       },
       "ubicacion": { "es": "Medellín / Itagüí, Colombia", "en": "Medellín / Itagüí, Colombia" },
-      "periodo": { "es": "May 2016 – Mar 2023", "en": "May 2016 – Mar 2023" },
+      "periodo": { "es": "Mayo 2016 – Marzo 2023", "en": "May 2016 – March 2023" },
       "bullets": {
         "es": [
           "Único responsable end-to-end de Sígueme 4 (telemetría satelital de flotas): arquitectura, backend, frontend, datos y despliegue.",
@@ -381,19 +379,19 @@
   "formacion": [
     {
       "titulo": {
-        "es": "Universidad de Medellín — estudios universitarios",
-        "en": "Universidad de Medellín — university studies"
+        "es": "Universidad de Medellín — estudios (sin título) · Autodidacta en producción",
+        "en": "Universidad de Medellín — studies (no degree) · Self-taught in production"
       },
       "detalle": {
-        "es": "2011–2017. Continuó con formación autodidacta aplicada en producción. Credencial demostrable: +10 años entregando sistemas en banca, telco, retail, logística y PropTech.",
-        "en": "2011–2017. Continued with self-directed learning applied in production. Demonstrable credential: 10+ years shipping systems in banking, telco, retail, logistics and PropTech."
+        "es": "2011–2017. Dejó la universidad; aprendió desde documentación oficial. Credencial: +10 años en producción y clientes enterprise (banca, telco, retail, logística, PropTech).",
+        "en": "2011–2017. Left university; learned from official docs. Credential: 10+ years in production and enterprise clients (banking, telco, retail, logistics, PropTech)."
       },
       "periodo": { "es": "2011 – 2017", "en": "2011 – 2017" }
     }
   ],
   "idiomas": [
-    { "es": "Spanish — Native", "en": "Spanish — Native" },
-    { "es": "English — Technical professional (reading/writing advanced; conversational improving)", "en": "English — Technical professional (advanced reading/writing; conversational improving)" }
+    { "es": "Español — nativo", "en": "Spanish — native" },
+    { "es": "Inglés — lectura/comprensión técnica avanzada; conversacional básico en mejora", "en": "English — advanced technical reading/comprehension; basic conversational, improving" }
   ],
   "marcas_publicas": [
     "Grupo Éxito / LTSA",

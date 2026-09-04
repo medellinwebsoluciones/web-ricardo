@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { isLocale, locales, type Locale } from "@/i18n/config";
@@ -61,8 +62,8 @@ export default async function TrayectoriaPage({
         }
         subtitle={
           en
-            ? "Enterprise brands and own products. Names only; no confidential systems, metrics or screenshots from client environments."
-            : "Marcas empresariales y productos propios. Solo nombres públicos; sin sistemas, métricas ni capturas confidenciales de entornos cliente."
+            ? "Enterprise brands and own products. Some cards show anonymized captures from public campaigns / product panels; no confidential client data is exposed."
+            : "Marcas empresariales y productos propios. Algunas tarjetas muestran capturas anonimizadas de campañas públicas / paneles de producto; sin exponer datos confidenciales de cliente."
         }
       />
 
@@ -72,16 +73,37 @@ export default async function TrayectoriaPage({
             {CAREER_ITEMS.map((item, i) => (
               <Reveal key={item.id} delay={Math.min(i * 0.03, 0.3)}>
                 <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900/40">
-                  <div
-                    className="flex h-28 items-end px-5 pb-4"
-                    style={{
-                      background: `linear-gradient(135deg, hsl(${item.placeholderHue} 35% 18%), hsl(${(item.placeholderHue + 40) % 360} 30% 10%))`,
-                    }}
-                  >
-                    <span className="text-lg font-semibold tracking-tight text-white">
-                      {item.companyPublic}
-                    </span>
-                  </div>
+                  {item.image ? (
+                    <div className="relative h-40 w-full overflow-hidden">
+                      <Image
+                        src={item.image}
+                        alt={`${item.companyPublic} — captura`}
+                        fill
+                        sizes="(max-width: 1024px) 100vw, 33vw"
+                        className="object-cover object-top"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
+                      {item.imageNote && (
+                        <span className="absolute right-2 top-2 rounded bg-black/60 px-1.5 py-0.5 text-[10px] font-medium text-emerald-300 ring-1 ring-emerald-500/30">
+                          {en ? item.imageNote.en : item.imageNote.es}
+                        </span>
+                      )}
+                      <span className="absolute bottom-3 left-5 text-lg font-semibold tracking-tight text-white drop-shadow">
+                        {item.companyPublic}
+                      </span>
+                    </div>
+                  ) : (
+                    <div
+                      className="flex h-28 items-end px-5 pb-4"
+                      style={{
+                        background: `linear-gradient(135deg, hsl(${item.placeholderHue} 35% 18%), hsl(${(item.placeholderHue + 40) % 360} 30% 10%))`,
+                      }}
+                    >
+                      <span className="text-lg font-semibold tracking-tight text-white">
+                        {item.companyPublic}
+                      </span>
+                    </div>
+                  )}
                   <div className="flex flex-1 flex-col gap-2 p-5">
                     <p className="text-[11px] uppercase tracking-wide text-zinc-500">
                       {en ? item.sector.en : item.sector.es}

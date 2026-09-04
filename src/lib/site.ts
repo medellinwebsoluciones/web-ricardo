@@ -7,17 +7,32 @@ export const site = {
     process.env.NEXT_PUBLIC_CONTACT_EMAIL ||
     process.env.CONTACT_EMAIL ||
     "ricki5789@gmail.com",
-  /** E.164 sin + para wa.me; display con espacios para humanos. */
-  phoneE164: "573053554636",
-  phoneDisplay: "+57 305 355 4636",
   linkedin:
     "https://www.linkedin.com/in/ricardo-luis-zuluaga-salazar-974276103/",
+  /**
+   * Número de WhatsApp en formato internacional solo dígitos (ej. "573001234567").
+   * Override con NEXT_PUBLIC_WHATSAPP_PHONE; por defecto usa el número de Ricardo (CO +57).
+   */
+  whatsapp: (
+    process.env.NEXT_PUBLIC_WHATSAPP_PHONE || "573053554636"
+  ).replace(/[^\d]/g, ""),
   timezone: process.env.BOOKING_TIMEZONE || "America/Bogota",
   displayTimezone: "Europe/Madrid",
   url:
     process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
     "http://localhost:3000",
 } as const;
+
+/** Enlace wa.me con mensaje pre-cargado. Vacío si no hay número configurado. */
+export function whatsappLink(locale: string, text?: string): string {
+  if (!site.whatsapp) return "";
+  const msg =
+    text ??
+    (locale === "en"
+      ? "Hi Ricardo, I saw your portfolio and I'd like to talk about a project/role."
+      : "Hola Ricardo, vi tu portafolio y me gustaría hablar sobre un proyecto/rol.");
+  return `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(msg)}`;
+}
 
 /** CV público generado con `npm run cv:pdf` y sincronizado a public/cv. */
 export function cvPath(locale: string): string {
@@ -30,13 +45,4 @@ export function mailtoContact(locale: string): string {
       ? "Technical inquiry — Medellín Web Soluciones"
       : "Consulta técnica — Medellín Web Soluciones";
   return `mailto:${site.email}?subject=${encodeURIComponent(subject)}`;
-}
-
-/** WhatsApp directo — fricción mínima para convertir visita en contacto real. */
-export function whatsappContact(locale: string): string {
-  const text =
-    locale === "en"
-      ? "Hi Ricardo — I saw your portfolio and would like to talk about a senior / architecture role or a technical project."
-      : "Hola Ricardo — vi tu portafolio y me gustaría hablar de un rol senior / arquitectura o de un proyecto técnico.";
-  return `https://wa.me/${site.phoneE164}?text=${encodeURIComponent(text)}`;
 }

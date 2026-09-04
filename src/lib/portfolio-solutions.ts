@@ -15,18 +15,26 @@ export type SolutionSlug =
   | "sitio-mws"
   | "crm-mws"
   | "landings-cliente"
-  | "wp-ai-agent";
+  | "wp-ai-agent"
+  | "feeling-core-erp"
+  | "prestamos-fintech"
+  | "landing-mws"
+  | "automatizacion-datos";
 
 export const solutionSlugs: SolutionSlug[] = [
   "orquestacion-agentes",
   "lexia-legal-os",
   "sistemas-criticos",
+  "feeling-core-erp",
+  "prestamos-fintech",
   "wp-ai-agent",
   "omnicanal-comercio",
   "plataforma-aprendizaje",
   "pagos-bold",
   "experiencia-recomendacion",
   "auge-urbano",
+  "landing-mws",
+  "automatizacion-datos",
   "sitio-mws",
   "crm-mws",
   "landings-cliente",
@@ -36,7 +44,9 @@ export const solutionSlugs: SolutionSlug[] = [
 export const featuredSlugs: SolutionSlug[] = [
   "orquestacion-agentes",
   "lexia-legal-os",
+  "feeling-core-erp",
   "sistemas-criticos",
+  "prestamos-fintech",
   "wp-ai-agent",
   "omnicanal-comercio",
   "plataforma-aprendizaje",
@@ -1471,6 +1481,408 @@ export const solutionsEs: SolutionDetail[] = [
     hiringFit:
       "Agencias/distribuidores en Espana y USA: canal white-label o volumen (margen recurrente Growth/Enterprise) — no es un pitch para contratarme como Solutions Architect. Tiendas Woo: licencia lista (audit → plugin → piloto). Demo en #mws-agencias o llamada de 15 min.",
   },
+  {
+    slug: "feeling-core-erp",
+    tag: "ERP & Producto propio",
+    title: "Feeling Core — ERP de bodega y eventos",
+    summary:
+      "ERP propio que unifica bodega, eventos, logística, proyectos y área comercial de una empresa de producción de eventos: un solo sistema con control de stock por estado, cotizaciones, KPIs en vivo y roles — reemplaza el caos de hojas de cálculo sueltas.",
+    ...img("feeling-core-erp"),
+    productImage: "/images/captures/feeling-core/feeling-core-card.webp",
+    gallery: [
+      {
+        src: "/images/captures/feeling-core/feeling-inventario.png",
+        alt: "Feeling Core — inventario de bodega con stock por estado",
+        width: 1024,
+        height: 640,
+        caption: "Bodega: stock por estado (disponible/en uso/mantenimiento), categorías y filtros",
+      },
+      {
+        src: "/images/captures/feeling-core/feeling-proyectos.png",
+        alt: "Feeling Core — gestión de proyectos por cliente",
+        width: 1024,
+        height: 640,
+        caption: "Proyectos: estado, prioridad, responsable y entrega por cliente",
+      },
+      {
+        src: "/images/captures/feeling-core/feeling-eventos.png",
+        alt: "Feeling Core — planificación y seguimiento de eventos",
+        width: 1024,
+        height: 640,
+        caption: "Eventos: agenda, ubicación, personal y despachos",
+      },
+      {
+        src: "/images/captures/feeling-core/feeling-login.png",
+        alt: "Feeling Core — acceso con control de roles",
+        width: 1024,
+        height: 640,
+        caption: "Acceso seguro con roles (admin, bodega, comercial) y bloqueo por intentos",
+      },
+    ],
+    archCaption:
+      "Login por rol → módulos operativos (bodega, eventos, proyectos, comercial) → MySQL único con dashboards de KPI y auditoría.",
+    meta: [
+      { label: "Dominio", value: "ERP / Operaciones" },
+      { label: "Rol", value: "Product / Full-stack" },
+      { label: "Stack", value: "Flask + MySQL" },
+      { label: "Foco", value: "Un sistema para toda la operación" },
+    ],
+    context:
+      "Una empresa de producción de eventos manejaba bodega, montajes, personal, proyectos y cotizaciones en hojas sueltas y WhatsApp. Feeling Core es el ERP que diseñé y construí para centralizar todo: inventario con stock por estado, agenda de eventos, logística de despachos, proyectos con tiempo y presupuesto, y un área comercial con cotizaciones numeradas — con dashboards que muestran el negocio en tiempo real.",
+    challenges: [
+      "Stock que se descuadra entre montajes (disponible vs en uso vs dañado).",
+      "Cero visibilidad de proyectos, horas y cotizaciones en un solo lugar.",
+      "Datos sensibles de clientes y operación sin control de acceso.",
+      "Decisiones a ciegas por falta de KPIs consolidados.",
+    ],
+    approach: [
+      {
+        title: "Modelo de dominio unificado",
+        description: "40+ entidades (inventario, eventos, despachos, proyectos, cotizaciones) en un esquema relacional coherente.",
+      },
+      {
+        title: "Inventario por estado",
+        description: "Cantidad disponible/en uso/mantenimiento/dañado, categorías, alertas de mínimos y auditorías.",
+      },
+      {
+        title: "Dashboards en vivo",
+        description: "KPIs de clientes, proyectos, cotizaciones, horas y tendencias a 6 meses sin exportar nada.",
+      },
+      {
+        title: "Seguridad por rol",
+        description: "Login PBKDF2, bloqueo por intentos y RBAC (admin/supervisor/bodega/comercial).",
+      },
+    ],
+    stack: ["Python", "Flask", "SQLAlchemy", "MySQL", "Flask-Migrate", "Chart.js"],
+    outcomes: [
+      { value: "1", label: "Sistema para toda la operación" },
+      { value: "40+", label: "Entidades de dominio modeladas" },
+      { value: "Tiempo real", label: "KPIs sin hojas de cálculo" },
+    ],
+    highlights: [
+      "Bodega con control de stock por estado, categorías y auditorías.",
+      "Eventos, despachos, personal, vehículos y horas en un flujo logístico.",
+      "Proyectos con tareas, tiempo, presupuestos y cotizaciones numeradas.",
+      "Dashboards de KPI y control de acceso por rol.",
+    ],
+    architectureLayers: [
+      "Acceso: login PBKDF2 + RBAC",
+      "Bodega / inventario",
+      "Eventos / despachos / logística",
+      "Proyectos / comercial (cotizaciones)",
+      "MySQL + dashboards KPI + auditoría",
+    ],
+    decisions: [
+      {
+        title: "Monolito modular (Flask + blueprints)",
+        why: "Un dominio muy interconectado; los módulos comparten datos sin la complejidad de microservicios.",
+      },
+      {
+        title: "MySQL relacional",
+        why: "Integridad referencial entre inventario, eventos y comercial; reportes con SQL directo.",
+      },
+      {
+        title: "RBAC desde el día uno",
+        why: "Bodega, comercial y administración ven solo lo suyo — dato sensible protegido.",
+      },
+    ],
+    hiringFit:
+      "Producto propio end-to-end: modelé el dominio, construí backend, UI y dashboards, y lo puse a operar con datos reales. Si buscas alguien que traduzca una operación desordenada en un sistema usable, este es el ejemplo. Demo con datos de muestra en 15 min.",
+  },
+  {
+    slug: "prestamos-fintech",
+    tag: "Fintech & Backend",
+    title: "ACCOOP — gestión de préstamos",
+    summary:
+      "Plataforma fintech para una cooperativa: solicitudes de crédito, scoring/aprobación, préstamos con amortización, cuotas y pagos, con API REST documentada (JWT + Swagger), panel administrativo y portal del asociado.",
+    ...img("prestamos-fintech"),
+    productImage: "/images/captures/prestamos/prestamos-card.webp",
+    gallery: [
+      {
+        src: "/images/captures/prestamos/prestamos-solicitudes.png",
+        alt: "ACCOOP — gestión de solicitudes de crédito con KPIs",
+        width: 1024,
+        height: 640,
+        caption: "Solicitudes: pendientes, en evaluación, aprobadas y monto total",
+      },
+      {
+        src: "/images/captures/prestamos/prestamos-clientes.png",
+        alt: "ACCOOP — cartera de clientes/asociados",
+        width: 1024,
+        height: 640,
+        caption: "Clientes / asociados con historial de crédito",
+      },
+      {
+        src: "/images/captures/prestamos/prestamos-swagger.png",
+        alt: "ACCOOP — API REST documentada con Swagger",
+        width: 1024,
+        height: 640,
+        caption: "API REST documentada (DRF + Swagger/OpenAPI)",
+      },
+      {
+        src: "/images/captures/prestamos/prestamos-django-admin.png",
+        alt: "ACCOOP — panel Django admin",
+        width: 1024,
+        height: 640,
+        caption: "Back-office sobre Django admin para operación interna",
+      },
+    ],
+    archCaption:
+      "Portal cliente y panel admin → API DRF con JWT y Swagger → dominio de crédito (solicitudes, préstamos, pagos) → base relacional.",
+    meta: [
+      { label: "Dominio", value: "Fintech / Crédito" },
+      { label: "Rol", value: "Backend / Full-stack" },
+      { label: "Stack", value: "Django + DRF" },
+      { label: "Foco", value: "Crédito con API documentada" },
+    ],
+    context:
+      "Una cooperativa necesitaba salir de los cálculos manuales de préstamos y llevar el ciclo completo a software: recibir solicitudes, evaluarlas, aprobar, generar el préstamo con su amortización, cobrar cuotas y controlar la cartera. Construí la plataforma con Django + DRF, con panel administrativo, portal del asociado y una API REST documentada para integraciones.",
+    challenges: [
+      "Cálculo manual de cuotas y saldos propenso a error.",
+      "Sin trazabilidad del estado de cada solicitud y su cartera.",
+      "Necesidad de integraciones (API) sin exponer la base directamente.",
+      "Operación interna que requería un back-office confiable.",
+    ],
+    approach: [
+      {
+        title: "Ciclo de crédito completo",
+        description: "Solicitud → evaluación/scoring → aprobación → préstamo → cuotas → pagos, cada uno con su estado.",
+      },
+      {
+        title: "API REST documentada",
+        description: "DRF + SimpleJWT + Swagger/OpenAPI: contrato claro para portal y terceros.",
+      },
+      {
+        title: "Doble superficie",
+        description: "Panel administrativo para la cooperativa y portal para el asociado.",
+      },
+      {
+        title: "Back-office sobre Django admin",
+        description: "Operación interna sin construir CRUD desde cero.",
+      },
+    ],
+    stack: ["Python", "Django", "Django REST Framework", "SimpleJWT", "drf-yasg", "SQLite/MySQL"],
+    outcomes: [
+      { value: "100%", label: "Ciclo de crédito digitalizado" },
+      { value: "API", label: "REST documentada con Swagger" },
+      { value: "JWT", label: "Autenticación para integraciones" },
+    ],
+    highlights: [
+      "Solicitudes con estados (pendiente, en evaluación, aprobada, rechazada) y KPIs.",
+      "Préstamos con amortización, cuotas y control de cartera/pagos.",
+      "API REST con JWT y documentación Swagger/ReDoc.",
+      "Panel admin + portal del asociado sobre un mismo dominio.",
+    ],
+    architectureLayers: [
+      "Canales: portal cliente + panel admin",
+      "API DRF + JWT + Swagger",
+      "Dominio: solicitudes / scoring",
+      "Dominio: préstamos / cuotas / pagos",
+      "Persistencia relacional (SQLite/MySQL)",
+    ],
+    decisions: [
+      {
+        title: "Django + DRF",
+        why: "Admin listo, ORM robusto y DRF para una API bien tipada — velocidad sin sacrificar orden.",
+      },
+      {
+        title: "JWT además de sesión",
+        why: "La web usa sesión; las integraciones usan tokens, sin abrir la base.",
+      },
+      {
+        title: "SQLite en dev, MySQL en prod",
+        why: "Onboarding inmediato local; misma capa ORM para producción.",
+      },
+    ],
+    hiringFit:
+      "Backend de dominio sensible (dinero) con reglas explícitas, API documentada y seguridad por token. Si necesitas modelar un flujo financiero con trazabilidad y una API limpia, puedo replicarlo. Recorrido del sistema en una llamada de 15 min.",
+  },
+  {
+    slug: "landing-mws",
+    tag: "Frontend & Web",
+    title: "Landing de agencia — Angular SPA",
+    summary:
+      "Landing de alto impacto para una agencia de software: SPA en Angular con hero animado, secciones de servicios y portafolio, y prueba social — pensada para convertir visitas en contactos, con build estático y foco en performance.",
+    ...img("landing-mws"),
+    productImage: "/images/captures/landing-mws-ng/landing-mws-ng-card.webp",
+    gallery: [
+      {
+        src: "/images/captures/landing-mws-ng/landingng-home.png",
+        alt: "Landing de agencia — hero animado y propuesta de valor",
+        width: 1024,
+        height: 640,
+        caption: "Hero de alto impacto con una acción primaria clara",
+      },
+      {
+        src: "/images/captures/landing-mws-ng/landingng-home-mobile.png",
+        alt: "Landing de agencia — versión móvil responsive",
+        width: 390,
+        height: 844,
+        caption: "Mobile-first: la mayoría del tráfico llega desde el móvil",
+      },
+    ],
+    archCaption:
+      "UX de conversión (hero + prueba social) → Angular SPA con componentes standalone → build estático optimizado para SEO/performance.",
+    meta: [
+      { label: "Dominio", value: "Marketing / Web" },
+      { label: "Rol", value: "Frontend" },
+      { label: "Stack", value: "Angular SPA" },
+      { label: "Foco", value: "Convertir visitas en contactos" },
+    ],
+    context:
+      "Una agencia necesitaba una landing que comunicara solidez y empujara al contacto. La construí como SPA en Angular: hero animado con propuesta clara, secciones de servicios y proyectos, prueba social (volumen de proyectos) y una única acción primaria — todo con build estático para bajo costo y buena performance.",
+    challenges: [
+      "Comunicar valor en segundos y guiar a una sola acción.",
+      "Mantener animaciones atractivas sin sacrificar performance.",
+      "Estructura escalable para agregar secciones sin desorden.",
+      "Buen comportamiento en móvil, donde llega la mayoría del tráfico.",
+    ],
+    approach: [
+      {
+        title: "Hero orientado a conversión",
+        description: "Mensaje claro + CTA primaria; jerarquía visual que lleva al contacto.",
+      },
+      {
+        title: "Arquitectura por componentes",
+        description: "Componentes standalone de Angular; secciones desacopladas y reutilizables.",
+      },
+      {
+        title: "Prueba social",
+        description: "Volumen de proyectos y servicios visibles arriba para generar confianza.",
+      },
+      {
+        title: "Entrega estática",
+        description: "Build optimizado sin runtime de servidor; menos superficie de fallo.",
+      },
+    ],
+    stack: ["Angular", "TypeScript", "RxJS", "SCSS", "HTML5"],
+    outcomes: [
+      { value: "SPA", label: "Angular con componentes standalone" },
+      { value: "1", label: "Acción primaria hacia el contacto" },
+      { value: "Estático", label: "Build sin servidor, bajo costo" },
+    ],
+    highlights: [
+      "Hero animado con propuesta de valor y CTA clara.",
+      "Secciones de servicios y portafolio con prueba social.",
+      "Arquitectura por componentes fácil de extender.",
+      "Responsive mobile-first con foco en performance.",
+    ],
+    architectureLayers: [
+      "UX de conversión (hero + prueba social)",
+      "Angular SPA (componentes standalone)",
+      "Build estático optimizado",
+      "SEO / performance",
+    ],
+    decisions: [
+      {
+        title: "SPA en Angular",
+        why: "Interacciones ricas y estructura por componentes para crecer sin deuda.",
+      },
+      {
+        title: "Build estático",
+        why: "Sin runtime de app = menor costo, latencia y superficie de fallo.",
+      },
+      {
+        title: "Una sola CTA primaria",
+        why: "Reduce la paradoja de elección y sube la conversión a contacto.",
+      },
+    ],
+    hiringFit:
+      "Frontend orientado a negocio: no solo se ve bien, está pensado para convertir. Si necesitas una landing que traduzca tráfico en leads, puedo diseñarla y construirla. Reviso tu caso en una llamada de 15 min.",
+  },
+  {
+    slug: "automatizacion-datos",
+    tag: "Automatización & Datos",
+    title: "Google Places Scraper — prospección",
+    summary:
+      "Herramienta en Python/Streamlit para prospección comercial: busca negocios por zona geográfica y tipo usando la API de Google Places, normaliza los datos (nombre, dirección, teléfono, rating) y los exporta a CSV/JSON listos para CRM o campañas.",
+    ...img("automatizacion-datos"),
+    productImage: "/images/captures/google-places/google-places-card.webp",
+    gallery: [
+      {
+        src: "/images/captures/google-places/places-app.png",
+        alt: "Google Places Scraper — prospección geolocalizada",
+        width: 1024,
+        height: 640,
+        caption: "Búsqueda por geo/tipo, resultados normalizados y export",
+      },
+      {
+        src: "/images/captures/google-places/places-app-mobile.png",
+        alt: "Google Places Scraper — vista móvil",
+        width: 390,
+        height: 844,
+        caption: "UI Streamlit responsive, usable desde el móvil",
+      },
+    ],
+    archCaption:
+      "Parámetros (geo + tipo) → API de Google Places con paginación → normalización → export CSV/JSON + historial.",
+    meta: [
+      { label: "Dominio", value: "Automatización" },
+      { label: "Rol", value: "Data / Tooling" },
+      { label: "Stack", value: "Python + Streamlit" },
+      { label: "Foco", value: "Prospección sin trabajo manual" },
+    ],
+    context:
+      "No todo problema necesita una plataforma: a veces una micro-herramienta bien hecha ahorra horas. Construí un scraper de Google Places que arma listas de prospección por zona y tipo de negocio: en lugar de copiar datos de mapas uno por uno, define geo + categoría, obtiene los lugares con su detalle y exporta todo limpio para usarlo en CRM o campañas.",
+    challenges: [
+      "Prospección manual copiando datos de mapas, una por una.",
+      "Rate limits y paginación de la API de Places.",
+      "Datos crudos con duplicados y campos inconsistentes.",
+      "Necesidad de una UI usable sin instalar nada complejo.",
+    ],
+    approach: [
+      {
+        title: "Scraper geolocalizado",
+        description: "Búsqueda por lat/lng, radio y tipo; detalle por lugar (dirección, teléfono, rating).",
+      },
+      {
+        title: "Manejo de límites",
+        description: "Paginación y pausas para respetar rate limits sin perder resultados.",
+      },
+      {
+        title: "Normalización y export",
+        description: "Datos limpios y deduplicados exportados a CSV/JSON para CRM/campañas.",
+      },
+      {
+        title: "UI Streamlit",
+        description: "Interfaz web inmediata: parametrizar y descargar, sin fricción.",
+      },
+    ],
+    stack: ["Python", "Streamlit", "Google Places API", "pandas", "requests"],
+    outcomes: [
+      { value: "Horas", label: "Ahorro por lista de prospección" },
+      { value: "CSV/JSON", label: "Export listo para CRM" },
+      { value: "1-click", label: "Descarga inmediata" },
+    ],
+    highlights: [
+      "Prospección geolocalizada por zona y tipo de negocio.",
+      "Manejo de paginación y rate limits de la API de Places.",
+      "Datos normalizados (nombre, dirección, teléfono, rating) exportables.",
+      "UI Streamlit lista para usar sin instalación local.",
+    ],
+    architectureLayers: [
+      "Entrada: parámetros geo + tipo",
+      "Proceso: Google Places API (paginación)",
+      "Normalización y deduplicado",
+      "Salida: CSV/JSON + historial",
+    ],
+    decisions: [
+      {
+        title: "Streamlit sobre SPA",
+        why: "Time-to-value: una herramienta interna útil en horas, no en semanas.",
+      },
+      {
+        title: "Export a formatos operativos",
+        why: "CSV/JSON que encajan directo en el flujo real (CRM, campañas).",
+      },
+      {
+        title: "Pausas anti rate-limit",
+        why: "Prioriza completar el trabajo sobre velocidad bruta con la API.",
+      },
+    ],
+    hiringFit:
+      "Pragmatismo: identifico trabajo repetitivo y lo automatizo con la herramienta correcta (a veces un script, no una plataforma). Si tienes una tarea manual que se repite, probablemente la puedo eliminar. Cuéntamela en una llamada corta.",
+  },
 ];
 
 export const solutionsEn: SolutionDetail[] = [
@@ -2847,5 +3259,407 @@ export const solutionsEn: SolutionDetail[] = [
     ],
     hiringFit:
       "Agencies/distributors in Spain and the USA: white-label or volume channel (recurring Growth/Enterprise margin) — not a pitch to hire me as a Solutions Architect. Woo stores: ready-to-activate license (audit → plugin → pilot). Demo via #mws-agencias or a 15-min call.",
+  },
+  {
+    slug: "feeling-core-erp",
+    tag: "ERP & Own product",
+    title: "Feeling Core — warehouse & events ERP",
+    summary:
+      "An ERP I built to unify warehouse, events, logistics, projects and sales for an event-production company: one system with state-based stock control, quotes, live KPIs and roles — replacing a mess of disconnected spreadsheets.",
+    ...img("feeling-core-erp"),
+    productImage: "/images/captures/feeling-core/feeling-core-card.webp",
+    gallery: [
+      {
+        src: "/images/captures/feeling-core/feeling-inventario.png",
+        alt: "Feeling Core — warehouse inventory with state-based stock",
+        width: 1024,
+        height: 640,
+        caption: "Warehouse: stock by state (available/in-use/maintenance), categories and filters",
+      },
+      {
+        src: "/images/captures/feeling-core/feeling-proyectos.png",
+        alt: "Feeling Core — project management by client",
+        width: 1024,
+        height: 640,
+        caption: "Projects: status, priority, owner and delivery per client",
+      },
+      {
+        src: "/images/captures/feeling-core/feeling-eventos.png",
+        alt: "Feeling Core — event planning and tracking",
+        width: 1024,
+        height: 640,
+        caption: "Events: schedule, location, staff and dispatches",
+      },
+      {
+        src: "/images/captures/feeling-core/feeling-login.png",
+        alt: "Feeling Core — role-based access",
+        width: 1024,
+        height: 640,
+        caption: "Secure access with roles (admin, warehouse, sales) and lockout on attempts",
+      },
+    ],
+    archCaption:
+      "Role-based login → operational modules (warehouse, events, projects, sales) → single MySQL with KPI dashboards and audit trail.",
+    meta: [
+      { label: "Domain", value: "ERP / Operations" },
+      { label: "Role", value: "Product / Full-stack" },
+      { label: "Stack", value: "Flask + MySQL" },
+      { label: "Focus", value: "One system for the whole operation" },
+    ],
+    context:
+      "An event-production company ran warehouse, setups, staff, projects and quotes on loose spreadsheets and WhatsApp. Feeling Core is the ERP I designed and built to centralize everything: state-based inventory, event scheduling, dispatch logistics, projects with time and budget, and a sales area with numbered quotes — with dashboards that show the business in real time.",
+    challenges: [
+      "Stock drifting between setups (available vs in-use vs damaged).",
+      "Zero visibility of projects, hours and quotes in one place.",
+      "Sensitive client and operational data without access control.",
+      "Blind decisions from a lack of consolidated KPIs.",
+    ],
+    approach: [
+      {
+        title: "Unified domain model",
+        description: "40+ entities (inventory, events, dispatches, projects, quotes) in one coherent relational schema.",
+      },
+      {
+        title: "State-based inventory",
+        description: "Available/in-use/maintenance/damaged quantities, categories, low-stock alerts and audits.",
+      },
+      {
+        title: "Live dashboards",
+        description: "KPIs for clients, projects, quotes, hours and 6-month trends with no exports.",
+      },
+      {
+        title: "Role-based security",
+        description: "PBKDF2 login, lockout on attempts and RBAC (admin/supervisor/warehouse/sales).",
+      },
+    ],
+    stack: ["Python", "Flask", "SQLAlchemy", "MySQL", "Flask-Migrate", "Chart.js"],
+    outcomes: [
+      { value: "1", label: "System for the whole operation" },
+      { value: "40+", label: "Domain entities modeled" },
+      { value: "Real-time", label: "KPIs without spreadsheets" },
+    ],
+    highlights: [
+      "Warehouse with state-based stock control, categories and audits.",
+      "Events, dispatches, staff, vehicles and hours in one logistics flow.",
+      "Projects with tasks, time, budgets and numbered quotes.",
+      "KPI dashboards and role-based access control.",
+    ],
+    architectureLayers: [
+      "Access: PBKDF2 login + RBAC",
+      "Warehouse / inventory",
+      "Events / dispatches / logistics",
+      "Projects / sales (quotes)",
+      "MySQL + KPI dashboards + audit",
+    ],
+    decisions: [
+      {
+        title: "Modular monolith (Flask + blueprints)",
+        why: "A highly interconnected domain; modules share data without microservice complexity.",
+      },
+      {
+        title: "Relational MySQL",
+        why: "Referential integrity across inventory, events and sales; reporting with direct SQL.",
+      },
+      {
+        title: "RBAC from day one",
+        why: "Warehouse, sales and admin see only what's theirs — sensitive data protected.",
+      },
+    ],
+    hiringFit:
+      "An end-to-end own product: I modeled the domain, built backend, UI and dashboards, and put it to work with real data. If you want someone who turns a messy operation into a usable system, this is the example. Demo with sample data in 15 min.",
+  },
+  {
+    slug: "prestamos-fintech",
+    tag: "Fintech & Backend",
+    title: "ACCOOP — loan management",
+    summary:
+      "A fintech platform for a credit union: loan applications, scoring/approval, loans with amortization, installments and payments, with a documented REST API (JWT + Swagger), an admin panel and a member portal.",
+    ...img("prestamos-fintech"),
+    productImage: "/images/captures/prestamos/prestamos-card.webp",
+    gallery: [
+      {
+        src: "/images/captures/prestamos/prestamos-solicitudes.png",
+        alt: "ACCOOP — loan application management with KPIs",
+        width: 1024,
+        height: 640,
+        caption: "Applications: pending, under review, approved and total amount",
+      },
+      {
+        src: "/images/captures/prestamos/prestamos-clientes.png",
+        alt: "ACCOOP — member/client portfolio",
+        width: 1024,
+        height: 640,
+        caption: "Clients / members with credit history",
+      },
+      {
+        src: "/images/captures/prestamos/prestamos-swagger.png",
+        alt: "ACCOOP — REST API documented with Swagger",
+        width: 1024,
+        height: 640,
+        caption: "REST API documented (DRF + Swagger/OpenAPI)",
+      },
+      {
+        src: "/images/captures/prestamos/prestamos-django-admin.png",
+        alt: "ACCOOP — Django admin panel",
+        width: 1024,
+        height: 640,
+        caption: "Back-office on Django admin for internal operations",
+      },
+    ],
+    archCaption:
+      "Member portal and admin panel → DRF API with JWT and Swagger → credit domain (applications, loans, payments) → relational store.",
+    meta: [
+      { label: "Domain", value: "Fintech / Credit" },
+      { label: "Role", value: "Backend / Full-stack" },
+      { label: "Stack", value: "Django + DRF" },
+      { label: "Focus", value: "Credit with a documented API" },
+    ],
+    context:
+      "A credit union needed to move off manual loan math and bring the full cycle into software: receive applications, evaluate them, approve, generate the loan with its amortization, collect installments and control the portfolio. I built the platform with Django + DRF, including an admin panel, a member portal and a documented REST API for integrations.",
+    challenges: [
+      "Manual installment and balance math prone to error.",
+      "No traceability of each application's status and its portfolio.",
+      "Need for integrations (API) without exposing the database directly.",
+      "Internal operations requiring a reliable back-office.",
+    ],
+    approach: [
+      {
+        title: "Full credit cycle",
+        description: "Application → evaluation/scoring → approval → loan → installments → payments, each with its state.",
+      },
+      {
+        title: "Documented REST API",
+        description: "DRF + SimpleJWT + Swagger/OpenAPI: a clear contract for the portal and third parties.",
+      },
+      {
+        title: "Dual surface",
+        description: "Admin panel for the union and a portal for the member.",
+      },
+      {
+        title: "Back-office on Django admin",
+        description: "Internal operations without building CRUD from scratch.",
+      },
+    ],
+    stack: ["Python", "Django", "Django REST Framework", "SimpleJWT", "drf-yasg", "SQLite/MySQL"],
+    outcomes: [
+      { value: "100%", label: "Digitized credit cycle" },
+      { value: "API", label: "REST documented with Swagger" },
+      { value: "JWT", label: "Auth for integrations" },
+    ],
+    highlights: [
+      "Applications with states (pending, under review, approved, rejected) and KPIs.",
+      "Loans with amortization, installments and portfolio/payment control.",
+      "REST API with JWT and Swagger/ReDoc docs.",
+      "Admin panel + member portal over one domain.",
+    ],
+    architectureLayers: [
+      "Channels: member portal + admin panel",
+      "DRF API + JWT + Swagger",
+      "Domain: applications / scoring",
+      "Domain: loans / installments / payments",
+      "Relational persistence (SQLite/MySQL)",
+    ],
+    decisions: [
+      {
+        title: "Django + DRF",
+        why: "Admin out of the box, a robust ORM and DRF for a well-typed API — speed without losing order.",
+      },
+      {
+        title: "JWT alongside sessions",
+        why: "The web uses sessions; integrations use tokens, without opening the database.",
+      },
+      {
+        title: "SQLite in dev, MySQL in prod",
+        why: "Instant local onboarding; the same ORM layer for production.",
+      },
+    ],
+    hiringFit:
+      "Backend for a sensitive domain (money) with explicit rules, a documented API and token security. If you need to model a financial flow with traceability and a clean API, I can replicate it. System walkthrough in a 15-min call.",
+  },
+  {
+    slug: "landing-mws",
+    tag: "Frontend & Web",
+    title: "Agency landing — Angular SPA",
+    summary:
+      "A high-impact landing for a software agency: an Angular SPA with an animated hero, services and portfolio sections, and social proof — built to convert visits into contacts, with a static build and a performance focus.",
+    ...img("landing-mws"),
+    productImage: "/images/captures/landing-mws-ng/landing-mws-ng-card.webp",
+    gallery: [
+      {
+        src: "/images/captures/landing-mws-ng/landingng-home.png",
+        alt: "Agency landing — animated hero and value proposition",
+        width: 1024,
+        height: 640,
+        caption: "High-impact hero with one clear primary action",
+      },
+      {
+        src: "/images/captures/landing-mws-ng/landingng-home-mobile.png",
+        alt: "Agency landing — responsive mobile version",
+        width: 390,
+        height: 844,
+        caption: "Mobile-first: most traffic arrives on mobile",
+      },
+    ],
+    archCaption:
+      "Conversion UX (hero + social proof) → Angular SPA with standalone components → static build optimized for SEO/performance.",
+    meta: [
+      { label: "Domain", value: "Marketing / Web" },
+      { label: "Role", value: "Frontend" },
+      { label: "Stack", value: "Angular SPA" },
+      { label: "Focus", value: "Turn visits into contacts" },
+    ],
+    context:
+      "An agency needed a landing that conveyed solidity and pushed toward contact. I built it as an Angular SPA: an animated hero with a clear value proposition, services and projects sections, social proof (project volume) and a single primary action — all with a static build for low cost and good performance.",
+    challenges: [
+      "Communicate value in seconds and guide to a single action.",
+      "Keep engaging animations without sacrificing performance.",
+      "A scalable structure to add sections without clutter.",
+      "Solid mobile behavior, where most traffic arrives.",
+    ],
+    approach: [
+      {
+        title: "Conversion-oriented hero",
+        description: "Clear message + primary CTA; visual hierarchy that leads to contact.",
+      },
+      {
+        title: "Component architecture",
+        description: "Angular standalone components; decoupled, reusable sections.",
+      },
+      {
+        title: "Social proof",
+        description: "Project volume and services visible up top to build trust.",
+      },
+      {
+        title: "Static delivery",
+        description: "Optimized build with no server runtime; less failure surface.",
+      },
+    ],
+    stack: ["Angular", "TypeScript", "RxJS", "SCSS", "HTML5"],
+    outcomes: [
+      { value: "SPA", label: "Angular with standalone components" },
+      { value: "1", label: "Primary action toward contact" },
+      { value: "Static", label: "Serverless build, low cost" },
+    ],
+    highlights: [
+      "Animated hero with a value proposition and clear CTA.",
+      "Services and portfolio sections with social proof.",
+      "Component architecture that's easy to extend.",
+      "Mobile-first responsive with a performance focus.",
+    ],
+    architectureLayers: [
+      "Conversion UX (hero + social proof)",
+      "Angular SPA (standalone components)",
+      "Optimized static build",
+      "SEO / performance",
+    ],
+    decisions: [
+      {
+        title: "Angular SPA",
+        why: "Rich interactions and a component structure to grow without debt.",
+      },
+      {
+        title: "Static build",
+        why: "No app runtime = lower cost, latency and failure surface.",
+      },
+      {
+        title: "One primary CTA",
+        why: "Reduces the paradox of choice and lifts conversion to contact.",
+      },
+    ],
+    hiringFit:
+      "Business-oriented frontend: it doesn't just look good, it's built to convert. If you need a landing that turns traffic into leads, I can design and build it. I'll review your case in a 15-min call.",
+  },
+  {
+    slug: "automatizacion-datos",
+    tag: "Automation & Data",
+    title: "Google Places Scraper — prospecting",
+    summary:
+      "A Python/Streamlit tool for commercial prospecting: it searches businesses by geographic area and type using the Google Places API, normalizes the data (name, address, phone, rating) and exports it to CSV/JSON ready for CRM or campaigns.",
+    ...img("automatizacion-datos"),
+    productImage: "/images/captures/google-places/google-places-card.webp",
+    gallery: [
+      {
+        src: "/images/captures/google-places/places-app.png",
+        alt: "Google Places Scraper — geolocated prospecting",
+        width: 1024,
+        height: 640,
+        caption: "Search by geo/type, normalized results and export",
+      },
+      {
+        src: "/images/captures/google-places/places-app-mobile.png",
+        alt: "Google Places Scraper — mobile view",
+        width: 390,
+        height: 844,
+        caption: "Responsive Streamlit UI, usable on mobile",
+      },
+    ],
+    archCaption:
+      "Parameters (geo + type) → Google Places API with pagination → normalization → CSV/JSON export + history.",
+    meta: [
+      { label: "Domain", value: "Automation" },
+      { label: "Role", value: "Data / Tooling" },
+      { label: "Stack", value: "Python + Streamlit" },
+      { label: "Focus", value: "Prospecting without manual work" },
+    ],
+    context:
+      "Not every problem needs a platform: sometimes a well-made micro-tool saves hours. I built a Google Places scraper that assembles prospecting lists by area and business type: instead of copying map data one by one, you set geo + category, get the places with their detail and export everything clean to use in a CRM or campaigns.",
+    challenges: [
+      "Manual prospecting copying data from maps, one by one.",
+      "Rate limits and pagination of the Places API.",
+      "Raw data with duplicates and inconsistent fields.",
+      "Need for a usable UI without installing anything complex.",
+    ],
+    approach: [
+      {
+        title: "Geolocated scraper",
+        description: "Search by lat/lng, radius and type; per-place detail (address, phone, rating).",
+      },
+      {
+        title: "Limit handling",
+        description: "Pagination and pauses to respect rate limits without losing results.",
+      },
+      {
+        title: "Normalization and export",
+        description: "Clean, deduplicated data exported to CSV/JSON for CRM/campaigns.",
+      },
+      {
+        title: "Streamlit UI",
+        description: "An immediate web interface: parameterize and download, frictionless.",
+      },
+    ],
+    stack: ["Python", "Streamlit", "Google Places API", "pandas", "requests"],
+    outcomes: [
+      { value: "Hours", label: "Saved per prospecting list" },
+      { value: "CSV/JSON", label: "Export ready for CRM" },
+      { value: "1-click", label: "Instant download" },
+    ],
+    highlights: [
+      "Geolocated prospecting by area and business type.",
+      "Handles pagination and rate limits of the Places API.",
+      "Normalized data (name, address, phone, rating) exportable.",
+      "Streamlit UI ready to use with no local install.",
+    ],
+    architectureLayers: [
+      "Input: geo + type parameters",
+      "Processing: Google Places API (pagination)",
+      "Normalization and dedup",
+      "Output: CSV/JSON + history",
+    ],
+    decisions: [
+      {
+        title: "Streamlit over an SPA",
+        why: "Time-to-value: a useful internal tool in hours, not weeks.",
+      },
+      {
+        title: "Export to operational formats",
+        why: "CSV/JSON that fit straight into the real flow (CRM, campaigns).",
+      },
+      {
+        title: "Anti rate-limit pauses",
+        why: "Prioritizes completing the job over raw speed against the API.",
+      },
+    ],
+    hiringFit:
+      "Pragmatism: I spot repetitive work and automate it with the right tool (sometimes a script, not a platform). If you have a manual task that repeats, I can probably eliminate it. Tell me about it in a short call.",
   },
 ];

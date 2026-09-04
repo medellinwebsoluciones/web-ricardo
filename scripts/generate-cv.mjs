@@ -65,7 +65,7 @@ const check = (value, where) => {
 };
 
 const contact = data.contacto;
-const contactFields = [
+const contactLine = [
   t(contact.ubicacion),
   contact.email,
   contact.telefono,
@@ -73,20 +73,10 @@ const contactFields = [
   contact.linkedin,
   contact.github,
 ]
-  .map((v) => (typeof v === "string" ? v.trim() : ""))
-  .filter((v) => v && !v.startsWith("TODO:"));
-
-for (const v of [contact.email, contact.telefono, contact.web, contact.linkedin, contact.github]) {
-  if (typeof v === "string" && v.startsWith("TODO:")) pending.push(`contacto: ${v.slice(5)}`);
-}
-
-const contactLine = contactFields.map((v) => esc(v)).join(" · ");
-
-/** Línea plana de keywords: los ATS/IA parsean texto mejor que tablas visuales. */
-const coreSkills =
-  lang === "en"
-    ? "Software Architecture, Solutions Architecture, Python, FastAPI, Django, PostgreSQL, Docker, RAG, Agentic AI, CrewAI, MCP, High Availability, Microservices, AWS, Backend Engineering"
-    : "Software Architecture, Solutions Architecture, Python, FastAPI, Django, PostgreSQL, Docker, RAG, Agentic AI, CrewAI, MCP, Alta disponibilidad, Microservicios, AWS, Backend Engineering";
+  .map((v) => check(v, "contacto"))
+  .filter(Boolean)
+  .map((v) => esc(String(v).replace(/^TODO:/, "")))
+  .join(" · ");
 
 const sections = {
   experiencia: () => `
@@ -158,7 +148,6 @@ const sections = {
   stack: () => `
   <section>
     <h2>${L.stack}</h2>
-    <p class="skills-line">${esc(coreSkills)}</p>
     <table class="stack">
       ${data.stack.map((g) => `<tr><th>${esc(t(g.grupo))}</th><td>${esc(g.items.join(" · "))}</td></tr>`).join("")}
     </table>
@@ -216,7 +205,6 @@ const html = `<!doctype html>
   table.stack { width: 100%; border-collapse: collapse; }
   table.stack th { text-align: left; width: 105px; font-weight: 600; vertical-align: top; padding: 2px 8px 2px 0; }
   table.stack td { padding: 2px 0; color: #3f3f46; }
-  .skills-line { margin-bottom: 6px; color: #3f3f46; font-size: 9pt; }
 </style></head>
 <body>
   <header>

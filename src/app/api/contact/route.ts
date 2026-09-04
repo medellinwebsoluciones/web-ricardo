@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
 const schema = z.object({
   name: z.string().min(2).max(120),
   email: z.string().email().max(160),
-  phone: z.string().min(7).max(40),
+  phone: z.string().max(40).optional().default(""),
   message: z.string().min(5).max(2000),
   locale: z.enum(["es", "en"]).default("es"),
   website: z.string().optional(), // honeypot
@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
     data: {
       name: data.name,
       email: data.email,
-      phone: data.phone.trim(),
+      phone: data.phone.trim() || "—",
       message: data.message,
       source: "contact",
       locale: data.locale,
@@ -60,7 +60,7 @@ export async function POST(req: NextRequest) {
     html: contactNotificationHtml({
       name: data.name,
       email: data.email,
-      phone: data.phone.trim(),
+      phone: data.phone.trim() || "—",
       message: data.message,
     }),
     replyTo: data.email,

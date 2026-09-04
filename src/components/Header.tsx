@@ -4,9 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X, Calendar } from "lucide-react";
-import { WhatsAppIcon } from "./icons";
 import { LanguageToggle } from "./LanguageToggle";
-import { whatsappContact } from "@/lib/site";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 
@@ -91,16 +89,6 @@ export function Header({
           >
             {dict.nav.booking}
           </Link>
-          <a
-            href={whatsappContact(locale)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-secondary hidden px-3 py-2 text-xs sm:inline-flex"
-            aria-label={dict.hero.ctaWhatsapp}
-          >
-            <WhatsAppIcon className="h-4 w-4" />
-            <span className="hidden lg:inline">{dict.hero.ctaWhatsapp}</span>
-          </a>
           <button
             onClick={() => setMenuOpen((o) => !o)}
             className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-zinc-800 text-zinc-300 transition-colors hover:border-zinc-600 hover:text-white lg:hidden"
@@ -134,15 +122,6 @@ export function Header({
               <Calendar className="h-4 w-4" />
               {dict.nav.booking}
             </Link>
-            <a
-              href={whatsappContact(locale)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-secondary mt-2 w-full"
-            >
-              <WhatsAppIcon className="h-4 w-4" />
-              {dict.hero.ctaWhatsapp}
-            </a>
           </nav>
         </div>
       )}

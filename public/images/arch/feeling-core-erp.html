@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Feeling Core — ERP de bodega y eventos — Architecture</title>
+<style>
+  :root {
+    --bg0: #050506;
+    --bg1: #09090b;
+    --green: #34d399;
+    --green-dim: rgba(52,211,153,0.14);
+    --line: #27272a;
+    --text: #fafafa;
+    --muted: #a1a1aa;
+    --dim: #71717a;
+    --card: rgba(24,24,27,0.88);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    min-height: 720px;
+    background:
+      radial-gradient(1100px 520px at 18% -10%, #0f2918 0%, transparent 55%),
+      radial-gradient(900px 480px at 90% 110%, rgba(16,185,129,0.08) 0%, transparent 50%),
+      linear-gradient(180deg, var(--bg1), var(--bg0));
+    color: var(--text);
+    font-family: "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+    display: flex; flex-direction: column;
+    padding: 36px 44px 28px;
+  }
+  .eyebrow {
+    color: var(--green); letter-spacing: 0.22em;
+    font-size: 11px; text-transform: uppercase; font-weight: 650;
+  }
+  h1 {
+    margin-top: 10px; font-size: 28px; font-weight: 600;
+    letter-spacing: -0.025em; line-height: 1.15;
+  }
+  .focus {
+    margin-top: 8px; font-size: 13px; color: var(--muted); max-width: 52rem;
+  }
+  .map {
+    margin-top: 22px; flex: 1; display: flex; flex-direction: column;
+    justify-content: center; gap: 0;
+  }
+  .layer {
+    display: grid; grid-template-columns: 148px 1fr; gap: 16px; align-items: center;
+    animation: rise 0.55s ease both; animation-delay: var(--d);
+  }
+  .layer-meta { display: flex; flex-direction: column; gap: 2px; }
+  .layer-name {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--green);
+  }
+  .layer-role { font-size: 12px; color: var(--dim); }
+  .nodes {
+    display: grid;
+    grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+    gap: 12px;
+  }
+  .node {
+    appearance: none; border: 1px solid var(--line);
+    background: var(--card);
+    border-radius: 12px; padding: 16px 14px; text-align: left;
+    color: var(--text); cursor: pointer;
+    box-shadow: 0 0 0 1px var(--green-dim);
+    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s, background 0.2s;
+    animation: rise 0.55s ease both; animation-delay: var(--d);
+    font: inherit;
+  }
+  .node-label { font-size: 15px; font-weight: 560; display: block; }
+  .node:hover, .node:focus-visible, .node.is-active {
+    outline: none;
+    border-color: rgba(52,211,153,0.55);
+    background: rgba(16,185,129,0.08);
+    transform: translateY(-2px);
+    box-shadow: 0 0 0 1px rgba(52,211,153,0.25), 0 10px 28px rgba(0,0,0,0.35);
+  }
+  .flow {
+    display: flex; justify-content: center; padding: 6px 0 6px 148px;
+  }
+  .flow span {
+    width: 2px; height: 14px;
+    background: linear-gradient(180deg, transparent, var(--green), transparent);
+    opacity: 0.55; position: relative;
+  }
+  .flow span::after {
+    content: ""; position: absolute; left: 50%; bottom: -3px;
+    width: 6px; height: 6px; border-right: 1.5px solid var(--green);
+    border-bottom: 1.5px solid var(--green); transform: translateX(-50%) rotate(45deg);
+    opacity: 0.8;
+  }
+  .tip {
+    margin-top: 18px; min-height: 52px;
+    border: 1px solid var(--line); border-radius: 12px;
+    background: rgba(9,9,11,0.75);
+    padding: 12px 16px; display: flex; gap: 12px; align-items: flex-start;
+  }
+  .tip-k {
+    flex-shrink: 0; margin-top: 2px;
+    font-size: 10px; font-weight: 700; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--green);
+  }
+  .tip-v { font-size: 13px; line-height: 1.45; color: var(--muted); }
+  .chips { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    font-size: 11px; color: #d4d4d8;
+    border: 1px solid #3f3f46; background: rgba(24,24,27,0.7);
+    border-radius: 999px; padding: 5px 10px;
+  }
+  .footer {
+    margin-top: 14px; font-size: 12px; color: var(--dim);
+    display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  }
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: none; }
+  }
+  @media (max-width: 820px) {
+    body { padding: 20px; }
+    .layer { grid-template-columns: 1fr; gap: 8px; }
+    .flow { padding-left: 0; }
+    h1 { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+  <div class="eyebrow">Architecture</div>
+  <h1>Feeling Core — ERP de bodega y eventos</h1>
+  <p class="focus">Vista parcial: acceso por rol → módulos operativos → datos + KPIs</p>
+  <div class="map">
+      <div class="layer" style="--d:0ms">
+        <div class="layer-meta">
+          <span class="layer-name">Acceso</span>
+          <span class="layer-role">Auth + roles</span>
+        </div>
+        <div class="nodes" style="--cols:2">
+          <button type="button" class="node" data-tip="Hash PBKDF2-SHA256 + bloqueo tras 5 intentos; cookies HttpOnly." style="--d:0ms" aria-describedby="tip">
+            <span class="node-label">Login PBKDF2</span>
+          </button>
+          <button type="button" class="node" data-tip="Roles admin/supervisor/bodega/comercial con decoradores reutilizables." style="--d:40ms" aria-describedby="tip">
+            <span class="node-label">RBAC</span>
+          </button></div>
+      </div>
+      <div class="flow" aria-hidden="true"><span></span></div>
+      <div class="layer" style="--d:90ms">
+        <div class="layer-meta">
+          <span class="layer-name">Operación</span>
+          <span class="layer-role">Módulos de negocio</span>
+        </div>
+        <div class="nodes" style="--cols:4">
+          <button type="button" class="node" data-tip="Stock por estado, categorías, alertas de mínimos y auditorías." style="--d:90ms" aria-describedby="tip">
+            <span class="node-label">Bodega / inventario</span>
+          </button>
+          <button type="button" class="node" data-tip="Personal, horas, vehículos y logística de montaje/desmontaje." style="--d:130ms" aria-describedby="tip">
+            <span class="node-label">Eventos / despachos</span>
+          </button>
+          <button type="button" class="node" data-tip="Tiempo, presupuestos e interacciones por proyecto." style="--d:170ms" aria-describedby="tip">
+            <span class="node-label">Proyectos / tareas</span>
+          </button>
+          <button type="button" class="node" data-tip="Clientes, cotizaciones y ventas con numeración propia." style="--d:210ms" aria-describedby="tip">
+            <span class="node-label">Comercial</span>
+          </button></div>
+      </div>
+      <div class="flow" aria-hidden="true"><span></span></div>
+      <div class="layer" style="--d:180ms">
+        <div class="layer-meta">
+          <span class="layer-name">Datos</span>
+          <span class="layer-role">Persistencia + KPIs</span>
+        </div>
+        <div class="nodes" style="--cols:3">
+          <button type="button" class="node" data-tip="SQLAlchemy + Flask-Migrate; un esquema relacional para toda la operación." style="--d:180ms" aria-describedby="tip">
+            <span class="node-label">MySQL</span>
+          </button>
+          <button type="button" class="node" data-tip="Tendencias 6 meses, valor de cotizaciones y horas — no hojas sueltas." style="--d:220ms" aria-describedby="tip">
+            <span class="node-label">Dashboards KPI</span>
+          </button>
+          <button type="button" class="node" data-tip="Bitácora de accesos (IP, motivo) y auditorías de inventario." style="--d:260ms" aria-describedby="tip">
+            <span class="node-label">Auditoría</span>
+          </button></div>
+      </div>
+      </div>
+  <div class="tip" id="tip" role="status" aria-live="polite">
+    <span class="tip-k">Insight</span>
+    <span class="tip-v" id="tip-text">Pasa el cursor o enfoca un bloque para ver el criterio arquitectónico de esa capa.</span>
+  </div>
+  <div class="chips"><span class="chip">Monolito modular vs microservicios</span><span class="chip">RBAC fino vs fricción operativa</span><span class="chip">Un ERP integrado vs herramientas sueltas</span></div>
+  <div class="footer">
+    <span>Ricardo Zuluaga · Medellín Web Soluciones · Mapa parcial (portfolio)</span>
+    <span>No revela internals propietarios</span>
+  </div>
+<script>
+(function () {
+  var tip = document.getElementById("tip-text");
+  var nodes = Array.prototype.slice.call(document.querySelectorAll(".node"));
+  var defaultTip = tip.textContent;
+  function setActive(btn) {
+    nodes.forEach(function (n) { n.classList.toggle("is-active", n === btn); });
+    tip.textContent = btn.getAttribute("data-tip") || defaultTip;
+  }
+  nodes.forEach(function (btn) {
+    btn.addEventListener("mouseenter", function () { setActive(btn); });
+    btn.addEventListener("focus", function () { setActive(btn); });
+    btn.addEventListener("click", function () { setActive(btn); });
+  });
+  document.querySelector(".map").addEventListener("mouseleave", function () {
+    nodes.forEach(function (n) { n.classList.remove("is-active"); });
+    tip.textContent = defaultTip;
+  });
+})();
+</script>
+</body></html>

@@ -54,7 +54,6 @@ export type Dictionary = {
     ctaSecondary: string;
     ctaCv: string;
     ctaLinkedin: string;
-    ctaWhatsapp: string;
     rolesLabel: string;
     roles: string[];
     stats: { value: string; label: string }[];
@@ -115,7 +114,6 @@ export type Dictionary = {
     ctaBody: string;
     downloadCv: string;
     viewLinkedin: string;
-    whatsappCta: string;
     bookCall: string;
     emailCta: string;
   };
@@ -149,11 +147,16 @@ export type Dictionary = {
     nameLabel: string;
     emailLabel: string;
     phoneLabel: string;
+    phoneOptional: string;
     messageLabel: string;
     submit: string;
     submitting: string;
     success: string;
     error: string;
+    trust: string;
+    responseTime: string;
+    whatsappCta: string;
+    whatsappAria: string;
   };
   chat: {
     launcher: string;
@@ -197,7 +200,7 @@ const es: Dictionary = {
     title:
       "Ricardo Zuluaga | Senior Software Architect · AI & Backend",
     description:
-      "Senior Software Architect / Solutions Architect (AI · Backend · Sistemas distribuidos). +10 años y 12+ sistemas en producción. Remoto desde Medellín con solape CET o relocation a España/EU.",
+      "Senior Software Architect / Solutions Architect (AI · Backend · Sistemas distribuidos). +10 años y 16+ sistemas en producción. Remoto desde Medellín con solape CET o relocation a España/EU.",
     keywords: [
       "Senior Software Architect",
       "Solutions Architect",
@@ -244,13 +247,12 @@ const es: Dictionary = {
     role: "Senior Software Architect / Solutions Architect",
     roleSpec: "AI · Backend · Sistemas distribuidos",
     subtitle:
-      "Diseño, construyo y opero sistemas en producción donde la arquitectura, la fiabilidad y la IA importan de verdad: +10 años y 12+ sistemas entregados para banca, telco, retail y producto propio.",
+      "Diseño, construyo y opero sistemas en producción donde la arquitectura, la fiabilidad y la IA importan de verdad: +10 años y 16+ sistemas entregados para banca, telco, retail y producto propio.",
     location: "España / EU · Remoto · Relocation",
     ctaPrimary: "Agendar llamada técnica (15 min)",
     ctaSecondary: "Ver sistemas en producción",
     ctaCv: "Descargar CV",
     ctaLinkedin: "LinkedIn",
-    ctaWhatsapp: "WhatsApp",
     rolesLabel: "Abierto a",
     roles: [
       "Senior Software Architect",
@@ -263,7 +265,7 @@ const es: Dictionary = {
     ],
     stats: [
       { value: "+10", label: "Años en producción" },
-      { value: "12+", label: "Sistemas entregados" },
+      { value: "16+", label: "Sistemas entregados" },
       { value: "24/7", label: "Automatización con IA local" },
     ],
   },
@@ -508,11 +510,16 @@ const es: Dictionary = {
     nameLabel: "Nombre",
     emailLabel: "Email",
     phoneLabel: "Teléfono",
+    phoneOptional: "opcional",
     messageLabel: "Mensaje",
     submit: "Contactar a Ricardo",
     submitting: "Enviando...",
     success: "Mensaje enviado. Te responderé pronto.",
     error: "No se pudo enviar. Intenta de nuevo.",
+    trust: "Trato directo conmigo. Sin spam, sin compartir tus datos.",
+    responseTime: "Respondo normalmente en menos de 24 h (días hábiles).",
+    whatsappCta: "Escríbeme por WhatsApp",
+    whatsappAria: "Abrir chat de WhatsApp con Ricardo",
   },
   chat: {
     launcher: "Pregúntale a Ricardo (IA)",
@@ -589,11 +596,11 @@ const es: Dictionary = {
     quickFactsHeading: "Datos rápidos",
     quickFacts: [
       { label: "Ubicación", value: "Medellín, Colombia" },
-      { label: "WhatsApp", value: "+57 305 355 4636" },
       { label: "Zona horaria", value: "COT · solape diario con CET" },
-      { label: "Experiencia", value: "+10 años · 12+ sistemas en producción" },
+      { label: "Experiencia", value: "+10 años · 16+ sistemas en producción" },
       { label: "Especialidad", value: "Arquitectura · IA · Backend" },
       { label: "Idiomas", value: "Español nativo · inglés técnico" },
+      { label: "Respuesta", value: "Contesto personalmente en 24 h hábiles" },
     ],
     rolesHeading: "Roles objetivo",
     rolesNote:
@@ -622,7 +629,6 @@ const es: Dictionary = {
       "Descarga el CV o agenda 15 minutos: hablas directamente conmigo, sin intermediarios.",
     downloadCv: "Descargar CV (PDF)",
     viewLinkedin: "Ver LinkedIn",
-    whatsappCta: "Escribir por WhatsApp",
     bookCall: "Agendar llamada técnica",
     emailCta: "Escribir un email",
   },
@@ -645,7 +651,7 @@ const en: Dictionary = {
   meta: {
     title: "Ricardo Zuluaga | Senior Software Architect · AI & Backend",
     description:
-      "Senior Software Architect / Solutions Architect (AI · Backend · Distributed Systems). 10+ years and 12+ production systems. Remote from Medellín with CET overlap or relocation to Spain/EU.",
+      "Senior Software Architect / Solutions Architect (AI · Backend · Distributed Systems). 10+ years and 16+ production systems. Remote from Medellín with CET overlap or relocation to Spain/EU.",
     keywords: [
       "Senior Software Architect",
       "Solutions Architect",
@@ -691,13 +697,12 @@ const en: Dictionary = {
     role: "Senior Software Architect / Solutions Architect",
     roleSpec: "AI · Backend · Distributed Systems",
     subtitle:
-      "I design, build and operate production systems where architecture, reliability and AI actually matter: 10+ years and 12+ systems shipped across banking, telco, retail and my own products.",
+      "I design, build and operate production systems where architecture, reliability and AI actually matter: 10+ years and 16+ systems shipped across banking, telco, retail and my own products.",
     location: "Spain / EU · Remote · Relocation",
     ctaPrimary: "Book a 15-Min Technical Call",
     ctaSecondary: "See Production Systems",
     ctaCv: "Download CV",
     ctaLinkedin: "LinkedIn",
-    ctaWhatsapp: "WhatsApp",
     rolesLabel: "Open to",
     roles: [
       "Senior Software Architect",
@@ -710,7 +715,7 @@ const en: Dictionary = {
     ],
     stats: [
       { value: "10+", label: "Years in production" },
-      { value: "12+", label: "Systems delivered" },
+      { value: "16+", label: "Systems delivered" },
       { value: "24/7", label: "Local AI automation" },
     ],
   },
@@ -955,11 +960,16 @@ const en: Dictionary = {
     nameLabel: "Name",
     emailLabel: "Email",
     phoneLabel: "Phone",
+    phoneOptional: "optional",
     messageLabel: "Message",
     submit: "Contact Ricardo",
     submitting: "Sending...",
     success: "Message sent. I'll get back to you soon.",
     error: "Could not send. Please try again.",
+    trust: "You deal directly with me. No spam, your data is never shared.",
+    responseTime: "I usually reply within 24 h (business days).",
+    whatsappCta: "Message me on WhatsApp",
+    whatsappAria: "Open WhatsApp chat with Ricardo",
   },
   chat: {
     launcher: "Ask Ricardo (AI)",
@@ -1035,11 +1045,11 @@ const en: Dictionary = {
     quickFactsHeading: "Quick facts",
     quickFacts: [
       { label: "Location", value: "Medellín, Colombia" },
-      { label: "WhatsApp", value: "+57 305 355 4636" },
       { label: "Timezone", value: "COT · daily CET overlap" },
-      { label: "Experience", value: "10+ years · 12+ production systems" },
+      { label: "Experience", value: "10+ years · 16+ production systems" },
       { label: "Focus", value: "Architecture · AI · Backend" },
       { label: "Languages", value: "Native Spanish · technical English" },
+      { label: "Response", value: "I reply personally within 24 business hours" },
     ],
     rolesHeading: "Target roles",
     rolesNote:
@@ -1065,7 +1075,6 @@ const en: Dictionary = {
       "Download the CV or book 15 minutes: you talk directly to me, no middle layer.",
     downloadCv: "Download CV (PDF)",
     viewLinkedin: "View LinkedIn",
-    whatsappCta: "Message on WhatsApp",
     bookCall: "Book a technical call",
     emailCta: "Send an email",
   },

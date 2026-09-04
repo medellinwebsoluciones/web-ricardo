@@ -1,0 +1,12 @@
+flowchart TB
+  Login[Login PBKDF2] --> RBAC[RBAC]
+  RBAC --> Bod[Bodega / inventario]
+  RBAC --> Eve[Eventos / despachos]
+  RBAC --> Pry[Proyectos / tareas]
+  RBAC --> Com[Comercial]
+  Bod --> DB[(MySQL)]
+  Eve --> DB
+  Pry --> DB
+  Com --> DB
+  DB --> KPI[Dashboards KPI]
+  DB --> Aud[Auditoría]

@@ -1,0 +1,9 @@
+flowchart TB
+  Cli[Portal cliente] --> DRF[DRF + JWT]
+  Adm[Panel admin] --> DRF
+  DRF --> Sol[Solicitudes / scoring]
+  DRF --> Pre[Préstamos / cuotas]
+  DRF --> Pag[Pagos]
+  Sol --> DB[(SQLite / MySQL)]
+  Pre --> DB
+  Pag --> DB

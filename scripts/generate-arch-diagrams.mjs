@@ -1014,6 +1014,194 @@ const diagrams = [
   G --> WC[wp-content]
   BR --> HK[Hooks WP]`,
   },
+  {
+    slug: "feeling-core-erp",
+    title: "Feeling Core — ERP de bodega y eventos",
+    focus: "Vista parcial: acceso por rol → módulos operativos → datos + KPIs",
+    layers: [
+      {
+        name: "Acceso",
+        role: "Auth + roles",
+        nodes: [
+          { id: "login", label: "Login PBKDF2", tip: "Hash PBKDF2-SHA256 + bloqueo tras 5 intentos; cookies HttpOnly." },
+          { id: "rbac", label: "RBAC", tip: "Roles admin/supervisor/bodega/comercial con decoradores reutilizables." },
+        ],
+      },
+      {
+        name: "Operación",
+        role: "Módulos de negocio",
+        nodes: [
+          { id: "bod", label: "Bodega / inventario", tip: "Stock por estado, categorías, alertas de mínimos y auditorías." },
+          { id: "eve", label: "Eventos / despachos", tip: "Personal, horas, vehículos y logística de montaje/desmontaje." },
+          { id: "pry", label: "Proyectos / tareas", tip: "Tiempo, presupuestos e interacciones por proyecto." },
+          { id: "com", label: "Comercial", tip: "Clientes, cotizaciones y ventas con numeración propia." },
+        ],
+      },
+      {
+        name: "Datos",
+        role: "Persistencia + KPIs",
+        nodes: [
+          { id: "db", label: "MySQL", tip: "SQLAlchemy + Flask-Migrate; un esquema relacional para toda la operación." },
+          { id: "kpi", label: "Dashboards KPI", tip: "Tendencias 6 meses, valor de cotizaciones y horas — no hojas sueltas." },
+          { id: "aud", label: "Auditoría", tip: "Bitácora de accesos (IP, motivo) y auditorías de inventario." },
+        ],
+      },
+    ],
+    tradeoffs: [
+      "Monolito modular vs microservicios",
+      "RBAC fino vs fricción operativa",
+      "Un ERP integrado vs herramientas sueltas",
+    ],
+    mmd: `flowchart TB
+  Login[Login PBKDF2] --> RBAC[RBAC]
+  RBAC --> Bod[Bodega / inventario]
+  RBAC --> Eve[Eventos / despachos]
+  RBAC --> Pry[Proyectos / tareas]
+  RBAC --> Com[Comercial]
+  Bod --> DB[(MySQL)]
+  Eve --> DB
+  Pry --> DB
+  Com --> DB
+  DB --> KPI[Dashboards KPI]
+  DB --> Aud[Auditoría]`,
+  },
+  {
+    slug: "prestamos-fintech",
+    title: "ACCOOP — gestión de préstamos fintech",
+    focus: "Vista parcial: canales → API JWT → dominio de crédito → datos",
+    layers: [
+      {
+        name: "Canales",
+        role: "Superficies por rol",
+        nodes: [
+          { id: "cli", label: "Portal cliente", tip: "Solicitudes, extractos y pago de cuotas para el asociado." },
+          { id: "adm", label: "Panel admin", tip: "Aprobación de solicitudes, cartera y reportes." },
+        ],
+      },
+      {
+        name: "API",
+        role: "Contrato + seguridad",
+        nodes: [
+          { id: "drf", label: "DRF + JWT", tip: "API REST con SimpleJWT; sesión para web, tokens para integraciones." },
+          { id: "doc", label: "Swagger/OpenAPI", tip: "Contrato documentado (drf-yasg) para clientes y front." },
+        ],
+      },
+      {
+        name: "Dominio",
+        role: "Reglas de crédito",
+        nodes: [
+          { id: "sol", label: "Solicitudes / scoring", tip: "Evaluación y aprobación explícita; nada de caja negra." },
+          { id: "pre", label: "Préstamos / cuotas", tip: "Amortización, tasas y saldos por préstamo." },
+          { id: "pag", label: "Pagos", tip: "Registro de pagos y estado de cartera vencida." },
+        ],
+      },
+      {
+        name: "Datos",
+        role: "Persistencia",
+        nodes: [
+          { id: "db", label: "SQLite / MySQL", tip: "SQLite para desarrollo, MySQL en producción — misma capa ORM." },
+        ],
+      },
+    ],
+    tradeoffs: [
+      "JWT vs sesión pura",
+      "SQLite dev vs MySQL prod",
+      "Aprobación con reglas explícitas vs automática",
+    ],
+    mmd: `flowchart TB
+  Cli[Portal cliente] --> DRF[DRF + JWT]
+  Adm[Panel admin] --> DRF
+  DRF --> Sol[Solicitudes / scoring]
+  DRF --> Pre[Préstamos / cuotas]
+  DRF --> Pag[Pagos]
+  Sol --> DB[(SQLite / MySQL)]
+  Pre --> DB
+  Pag --> DB`,
+  },
+  {
+    slug: "landing-mws",
+    title: "Landing de agencia — Angular SPA",
+    focus: "Vista parcial: UX de alto impacto → SPA → entrega estática",
+    layers: [
+      {
+        name: "UX",
+        role: "Conversión",
+        nodes: [
+          { id: "hero", label: "Hero animado", tip: "Animación tech + propuesta clara; una acción primaria (Contrátanos)." },
+          { id: "sec", label: "Servicios / proyectos", tip: "Prueba social (150+ proyectos) y portafolio navegable." },
+        ],
+      },
+      {
+        name: "App",
+        role: "Angular",
+        nodes: [
+          { id: "spa", label: "Angular 20 SPA", tip: "Componentes standalone; routing por secciones." },
+          { id: "cmp", label: "Componentes", tip: "UI modular reutilizable; estado local ligero." },
+        ],
+      },
+      {
+        name: "Entrega",
+        role: "Performance + SEO",
+        nodes: [
+          { id: "build", label: "Build estático", tip: "Bundle optimizado; sin runtime de servidor = menos superficie de fallo." },
+          { id: "perf", label: "SEO / performance", tip: "Presupuesto de peso y metadatos; LCP como KPI de diseño." },
+        ],
+      },
+    ],
+    tradeoffs: [
+      "SPA vs multipágina",
+      "Animaciones vs performance",
+      "Estático vs CMS",
+    ],
+    mmd: `flowchart TB
+  Hero[Hero animado] --> SPA[Angular SPA]
+  Sec[Servicios / proyectos] --> SPA
+  SPA --> Build[Build estático]
+  Build --> Perf[SEO / performance]
+  Perf --> CTA[CTA contacto]`,
+  },
+  {
+    slug: "automatizacion-datos",
+    title: "Google Places Scraper — prospección",
+    focus: "Vista parcial: parámetros geo → Places API → export operativo",
+    layers: [
+      {
+        name: "Entrada",
+        role: "Parámetros",
+        nodes: [
+          { id: "geo", label: "Geo / radio", tip: "lat/lng y radio de búsqueda para acotar la zona." },
+          { id: "tipo", label: "Tipo de negocio", tip: "Filtro por categoría/keyword para segmentar prospectos." },
+        ],
+      },
+      {
+        name: "Proceso",
+        role: "Lógica Python",
+        nodes: [
+          { id: "api", label: "Google Places API", tip: "Paginación y detalle por lugar con pausas anti rate-limit." },
+          { id: "norm", label: "Normalización", tip: "Nombre, dirección, teléfono, rating — deduplicado y limpio." },
+        ],
+      },
+      {
+        name: "Salida",
+        role: "Export",
+        nodes: [
+          { id: "csv", label: "CSV / JSON", tip: "Listas exportables listas para CRM o campañas." },
+          { id: "hist", label: "Historial", tip: "Búsquedas guardadas para reutilizar y comparar." },
+        ],
+      },
+    ],
+    tradeoffs: [
+      "Streamlit rápido vs SPA",
+      "Local vs cloud",
+      "Rate limits vs cobertura",
+    ],
+    mmd: `flowchart TB
+  Geo[Geo / radio] --> API[Google Places API]
+  Tipo[Tipo de negocio] --> API
+  API --> Norm[Normalización]
+  Norm --> CSV[CSV / JSON]
+  Norm --> Hist[Historial]`,
+  },
 ];
 
 function esc(s) {
